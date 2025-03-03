@@ -1,0 +1,40 @@
+.fc .fc-daygrid-day {
+    background-color: #f5f5f5;
+}
+
+.fc-toolbar-title {
+    color: black;
+}
+
+.fc-button-primary {
+    background-color: rgb(3, 99, 3) !important;
+    border: none !important;
+}
+
+.fc-col-header-cell-cushion {
+    color: black;
+}
+
+.fc-theme-standard td, .fc-theme-standard th {
+    width: 50px !important;
+}
+  
+.fc-day-today {
+    background-color: rgba(5, 150, 22, 0.304) !important;
+}
+
+.fc-event {
+    background-color: #0a8193 !important; /* Rouge vif */
+    color: white !important;
+    border-radius: 5px;
+    padding: 5px;
+    z-index: 50;
+}
+
+.fc-bg-event {
+    background-color: #0a8193;
+}
+
+.fc-view-harness {
+    height: 150px !important;
+}
