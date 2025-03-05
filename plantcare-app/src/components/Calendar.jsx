@@ -13,7 +13,7 @@ export default function MyCalendar() {
   ]);
 
   return (
-    <div className="p-4 h-60 w-[45rem] bg-white rounded-lg shadow-md">
+    <div className="p-4 h-[70%] w-[80%] bg-white rounded-lg shadow-md z-[100]">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridWeek"
