@@ -1,6 +1,10 @@
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cherry+Bomb+One&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 
 :root {
   --background: #ffffff;
@@ -17,6 +21,7 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+  color: #21301a;
+  @apply font-mono;
 }
  

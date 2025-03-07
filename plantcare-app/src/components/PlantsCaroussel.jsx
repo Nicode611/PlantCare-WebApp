@@ -8,14 +8,14 @@ import "../styles/plantsCaroussel.css"
 import { Navigation, Pagination, A11y, EffectCoverflow } from 'swiper/modules';
 import Image from "next/image";
 
-import PlantImg from "../images/plant-test.png"
+import PlantImg from "../images/plant-card.png"
 
 
 function PlantsCaroussel() {
 
     return (
-        <div className='w-[100%] mb-5'>
-            <Swiper className='w-full h-52 text-black'
+        <div className=' w-[100%] min-w-[245px] max-w-[400px] z-20 mt-[-60px]'>
+            <Swiper className='w-full text-black'
                 modules={[Navigation, Pagination, A11y, EffectCoverflow]}
                 spaceBetween={10}
                 slidesPerView={3}
@@ -32,7 +32,7 @@ function PlantsCaroussel() {
             {[...Array(5)].map((_, index) => (
                 <SwiperSlide 
                     key={index}
-                    className="flex justify-center items-center w-10 shadow-xl rounded-xl bg-[#CDD9CA] "
+                    className="flex justify-center items-center shadow-xl rounded-xl bg-[#CDD9CA] "
                     onClick={()=> {console.log(index)}}
                 >
                     <div className="relative h-full flex justify-center items-center">
@@ -45,8 +45,6 @@ function PlantsCaroussel() {
                     </div>
                 </SwiperSlide>
                 ))}
-                
-                ...
             </Swiper>
         </div>
     )

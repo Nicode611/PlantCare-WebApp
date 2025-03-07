@@ -1,5 +1,10 @@
 .fc-media-screen {
-    height: 100%;
+    background-color: #f5f5f5;
+}
+
+.fc-col-header-cell-cushion {
+    background-color: #277A1D;
+    color: white;
 }
 
 .fc .fc-daygrid-day {
@@ -7,24 +12,17 @@
 }
 
 .fc-toolbar-title {
-    color: black;
+    color: #21301a;
 }
 
 .fc-button-primary {
     background-color: rgb(3, 99, 3) !important;
     border: none !important;
-}
-
-.fc-col-header-cell-cushion {
-    color: black;
-}
-
-.fc-theme-standard td, .fc-theme-standard th {
-    width: 50px !important;
+    color: white !important;
 }
   
 .fc-day-today {
-    background-color: rgba(5, 150, 22, 0.304) !important;
+    background-color: #dce5d5 !important;
 }
 
 .fc-event {
@@ -40,5 +38,5 @@
 }
 
 .fc-view-harness {
-    height: 150px !important;
+    height: 135px !important;
 }

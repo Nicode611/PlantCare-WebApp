@@ -12,6 +12,11 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      fontFamily: {
+        sans: ["Arial", "sans-serif"], // Police principale (par défaut)
+        mono: ["Martian Mono", "monospace"],
+        fancy: ["Cherry Bomb One", "cursive"], // Correction ici
+      },
     },
   },
   plugins: [],

@@ -1,6 +1,9 @@
+
 .swiper-slide {
-    height: 70%;
+    aspect-ratio: 1 / 1 !important;
 }
+
+
 
 .swiper-slide:hover {
     cursor: pointer;
@@ -13,6 +16,11 @@
 
 .swiper-slide-shadow-left, .swiper-slide-shadow-right {
     border-radius: 12px;
+}
+
+.swiper-pagination {
+    position: static;
+    margin-top: 10px;
 }
 
 .swiper-pagination-bullet {

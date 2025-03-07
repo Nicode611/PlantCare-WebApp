@@ -1,0 +1,31 @@
+.button {
+    background-color: #fef8ea;
+    border: 0px;
+    outline: 0px;
+    color: #fff;
+    width: 100px;
+    padding: 10px;
+    border-radius: 25px;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.liquid {
+    background-color: #088193;
+    width: 100px;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    box-shadow: inset 2.5px -2.5px 12.5px #104e81,
+}
+
+
+.btn-txt {
+    position: relative;
+    z-index: 1;
+    font-size: 11px;
+    font-family: sans-serif;
+    letter-spacing: 1px;
+}
