@@ -23,7 +23,7 @@ function PlantsDiseases() {
     ]
 
   return (
-    <div className="w-[80%] z-10">
+    <div className="w-[80%] z-30">
         <h2 className="font-fancy text-[3rem] font-extrabold m-5 mb-8">Possible plant diseases :</h2>
         <div className="grid grid-cols-3 gap-[28px] place-items-center ">
             {tab.map((decease, index) => (
