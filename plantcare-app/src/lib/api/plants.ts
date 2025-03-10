@@ -21,7 +21,6 @@ export async function getPlantsFromUser(id: number): Promise<Plant[]> {
         }
 
         const data = await res.json(); // Appelle la fonction et récupère les données
-        console.log(data);
         return await data;
     } catch (error) {
         console.error("Erreur attrapée :", error);

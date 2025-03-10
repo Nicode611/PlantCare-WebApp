@@ -13,8 +13,7 @@ export default {
         foreground: "var(--foreground)",
       },
       fontFamily: {
-        sans: ["Arial", "sans-serif"], // Police principale (par défaut)
-        mono: ["Martian Mono", "monospace"],
+        sans: ["Arial", "sans-serif"],
         fancy: ["Cherry Bomb One", "cursive"], // Correction ici
       },
     },

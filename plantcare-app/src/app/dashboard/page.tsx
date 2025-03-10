@@ -1,5 +1,4 @@
-"use client";
-import { useState } from "react";
+
 import Image from "next/image";
 
 // CSS
@@ -19,27 +18,15 @@ import BlackDrop from "../../images/droplet-black.png"
 import BgPlant from "../../images/Background-Illustration.png"
 import LeafTexture from "../../images/leaf-texture.webp"
 
-// API
-import { Plant, getPlantsFromUser } from "@/lib/api"
 
 
 export default function Dashboard() {
 
-    const [plants, setPlants] = useState<Plant[]>([]);
-
-    const getPlants = async () => {
-        const userId = 1;
-        const plantsOfUser = await getPlantsFromUser(userId);
-
-        if (plantsOfUser.length !== 0) {
-            setPlants(plantsOfUser);
-        }
-        
-    }
+    
 
 
   return (
-    <div className="flex flex-col bg-[#fef8ea] w-[100vw]">
+    <div className="flex flex-col bg-[#fef8ea]">
         <div className={` h-screen flex flex-col items-center bg-[#fef8ea] relative overflow-x-hidden pl-5 pr-5`} >
     
         <div className="absolute right-0 top-[-200px] w-[70%] h-[700px] bg-[#87b57d] bg-opacity-[90%] z-10" 
@@ -72,7 +59,6 @@ export default function Dashboard() {
     
             <section className="w-full h-full flex flex-col items-center z-20">
                 <h2 className="font-fancy text-[2.8rem]">Plant name</h2>
-                <button onClick={() => {getPlants()}}>Get Plants</button>
                 <div className="relative w-full h-[100%] flex">
                     <div className="relative w-[60%] flex justify-around items-center">
     
@@ -139,29 +125,20 @@ export default function Dashboard() {
                         </div>
                     
                     </div>
-                    <div className="w-[40%] flex flex-col justify-around items-end">
-                        <div className="flex flex-col items-end w-full">
-                            <div className="mb-2">
-                                <PrimaryButton title={"Plant settings"}></PrimaryButton>
-                            </div>
-                            
-                        </div>
-                        <div className="max-h-[192px] overflow-y-auto mr-2 ml-2">
-                            <p className="text-[0.8rem] mb-10">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+                    <div className="w-[40%] flex flex-col justify-center ">
+                        
+                        <div className="max-h-[80%] overflow-y-auto mr-2 ml-2">
+                            <h2 className="font-fancy text-[2.8rem] text-right m-2">Some infos</h2>
+                            <p className="text-[0.9rem] mb-10">
+                            Lilipus antonaris is a rare, bioluminescent plant found in dense tropical forests. Its translucent, spiraling leaves emit a soft blue glow at night, attracting nocturnal pollinators.<br></br><br /> The plant produces tiny, ruby-colored fruits with a spicy, citrus-like flavor. It thrives in humid environments and is known for its rapid growth after heavy rainfall. Some indigenous cultures use its sap for medicinal purposes, believing it enhances mental clarity.
                             
                             </p>
-                            <ul>
-                                {plants.length > 0 ? (
-                                    plants.map((plant, index) => (
-                                        <li key={index}>{plant.model.name}</li>
-                                    ))
-                                ) : (
-                                    <p>Aucune plante trouvée.</p>
-                                )}
-                            </ul>
+                            
                         </div>
-                        
+                        <div className="flex justify-between mb-2">
+                            <PrimaryButton title={"Plant settings"}></PrimaryButton>
+                            <PrimaryButton title={"Add plant"}></PrimaryButton>
+                        </div>
     
                     </div>
                 </div>
