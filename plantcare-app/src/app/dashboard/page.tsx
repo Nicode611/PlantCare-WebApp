@@ -1,11 +1,12 @@
 
-// import Image from "next/image";
-
 // CSS
 import "../../styles/dashboard.css"
 
 // Components
 // import Calendar from "../../components/Calendar"
+import Sidebar from "@/components/Sidebar"
+import TasksModule from "@/components/dashboard/TasksModule"
+import PlantsModule from "@/components/dashboard/PlantsModule"
 
 // Images
 // import PlantImg from "../../images/plant-card.png"
@@ -16,6 +17,7 @@ import LeafTexture from "../../images/leaf-texture.webp"
 
 
 
+
 export default function Dashboard() {
 
     
@@ -23,7 +25,7 @@ export default function Dashboard() {
 
     return (
         <div className="flex w-screen h-screen bg-[#fef8ea]">
-            <div className="relative flex w-screen h-full overflow-hidden">
+            <div className="relative flex w-screen min-w-[1000px] h-full overflow-hidden">
 
                 {/* Background */}
                 <div className="absolute bg-black bg-opacity-10 w-full h-full z-40"></div>
@@ -40,22 +42,29 @@ export default function Dashboard() {
 
 
                 {/* Sidebar */}
-                <section className="w-[20%] bg-white shadow-spread z-50">
+                <div className="w-[20%] h-full  bg-[#e8e8e8] shadow-spread z-50">
+                    <Sidebar/>
+                </div>
 
-                </section>
-
+                {/* Main content */}
                 <section className="w-[77%] flex flex-col items-center m-2 z-50">
                     <div className="flex w-full h-[70%] m-2 mr-0 ml-0">
-                        <div className="flex flex-col w-full h-full m-2">
-                            <div className="w-full h-[30%] m-2 bg-white bg-opacity-85 shadow-spread rounded-md"></div>
-                            <div className="w-full h-[70%] m-2 bg-white bg-opacity-85 shadow-spread rounded-md"></div>
+                        <div className="flex flex-col w-[60%] h-full m-2">
+
+                            <div className="w-full h-[30%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
+                                <TasksModule/>
+                            </div>
+
+                            <div className="w-full h-[70%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
+                                <PlantsModule/>
+                            </div>
                         </div>
-                        <div className="flex flex-col w-full h-full m-2">
-                            <div className="w-full h-[60%] m-2 bg-white bg-opacity-85 shadow-spread rounded-md"></div>
-                            <div className="w-full h-[40%] m-2 bg-white bg-opacity-85 shadow-spread rounded-md"></div>
+                        <div className="flex flex-col w-[40%] h-full m-2">
+                            <div className="w-full h-[60%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg "></div>
+                            <div className="w-full h-[40%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg "></div>
                         </div>
                     </div>
-                    <div className="w-full h-[30%] m-2 ml-6 bg-white bg-opacity-85 shadow-spread rounded-md">
+                    <div className="w-full h-[30%] m-2 ml-6 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
 
                     </div>
                 </section>

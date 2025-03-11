@@ -8,9 +8,17 @@ export default {
   ],
   theme: {
     extend: {
+      boxShadow: {
+        button: "1px 2px 2px 1px rgba(0, 0, 0, 0.285)",
+        activeButton: "inset 1px 2px 2px 0px rgba(0, 0, 0, 0.285)",
+        primaryShadow: "2px 2px 0px 2px #277A1C",
+      },
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        primary: "#277A1C",
+        secondary: "#AACCA6",
+        water: "#188396"
       },
       fontFamily: {
         sans: ["Arial", "sans-serif"],
