@@ -6,9 +6,10 @@ import 'swiper/css';
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/scrollbar";
+import "swiper/css/grid";
 import "swiper/css/effect-coverflow"
 import "../styles/plantsCaroussel.css"
-import { Navigation, Pagination, A11y, EffectCoverflow } from 'swiper/modules';
+import { Navigation, Pagination, A11y, Grid } from 'swiper/modules';
 
 
 
@@ -35,29 +36,28 @@ function PlantsCaroussel() {
 
     return (
 
-        <div className=' w-[100%] min-w-[245px] max-w-[400px] z-20 mt-[-60px]'>
-            <Swiper className='w-full text-black'
-                modules={[Navigation, Pagination, A11y, EffectCoverflow]}
-                spaceBetween={10}
-                slidesPerView={3}
-                loop={false}
-                pagination={{ clickable: true }}
-                effect='coverflow'
-                initialSlide={1}
-                slideToClickedSlide={true}
-                centeredSlides={true}
-                onSwiper={() => {console.log("swipe")}}
-                onSlideChange={() => console.log('')}
+        <div className=' w-[100%] h-full max-w-[400px] rounded-md z-20'>
+            <Swiper 
+            className='w-full h-full text-black'
+            modules={[Navigation, Pagination, A11y, Grid]}
+            spaceBetween={10}
+            slidesPerView={3} // Définit 3 colonnes visibles
+            grid={{ rows: 2}}
+            loop={false}
+            pagination={{ clickable: true }}
+            centeredSlides={false} // Désactiver le centrage pour un affichage correct
+            onSwiper={() => console.log("swipe")}
+            onSlideChange={() => {console.log('slide change')}}
             >
 
             {
                 plants.map((plant, index) => (
                 <SwiperSlide 
                     key={index}
-                    className="flex justify-center items-center shadow-xl rounded-xl bg-[#CDD9CA] "
+                    className="flex justify-center items-center shadow-xl rounded-xl bg-[#CDD9CA] max-w-[130px] "
                     onClick={()=> {console.log(`../images/${plant.model.image}`)}}
                 >
-                    <div className="relative h-full flex justify-center items-center">
+                    <div className="relative h-10 flex justify-center items-center">
                         {/* <Image
                         src={''}
                         alt="Plant Image"

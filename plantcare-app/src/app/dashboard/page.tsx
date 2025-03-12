@@ -42,7 +42,7 @@ export default function Dashboard() {
 
 
                 {/* Sidebar */}
-                <div className="w-[20%] h-full  bg-[#e8e8e8] shadow-spread z-50">
+                <div className="w-[20%] max-w-[270px] h-full  bg-[#e8e8e8] shadow-spread z-50">
                     <Sidebar/>
                 </div>
 
@@ -56,11 +56,13 @@ export default function Dashboard() {
                             </div>
 
                             <div className="w-full h-[70%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
-                                <PlantsModule/>
+                                
                             </div>
                         </div>
                         <div className="flex flex-col w-[40%] h-full m-2">
-                            <div className="w-full h-[60%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg "></div>
+                            <div className="w-full h-[60%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
+                                <PlantsModule/>
+                            </div>
                             <div className="w-full h-[40%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg "></div>
                         </div>
                     </div>

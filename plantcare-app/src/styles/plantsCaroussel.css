@@ -1,9 +1,18 @@
+.swiper-wrapper, .swiper {
+    border-radius: 10px;
+    height: 100%;
+    width: 100%;
+}
 
-.swiper-slide {
-    aspect-ratio: 1 / 1 !important;
+.swiper {
+    padding: 10px;
 }
 
 
+/* 
+.swiper-slide {
+    aspect-ratio: 1 / 1 !important;
+}
 
 .swiper-slide:hover {
     cursor: pointer;
@@ -38,3 +47,4 @@
     box-shadow: rgba(0, 0, 0, 0.422) 0 1px 3px ;
     opacity: 80;
 }
+ */
