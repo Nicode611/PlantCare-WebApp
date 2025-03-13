@@ -5,7 +5,9 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // Pour le drag & drop
-import "../styles/calendar.css"
+
+// CSS
+import "../../styles/calendar.css"
 
 export default function MyCalendar() {
   const [events, setEvents] = useState([
@@ -13,12 +15,12 @@ export default function MyCalendar() {
   ]);
 
   return (
-    <div className="font-sans p-4 h-[240px] min-w-[600px] max-w-[600px] bg-[#f5f5f5] border border-b border-[#21301a] rounded-lg shadow-lg z-[100]">
+    <div className="font-sans p-4 h-[100%]  bg-[#f5f5f5] border border-b border-[#21301a] rounded-lg shadow-lg z-[100]">
       <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
         initialView="dayGridWeek"
         headerToolbar={{
-            left: "prev,next today",
+            left: "prev,next",
             center: "title",
             right: "", // Choix des vues
           }}

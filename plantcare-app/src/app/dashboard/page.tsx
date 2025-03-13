@@ -3,10 +3,10 @@
 import "../../styles/dashboard.css"
 
 // Components
-// import Calendar from "../../components/Calendar"
 import Sidebar from "@/components/Sidebar"
 import TasksModule from "@/components/dashboard/TasksModule"
 import PlantsModule from "@/components/dashboard/PlantsModule"
+import CalendarModule from "@/components/dashboard/CalendarModule"
 
 // Images
 // import PlantImg from "../../images/plant-card.png"
@@ -42,12 +42,12 @@ export default function Dashboard() {
 
 
                 {/* Sidebar */}
-                <div className="w-[20%] max-w-[270px] h-full  bg-[#e8e8e8] shadow-spread z-50">
+                <div className="w-[20%] h-full z-50">
                     <Sidebar/>
                 </div>
 
                 {/* Main content */}
-                <section className="w-[77%] flex flex-col items-center m-2 z-50">
+                <section className="w-full flex flex-col items-center m-2 z-50">
                     <div className="flex w-full h-[70%] m-2 mr-0 ml-0">
                         <div className="flex flex-col w-[60%] h-full m-2">
 
@@ -63,7 +63,9 @@ export default function Dashboard() {
                             <div className="w-full h-[60%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
                                 <PlantsModule/>
                             </div>
-                            <div className="w-full h-[40%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg "></div>
+                            <div className="w-full h-[40%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
+                                <CalendarModule></CalendarModule>
+                            </div>
                         </div>
                     </div>
                     <div className="w-full h-[30%] m-2 ml-6 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
