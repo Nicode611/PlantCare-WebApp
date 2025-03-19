@@ -11,7 +11,9 @@ import "swiper/css/effect-coverflow"
 import "../styles/plantsCaroussel.css"
 import { Navigation, Pagination, A11y, Grid } from 'swiper/modules';
 
-
+// Image
+import PlantImg from "@/images/plant-card.png"
+import Image from "next/image";
 
 // API
 import { getPlantsFromUser, Plant } from "@/lib/api/plants"
@@ -36,39 +38,44 @@ function PlantsCaroussel() {
 
     return (
 
-        <div className=' w-[100%] h-full max-w-[400px] rounded-md z-20'>
-            <Swiper 
-            className='w-full h-full text-black'
-            modules={[Navigation, Pagination, A11y, Grid]}
-            spaceBetween={10}
-            slidesPerView={3} // Définit 3 colonnes visibles
-            grid={{ rows: 2}}
-            loop={false}
-            pagination={{ clickable: true }}
-            centeredSlides={false} // Désactiver le centrage pour un affichage correct
-            onSwiper={() => console.log("swipe")}
-            onSlideChange={() => {console.log('slide change')}}
-            >
+        <div className=' w-[100%] h-full max-w-[400px] rounded-md z-20 flex justify-center items-center'>
+            {plants.length === 0 ? <p>No plants yet</p> :
 
-            {
-                plants.map((plant, index) => (
-                <SwiperSlide 
-                    key={index}
-                    className="flex justify-center items-center shadow-xl rounded-xl bg-[#CDD9CA] max-w-[130px] "
-                    onClick={()=> {console.log(`../images/${plant.model.image}`)}}
+                <Swiper 
+                className='w-full h-full text-black'
+                modules={[Navigation, Pagination, A11y, Grid]}
+                spaceBetween={10}
+                slidesPerView={3} // Définit 3 colonnes visibles
+                grid={{ rows: 2}}
+                loop={false}
+                pagination={{ clickable: true }}
+                centeredSlides={false} // Désactiver le centrage pour un affichage correct
+                onSwiper={() => console.log("swipe")}
+                onSlideChange={() => {console.log('slide change')}}
                 >
-                    <div className="relative h-10 flex justify-center items-center">
-                        {/* <Image
-                        src={''}
-                        alt="Plant Image"
-                        fill
-                        className="object-contain z-50"
-                        /> */}
-                        {plant.model.name}
-                    </div>
-                </SwiperSlide>
-                ))}
-            </Swiper>
+
+                {
+                    plants.map((plant, index) => (
+                    <SwiperSlide 
+                        key={index}
+                        className="flex justify-center items-center shadow-xl rounded-xl bg-white max-w-[130px] "
+                        onClick={()=> {console.log(`${plant.model.name}`)}}
+                    >
+                        <div className="h-full flex flex-col justify-center items-center">
+                        <span className="h-[10%]">{plant.model.name}</span>
+                        <div className="relative h-[90%] w-full">
+                                <Image
+                                src={PlantImg}
+                                alt="Plant Image"
+                                fill
+                                objectFit="contain"
+                                />
+                        </div>
+                        </div>
+                    </SwiperSlide>
+                    ))}
+                </Swiper>
+            }
         </div>
     )
     }

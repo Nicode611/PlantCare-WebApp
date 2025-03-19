@@ -7,7 +7,7 @@ import ThemeButton from "./ThemeButton"
 
 function Sidebar() {
     return (
-        <div className="w-full h-full flex flex-col justify-between items-center bg-[#e8e8e8]   shadow-spread">
+        <div className="w-full h-full flex flex-col justify-between items-center bg-[#e8e8e8] shadow-spread">
             <div className="flex flex-col items-center w-full">
                 <div className="flex justify-center items-center w-full mt-5 mb-10">
                     <svg xmlns="http://www.w3.org/2000/svg" version="1.1" id="Layer_1" x="0px" y="0px" width="20%" viewBox="0 0 544 544" enableBackground="new 0 0 544 544">
