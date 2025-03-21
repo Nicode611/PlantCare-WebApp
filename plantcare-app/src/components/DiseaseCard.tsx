@@ -1,4 +1,8 @@
+
 import "@/styles/diseaseCard.css"
+
+
+import Image from "next/image";
 
 // Images
 import DeceaseImg from "@/images/decease2.jpeg"
@@ -6,14 +10,9 @@ import DeceaseImg from "@/images/decease2.jpeg"
 // Types
 import { Disease } from "@/types/diseases";
 
-// mui
-import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Typography from '@mui/material/Typography';
-import CardActionArea from '@mui/material/CardActionArea';
-import CardActions from '@mui/material/CardActions';
-import CircleIcon from '@mui/icons-material/Circle';
+// lucide
+import { Circle } from "lucide-react";
+import { Info } from "lucide-react";
 
 function DiseaseCard() {
 
@@ -25,38 +24,40 @@ function DiseaseCard() {
     }
 
     return (
-        <Card sx={{ width: 250, minWidth: 200, height: "100%", marginRight: "35px"}}>
-            <CardActionArea className="h-[85%]">
-                <CardMedia
-                component="img"
-                image={DeceaseImg.src}
-                alt="green iguana"
-                className="h-[55%]"
-                />
-                <CardContent className="h-[45%]">
-                    <Typography gutterBottom variant="h5" component="div" className="whitespace-nowrap overflow-hidden text-ellipsis">
+        <div className="w-[250px] min-w-[200px] h-full mr-[35px] bg-white rounded-lg hover:cursor-pointer ">
+            <div className="h-[80%]">
+                <div className="relative h-[55%] w-full">
+                    <Image
+                        src={DeceaseImg.src}
+                        alt="Plant Disease"
+                        layout="fill"
+                        objectFit="cover" // ou "contain" selon le rendu souhaité
+                    />
+                </div>
+                <div className="h-[45%] p-3">
+                    <div className="whitespace-nowrap overflow-hidden text-ellipsis">
                         {disease.name}
-                    </Typography>
-                    <Typography variant="body2" sx={{ color: 'text.secondary'}} className="whitespace-nowrap overflow-hidden">
-                        Severity :
+                    </div>
+                    <div className="flex items-center whitespace-nowrap overflow-hidden">
+                        <span className="mr-2 text-sm">Severity :</span>
                         {Array.from({ length: disease.severity }).map((_, i) => {
                             let color;
                             if (disease.severity === 3) color = "red";
                             else if (disease.severity === 2) color = "orange";
                             else if (disease.severity === 1) color = "green";
 
-                            return <CircleIcon key={i} sx={{ fontSize: "0.8rem", marginLeft: "2px", color }} />;
+                            return <Circle key={i} className="h-2 w-2 ml-[2px] fill-current" style={{color }} />;
                         })}
-                    </Typography>
-                </CardContent>
-            </CardActionArea>
-            <CardActions className="h-[15%] flex justify-end">
-                <button className="bg-[#b8f7c1] text-[#277a1c] text-[0.7rem] font-bold rounded-full w-auto pl-2 pr-2 m-2 active:bg-[#277a1c] active:text-[#b8f7c1]">
+                    </div>
+                </div>
+            </div>
+            <div className="h-[20%] flex justify-end">
+                <button className="flex items-center bg-[#b8f7c1] text-[#277a1c] text-[0.7rem] font-bold rounded-full w-auto pl-1 pr-2 m-2 active:bg-[#277a1c] active:text-[#b8f7c1]">
+                <Info className="h-[0.8rem]" strokeWidth={1.75} />
                     Treament
                 </button>
-            </CardActions>
-        </Card>
-
+            </div>
+        </div>
     )
 }
 
