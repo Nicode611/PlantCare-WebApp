@@ -2,6 +2,10 @@
 
 import { useState, useEffect } from "react";
 
+// Redux 
+import type { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import "swiper/css/navigation";
@@ -21,7 +25,7 @@ import { getPlantsFromUser, Plant } from "@/lib/api/plants"
 
 
 function PlantsCaroussel() {
-
+    const updatePlants = useSelector((state: RootState) => state.updatePlants.value);
     const [plants, setPlants] = useState<Plant[]>([]);
 
     const getPlants = async () => {
@@ -33,9 +37,9 @@ function PlantsCaroussel() {
         }
     }
 
-    useEffect(() => {
+    useEffect(()=>{ 
         getPlants();
-    }, []);
+    },[updatePlants])
 
     return (
 
@@ -46,11 +50,11 @@ function PlantsCaroussel() {
                 className='w-full h-full text-black'
                 modules={[Navigation, Pagination, A11y, Grid]}
                 spaceBetween={10}
-                slidesPerView={3} // Définit 3 colonnes visibles
+                slidesPerView={3} 
                 grid={{ rows: 2}}
                 loop={false}
                 pagination={{ clickable: true }}
-                centeredSlides={false} // Désactiver le centrage pour un affichage correct
+                centeredSlides={false} 
                 onSwiper={() => console.log("swipe")}
                 onSlideChange={() => {console.log('slide change')}}
                 >
