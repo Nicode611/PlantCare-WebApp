@@ -7,10 +7,9 @@ import type { RootState } from "@/redux/store"
 import PlantImg from "@/images/plant-card.png"
 import EmptyDrop from "@/images/droplet-black.png"
 import FullDrop from "@/images/droplet-blue.png"
-import WaterButton from "../WaterButton"
 
 // API 
-import { getSpecificPlant, Plant } from "@/lib/api"
+import { getSpecificPlant, updateWaterLvl, Plant } from "@/lib/api"
 
 
 function CaringModule() {
@@ -22,11 +21,10 @@ function CaringModule() {
     useEffect(() => {
         setHasMounted(true)
     }, [])
-
     const [plant, setPlant] = useState<Plant>();
 
+    // Get plant
     const selectedPlantId = useSelector((state: RootState) => state.selectPlant.value)
-
     useEffect(() => {
         async function getPlant(): Promise<Plant | null> {
             if (selectedPlantId !== null) {
@@ -40,7 +38,12 @@ function CaringModule() {
         getPlant();
     }, [selectedPlantId])
 
-    
+    const wateringPlant = (idPlant: number) => {
+        updateWaterLvl(idPlant);
+        if (plant) {
+            setPlant( {...plant, actualWaterLvl: 100})
+        }
+    }
 
     if (!hasMounted) return null
 
@@ -86,9 +89,14 @@ function CaringModule() {
                 <div className="w-2/5 p-3">
                     <div className="w-full h-full flex flex-col justify-center items-center bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 shadow-sm rounded-md">
                         <div className="flex items-end w-5 h-3/5 bg-gray-100 m-5 p-1 rounded-full border border-b">
-                            <div className="w-full bg-water rounded-full" style={{ height: `${plant?.actualWaterLvl ?? 75}%` }}></div>
+                            <div className="w-full bg-water rounded-full" style={{ height: `${plant?.actualWaterLvl ?? 0}%`, transition: "height 0.5s ease-out" }}onClick={()=> { console.log(plant)}} ></div>
                         </div>
-                        <WaterButton />
+                        <div className="w-[80px]">
+                            <button className="w-full p-2 bg-water rounded-lg text-white active:shadow-activeButton" onClick={()=>{if (plant?.id !== undefined) { wateringPlant(plant.id) }}}>
+                                <span className="liquid"></span>  
+                                <span className="btn-txt">Water</span>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

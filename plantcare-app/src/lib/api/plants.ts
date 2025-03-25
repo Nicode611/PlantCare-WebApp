@@ -60,3 +60,17 @@ export async function createPlant({ userId, modelId, location }: {
         return null;
     }
 }
+
+// Request EDIT to set the water lvl of a plant
+export async function updateWaterLvl(plantId: number) {
+    try {
+        const response = await axios.patch(`http://localhost:3001/api/plants/${plantId}`, {
+            actualWaterLvl: 100,
+            lastWateredAt: new Date().toISOString()
+        });
+        return response.data
+    } catch (error) {
+        console.error("Erreur attrapée lors de l'appel a l'API :", error);
+        return null;
+    }
+}

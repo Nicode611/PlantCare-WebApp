@@ -8,6 +8,7 @@
 body {
   color: #21301a;
   @apply font-sans;
+  overscroll-behavior-x: none;
 }
 
 

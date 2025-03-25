@@ -16,7 +16,7 @@ import "swiper/css/scrollbar";
 import "swiper/css/grid";
 import "swiper/css/effect-coverflow"
 import "../styles/plantsCaroussel.css"
-import { Navigation, Pagination, A11y, Grid } from 'swiper/modules';
+import { Navigation, A11y, Grid, FreeMode, Scrollbar, Mousewheel } from 'swiper/modules';
 
 // Image
 import PlantImg from "@/images/plant-card.png"
@@ -47,17 +47,20 @@ function PlantsCaroussel() {
 
     return (
 
-        <div className=' w-[100%] h-full max-w-[400px] rounded-md z-20 flex justify-center items-center'>
+        <div className='swip w-[100%] h-full max-w-[400px] rounded-md z-20 flex justify-center items-center' > 
             {plants.length === 0 ? <p>No plants yet</p> :
 
                 <Swiper 
                 className='w-full h-full text-black'
-                modules={[Navigation, Pagination, A11y, Grid]}
+                direction="horizontal"
+                modules={[Navigation, A11y, Grid, Scrollbar, Mousewheel, FreeMode]}
                 spaceBetween={10}
                 slidesPerView={3} 
                 grid={{ rows: 2}}
                 loop={false}
-                pagination={{ clickable: true }}
+                scrollbar={{draggable: true}}
+                freeMode={true}
+                mousewheel={{enabled: true}}
                 centeredSlides={false} 
                 onSwiper={() => console.log("swipe")}
                 onSlideChange={() => {console.log('slide change')}}
@@ -68,7 +71,7 @@ function PlantsCaroussel() {
                     <SwiperSlide 
                         key={index}
                         className="flex justify-center items-center shadow-xl rounded-xl bg-white max-w-[130px] "
-                        style={plant.id === selectedPlant ? { border: "solid 1px black" } : {}}
+                        style={plant.id === selectedPlant ? { border: "solid 1px #277a1c", boxShadow: "0px 1px 8px #277a1c" } : {}}
                         onClick={()=> {dispatch(select(plant.id))}}
                     >
                         <div className="h-full flex flex-col justify-center items-center">

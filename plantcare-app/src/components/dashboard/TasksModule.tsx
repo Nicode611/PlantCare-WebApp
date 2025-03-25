@@ -31,7 +31,6 @@ function TasksModule() {
                     <span className="text-[0.8rem] ">Total tasks</span>
                     <span>5</span>
                 </div>
-                <button className="bg-secondary shadow-button rounded-md text-white w-[75%] h-[25%] m-2 active:shadow-activeButton">Add task</button>
             </div>
         </div>
     )
