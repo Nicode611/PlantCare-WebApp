@@ -1,5 +1,11 @@
+"use client"
+
 // Next
 import Image from "next/image"
+
+// Redux
+import { useSelector } from "react-redux"
+import type { RootState } from "@/redux/store";
 
 // Image
 import PlantImg from "@/images/plant-card.png"
@@ -10,6 +16,10 @@ import FullDrop from "@/images/droplet-blue.png"
 import WaterButton from "../WaterButton"
 
 function CaringModule() {
+    const selectedPlantId = useSelector((state: RootState) => state.selectPlant.value);
+
+
+    
 
     /* const plant = "/../../images/plant-card.png"; */
 
@@ -19,7 +29,7 @@ function CaringModule() {
     return (
         <div className="w-full h-full flex flex-col">
             <div className="h-[10%] flex justify-center items-center">
-                <h2 className="font-sans font-bold text-[1.9rem] mr-3">Plant name</h2>
+                <h2 className="font-sans font-bold text-[1.9rem] mr-3">{selectedPlantId}</h2>
                 <div>Lounge</div>
             </div>
             <div className="flex h-full p-3">

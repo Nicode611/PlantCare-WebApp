@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 
 // Redux 
 import type { RootState } from "@/redux/store";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { select } from "@/redux/slices/plants/selectPlantSlice";
 
+// Caroussel
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import "swiper/css/navigation";
@@ -25,7 +27,9 @@ import { getPlantsFromUser, Plant } from "@/lib/api/plants"
 
 
 function PlantsCaroussel() {
+    const dispatch = useDispatch();
     const updatePlants = useSelector((state: RootState) => state.updatePlants.value);
+    const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
     const [plants, setPlants] = useState<Plant[]>([]);
 
     const getPlants = async () => {
@@ -64,7 +68,8 @@ function PlantsCaroussel() {
                     <SwiperSlide 
                         key={index}
                         className="flex justify-center items-center shadow-xl rounded-xl bg-white max-w-[130px] "
-                        onClick={()=> {console.log(`${plant.model.name}`)}}
+                        style={plant.id === selectedPlant ? { border: "solid 1px black" } : {}}
+                        onClick={()=> {dispatch(select(plant.id))}}
                     >
                         <div className="h-full flex flex-col justify-center items-center">
                         <span className="h-[10%]">{plant.model.name}</span>
