@@ -19,11 +19,13 @@ import "../styles/plantsCaroussel.css"
 import { Navigation, A11y, Grid, FreeMode, Scrollbar, Mousewheel } from 'swiper/modules';
 
 // Image
-import PlantImg from "@/images/plant-card.png"
 import Image from "next/image";
 
 // API
-import { getPlantsFromUser, Plant } from "@/lib/api/plants"
+import { getPlantsFromUser } from "@/lib/api/plants"
+
+// Types
+import { Plant } from "@/types/plant";
 
 
 function PlantsCaroussel() {
@@ -67,7 +69,7 @@ function PlantsCaroussel() {
                 >
 
                 {
-                    plants.map((plant, index) => (
+                    plants.length !== 0 ? plants.map((plant, index) => (
                     <SwiperSlide 
                         key={index}
                         className="flex justify-center items-center shadow-xl rounded-xl bg-white max-w-[130px] "
@@ -75,10 +77,9 @@ function PlantsCaroussel() {
                         onClick={()=> {dispatch(select(plant.id))}}
                     >
                         <div className="h-full flex flex-col justify-center items-center">
-                        <span className="h-[10%]">{plant.model.name}</span>
                         <div className="relative h-[90%] w-full">
                                 <Image
-                                src={PlantImg}
+                                src={`/images/plants-img/${plant.model.image}.png`}
                                 alt="Plant Image"
                                 fill
                                 objectFit="contain"
@@ -86,7 +87,7 @@ function PlantsCaroussel() {
                         </div>
                         </div>
                     </SwiperSlide>
-                    ))}
+                    )) : ""}
                 </Swiper>
             }
         </div>

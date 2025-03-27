@@ -1,5 +1,7 @@
 "use client";
 
+import { useState, useEffect } from "react";
+
 // Redux
 import { useDispatch } from "react-redux";
 import { close } from "@/redux/slices/modalSlice" 
@@ -29,11 +31,31 @@ import { CookingPot } from "lucide-react";
 
 // API
 import { createPlant } from "@/lib/api";
+import { getPlantsModel } from "@/lib/api/model"
  
+// Types
+import { Model } from "@/types/model";
+
+
 function AddPlantModal() {
     const dispatch = useDispatch(); 
-    
 
+    const [models, setModels] = useState<Model[]>([]);
+
+    const getModels = async () => {
+        const plantModels = await getPlantsModel()
+
+        if (plantModels.length !== 0) {
+            setModels(plantModels);
+        }
+    }
+
+    useEffect(()=> {
+        getModels()
+    },[])
+
+    
+    // Handle submit add plant form
     const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Empêche le rechargement de la page
         
@@ -48,6 +70,8 @@ function AddPlantModal() {
         dispatch(update());
         dispatch(close());
     };
+
+    
 
     return (
         <div className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center rounded-lg p-5">
@@ -66,11 +90,11 @@ function AddPlantModal() {
                                             <SelectValue placeholder="Select" />
                                         </SelectTrigger>
                                         <SelectContent position="popper">
-                                            {/* Ici les valeurs sont en string, pensez à convertir en nombre dans le submit */}
-                                            <SelectItem value="1">Orchidea</SelectItem>
-                                            <SelectItem value="2">Tulip</SelectItem>
-                                            <SelectItem value="3">Rose</SelectItem>
-                                            <SelectItem value="4">Palm tree</SelectItem>
+
+                                            {models.map((model, index) => (
+                                                <SelectItem key={index} value={model.id.toString()}>{model.name}</SelectItem>
+                                            ))}
+
                                         </SelectContent>
                                     </Select>
 

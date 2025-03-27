@@ -1,21 +1,7 @@
 import axios from "axios"
+import { Plant } from "@/types/plant";
 
 
-export interface Plant {
-    id: number;
-    modelId: number;
-    location: string;
-    lastWateredAt: Date;
-    actualWaterLvl: number;
-    model: {
-        name: string;
-        wateringFrequency: number;
-        waterLvlNeeded: number;
-        sunLvlNeeded: number;
-        image: string;
-    }
-
-}
 
 // Request GET to get all the plants from a user id
 export async function getPlantsFromUser(id: number): Promise<Plant[]> {

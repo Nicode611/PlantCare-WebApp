@@ -99,7 +99,7 @@ function Sidebar() {
             </div>
 
             <div className="flex flex-col items-center w-full">
-                <div className="flex justify-start w-[100%] bg-gray-700 p-2">
+                <div className="flex justify-start w-[100%] bg-primary shadow-md p-2">
                     <Image
                     src={"/icons/settings-white.svg"}
                     alt="Settings icon"
