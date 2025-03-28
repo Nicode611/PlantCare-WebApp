@@ -1,2 +1,4 @@
 export * from "./users"
 export * from "./plants"
+export * from "./models"
+export * from "./diseases"

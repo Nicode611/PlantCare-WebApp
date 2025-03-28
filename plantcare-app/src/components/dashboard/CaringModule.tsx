@@ -15,16 +15,16 @@ import { Plant } from "@/types/plant";
 
 function CaringModule() {
   const [plant, setPlant] = useState<Plant | null>(null);
-  const selectedPlantId = useSelector((state: RootState) => state.selectPlant.value);
+  const selectPlant = useSelector((state: RootState) => state.selectPlant.value);
 
   // Récupère la plante dès que l'ID est disponible
   useEffect(() => {
-    if (selectedPlantId !== null) {
-      getSpecificPlant(selectedPlantId).then((data) => {
+    if (selectPlant !== null) {
+      getSpecificPlant(selectPlant.id).then((data) => {
         if (data) setPlant(data);
       });
     }
-  }, [selectedPlantId]);
+  }, [selectPlant]);
 
   // Met à jour le niveau d'eau et l'état local
   const handleWatering = () => {
@@ -45,7 +45,7 @@ function CaringModule() {
       </div>
       <div className="flex h-full p-3">
         <div className="relative w-3/5">
-          <Image src={`/images/plants-img/${plant.model.image}.png`} alt="Plant" fill objectFit="contain" />
+          <Image src={`/images/plants-img/${plant.model.image}.png`} alt="Plant" fill sizes="max-width: 100%; max-height: 100%;" style={{ objectFit: "contain" }} />
           <div className="absolute flex justify-start w-[100px] right-0 bottom-3 z-1">
             {Array.from({ length: 5 }, (_, i) => (
               <Image key={i} src={EmptyDrop} alt="Empty drop" width={20} height={20} />

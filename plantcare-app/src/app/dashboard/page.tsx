@@ -18,12 +18,7 @@ import BgPlant from "../../images/Background-Illustration.png"
 import LeafTexture from "../../images/leaf-texture.webp"
 
 
-
-
 export default function Dashboard() {
-
-    
-
 
     return (
         <div className="swip flex w-screen h-screen bg-[#fef8ea]">
@@ -71,7 +66,7 @@ export default function Dashboard() {
                                 </div>
                             </div>
                         </div>
-                        <div className="w-full h-[30%] m-2  bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg overflow-x-auto">
+                        <div className="w-full h-[30%] justify-center m-2 p-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg overflow-x-auto">
                             <DiseasesModule/>
                         </div>
                     </div>

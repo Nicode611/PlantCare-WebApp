@@ -39,7 +39,6 @@ export async function createPlant({ userId, modelId, location }: {
             location,
             lastWateredAt: new Date().toISOString(),
         });
-        console.log("Plant created:", response.data);
         return response.data;
     } catch (error) {
         console.error("Erreur attrapée lors de l'appel a l'API :", error);

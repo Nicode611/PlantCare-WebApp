@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 // Redux
 import { useDispatch } from "react-redux";
@@ -25,13 +26,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+  } from "@/components/ui/tooltip"
+
 
 // Lucide
 import { CookingPot } from "lucide-react";
+import { BedDouble } from 'lucide-react';
+import { Armchair } from 'lucide-react';
+import { Package } from 'lucide-react';
 
 // API
 import { createPlant } from "@/lib/api";
-import { getPlantsModel } from "@/lib/api/model"
+import { getPlantsModel } from "@/lib/api"
  
 // Types
 import { Model } from "@/types/model";
@@ -65,8 +76,8 @@ function AddPlantModal() {
         const modelIdStr = formData.get("modelId") as string;
         const modelId = Number(modelIdStr);
 
-        const newPlant = await createPlant({ userId, modelId, location });
-        console.log(location, modelId, userId, "Nouvelle plante créée:", newPlant);
+        await createPlant({ userId, modelId, location });
+        
         dispatch(update());
         dispatch(close());
     };
@@ -92,7 +103,23 @@ function AddPlantModal() {
                                         <SelectContent position="popper">
 
                                             {models.map((model, index) => (
-                                                <SelectItem key={index} value={model.id.toString()}>{model.name}</SelectItem>
+                                                <SelectItem key={index} value={model.id.toString()}>
+                                                    <TooltipProvider>
+                                                        <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <span>{model.name}</span>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent side="left" className="bg-gray-200 border-none shadow-lg left-3 w-[150px] h-auto">
+                                                            <Image
+                                                            src={`/images/plants-img/${model.image}.png`}
+                                                            alt="Plant Image"
+                                                            width={150}
+                                                            height={150}
+                                                            />
+                                                        </TooltipContent>
+                                                        </Tooltip>
+                                                    </TooltipProvider>
+                                                </SelectItem>
                                             ))}
 
                                         </SelectContent>
@@ -105,12 +132,21 @@ function AddPlantModal() {
                                         </SelectTrigger>
                                         <SelectContent position="popper">
                                             <SelectItem value="Kitchen">
-                                            <CookingPot strokeWidth={1.75} fill="#0b8294" color="#0b8294" className="h-5 w-5 inline-block mr-1" />
-                                            Kitchen
+                                                <CookingPot strokeWidth={1.75} fill="#277A1C" color="#277A1C" className="h-5 w-5 inline-block mr-1" />
+                                                Kitchen
                                             </SelectItem>
-                                            <SelectItem value="Bedroom">Bedroom</SelectItem>
-                                            <SelectItem value="Lounge">Lounge</SelectItem>
-                                            <SelectItem value="Cellar">Cellar</SelectItem>
+                                            <SelectItem value="Bedroom">
+                                                <BedDouble strokeWidth={1.75} color="#277A1C" className="h-5 w-5 inline-block mr-1" />
+                                                Bedroom
+                                            </SelectItem>
+                                            <SelectItem value="Lounge">
+                                                <Armchair strokeWidth={1.75} color="#277A1C" className="h-5 w-5 inline-block mr-1" />
+                                                Lounge
+                                            </SelectItem>
+                                            <SelectItem value="Cellar">
+                                                <Package strokeWidth={1.75} color="#277A1C" className="h-5 w-5 inline-block mr-1" />
+                                                Cellar
+                                            </SelectItem>
                                         </SelectContent>
                                     </Select>
                                 </div>

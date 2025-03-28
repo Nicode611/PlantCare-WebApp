@@ -72,9 +72,9 @@ function PlantsCaroussel() {
                     plants.length !== 0 ? plants.map((plant, index) => (
                     <SwiperSlide 
                         key={index}
-                        className="flex justify-center items-center shadow-xl rounded-xl bg-white max-w-[130px] "
-                        style={plant.id === selectedPlant ? { border: "solid 1px #277a1c", boxShadow: "0px 1px 8px #277a1c" } : {}}
-                        onClick={()=> {dispatch(select(plant.id))}}
+                        className="flex justify-center items-center shadow-xl rounded-xl bg-white max-w-[130px] hover:cursor-pointer "
+                        style={plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c", boxShadow: "0px 1px 8px #277a1c" } : {}}
+                        onClick={()=> {dispatch(select(plant))}}
                     >
                         <div className="h-full flex flex-col justify-center items-center">
                         <div className="relative h-[90%] w-full">
@@ -82,7 +82,8 @@ function PlantsCaroussel() {
                                 src={`/images/plants-img/${plant.model.image}.png`}
                                 alt="Plant Image"
                                 fill
-                                objectFit="contain"
+                                sizes="max-width: 100%; max-height: 100%;"
+                                style={{ objectFit: "contain" }}
                                 />
                         </div>
                         </div>

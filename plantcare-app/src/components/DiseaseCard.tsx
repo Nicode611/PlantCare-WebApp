@@ -1,26 +1,30 @@
-
 import "@/styles/diseaseCard.css"
-
 
 import Image from "next/image";
 
-// Images
-import DeceaseImg from "@/images/decease2.jpeg"
-
 // Types
-import { Disease } from "@/types/diseases";
+import { Disease } from "@/types/disease";
 
-// lucide
+// Lucide
 import { Circle } from "lucide-react";
 import { Info } from "lucide-react";
 
-function DiseaseCard() {
+interface DiseaseCardProps {
+  diseaseName: string;
+  diseaseDescription: string;
+  diseaseSeverity: number;
+  diseaseTreatment: string;
+  diseaseImage: string;
+}
+
+function DiseaseCard({ diseaseName, diseaseDescription, diseaseSeverity, diseaseTreatment, diseaseImage }: DiseaseCardProps) {
 
     const disease: Disease = {
-        name: "Plant disease",
-        description: "",
-        severity: 3,
-        treatment: ""
+        name: diseaseName,
+        description: diseaseDescription,
+        severity: diseaseSeverity,
+        treatment: diseaseTreatment,
+        image : diseaseImage
     }
 
     return (
@@ -28,10 +32,11 @@ function DiseaseCard() {
             <div className="h-[80%]">
                 <div className="relative h-[55%] w-full">
                     <Image
-                        src={DeceaseImg.src}
+                        src={`/images/diseases-img/${diseaseImage}.png`}
                         alt="Plant Disease"
-                        layout="fill"
-                        objectFit="cover" // ou "contain" selon le rendu souhaité
+                        fill
+                        sizes="max-width: 100%; max-height: 100%;"
+                        style={{ objectFit: "cover" }}
                     />
                 </div>
                 <div className="h-[45%] p-3">

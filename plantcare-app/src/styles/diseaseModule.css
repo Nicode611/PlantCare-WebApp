@@ -1,0 +1,19 @@
+/* Pour tout élément qui a une scrollbar */
+::-webkit-scrollbar {
+    width: 4px; /* largeur de la scrollbar verticale */
+    height: 4px; /* hauteur de la scrollbar horizontale */
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #b7b7b72a; /* fond de la piste */
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #277A1C; /* couleur du "pouce" */
+    border-radius: 10px;
+  }
+  
+  ::-webkit-scrollbar-thumb:hover {
+    background: #1e5e15; /* couleur au survol */
+  }
