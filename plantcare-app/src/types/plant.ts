@@ -2,7 +2,7 @@ export interface Plant {
     id: number;
     modelId: number;
     location: string;
-    lastWateredAt: Date;
+    lastWateredAt: string;
     actualWaterLvl: number;
     model: {
         name: string;

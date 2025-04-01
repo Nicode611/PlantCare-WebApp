@@ -41,4 +41,5 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 Carrousel - swiper
 Calendar - FullCalendar
 Components - shadcn/ui
-Request - Axios
+Icons - Lucide
+HTTP Request - Axios

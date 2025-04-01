@@ -47,11 +47,11 @@ export async function createPlant({ userId, modelId, location }: {
 }
 
 // Request EDIT to set the water lvl of a plant
-export async function updateWaterLvl(plantId: number) {
+export async function updateWaterLvl(plantId: number, lastWateredAt: Date) {
     try {
         const response = await axios.patch(`http://localhost:3001/api/plants/${plantId}`, {
             actualWaterLvl: 100,
-            lastWateredAt: new Date().toISOString()
+            lastWateredAt: lastWateredAt
         });
         return response.data
     } catch (error) {

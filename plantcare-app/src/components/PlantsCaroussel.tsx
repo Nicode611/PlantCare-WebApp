@@ -22,7 +22,7 @@ import { Navigation, A11y, Grid, FreeMode, Scrollbar, Mousewheel } from 'swiper/
 import Image from "next/image";
 
 // API
-import { getPlantsFromUser } from "@/lib/api/plants"
+import { getPlantsFromUser, getSpecificPlant } from "@/lib/api/plants"
 
 // Types
 import { Plant } from "@/types/plant";
@@ -40,6 +40,14 @@ function PlantsCaroussel() {
 
         if (plantsOfUser.length !== 0) {
             setPlants(plantsOfUser);
+        }
+    }
+
+    const fetchSelectedPlant = async (plant: number) => {
+        const plantInfos = await getSpecificPlant(plant)
+        if (plantInfos) {
+            dispatch(select(plantInfos))
+            console.log(plantInfos)
         }
     }
 
@@ -73,8 +81,8 @@ function PlantsCaroussel() {
                     <SwiperSlide 
                         key={index}
                         className="flex justify-center items-center shadow-xl rounded-xl bg-white max-w-[130px] hover:cursor-pointer "
-                        style={plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c", boxShadow: "0px 1px 8px #277a1c" } : {}}
-                        onClick={()=> {dispatch(select(plant))}}
+                        style={selectedPlant ? plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c", boxShadow: "0px 1px 8px #277a1c" } : {} : {}}
+                        onClick={()=> {fetchSelectedPlant(plant.id)}}
                     >
                         <div className="h-full flex flex-col justify-center items-center">
                         <div className="relative h-[90%] w-full">
