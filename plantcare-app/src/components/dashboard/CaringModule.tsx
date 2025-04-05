@@ -50,8 +50,8 @@ function CaringModule() {
     return (
         
         <div className="w-full h-full flex flex-col">
-        <div className="h-[10%] flex justify-center items-center">
-            <h2 className="font-sans font-bold text-[1.9rem] mr-3">{plant.model.name}</h2>
+        <div className="h-[10%] p-2 flex justify-center items-center">
+            <h2 className="font-sans font-bold text-[1.9rem] whitespace-nowrap truncate mr-3">{plant.model.name}</h2>
             <div>{plant.location}</div>
         </div>
         <div className="flex h-full p-3">

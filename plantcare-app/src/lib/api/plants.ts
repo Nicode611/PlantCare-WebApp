@@ -4,12 +4,12 @@ import { Plant } from "@/types/plant";
 
 
 // Request GET to get all the plants from a user id
-export async function getPlantsFromUser(id: number): Promise<Plant[]> {
+export async function getPlantsFromUser(userId: string): Promise<Plant[]> {
     try {
-        const response = await axios.get<Plant[]>(`http://localhost:3001/api/users/${id}/plants`);
+        const response = await axios.get<Plant[]>(`/api/plants/users/${userId}`);
         return response.data;
     } catch (error) {
-        console.error(`Erreur lors de la récupération des plantes pour l'utilisateur ${id} :`, error);
+        console.error("Error when calling the API :", error);
         return [];
     }
 }
@@ -17,10 +17,10 @@ export async function getPlantsFromUser(id: number): Promise<Plant[]> {
 // Request GET to get a specific plant from an id
 export async function getSpecificPlant(plantId: number): Promise<Plant | null>  {
     try {
-        const response = await axios.get<Plant>(`http://localhost:3001/api/plants/${plantId}`);
+        const response = await axios.get<Plant>(`/api/plants/${plantId}`);
         return response.data;
     } catch (error) {
-        console.error(`Erreur lors de la récupération de la plante ${plantId} :`, error);
+        console.error(`Error when calling the API :`, error);
         return null;
     }
 }
@@ -33,7 +33,7 @@ export async function createPlant({ userId, modelId, location }: {
     location: string;
 }): Promise<Plant | null> {
     try {
-        const response = await axios.post<Plant>('http://localhost:3001/api/plants', {
+        const response = await axios.post<Plant>(`/api/plants/users/${userId}`, {
             userId,
             modelId,
             location,
@@ -41,21 +41,21 @@ export async function createPlant({ userId, modelId, location }: {
         });
         return response.data;
     } catch (error) {
-        console.error("Erreur attrapée lors de l'appel a l'API :", error);
+        console.error("Error when calling the API :", error);
         return null;
     }
 }
 
-// Request EDIT to set the water lvl of a plant
+// Request UPDATE to set the water lvl of a plant
 export async function updateWaterLvl(plantId: number, lastWateredAt: Date) {
     try {
-        const response = await axios.patch(`http://localhost:3001/api/plants/${plantId}`, {
+        const response = await axios.patch(`/api/plants/${plantId}`, {
             actualWaterLvl: 100,
             lastWateredAt: lastWateredAt
         });
         return response.data
     } catch (error) {
-        console.error("Erreur attrapée lors de l'appel a l'API :", error);
+        console.error("Error when calling the API :", error);
         return null;
     }
 }

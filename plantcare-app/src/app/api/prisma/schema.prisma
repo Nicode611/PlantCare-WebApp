@@ -1,0 +1,72 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql" 
+  url      = env("DATABASE_URL") 
+}
+
+model User {
+  id       Int     @id @default(autoincrement())
+  username String  @unique
+  email    String  @unique
+  password String
+  image    String?
+
+  // Relation : un User possède plusieurs Plant
+  plants   Plant[]
+}
+
+model Plant {
+  id             Int       @id @default(autoincrement())
+  userId         Int       @map("user_id")
+  modelId        Int       @map("model_id")
+  location       String    @map("location")
+  actualWaterLvl Int?      @map("actual_water_lvl")
+  lastWateredAt  DateTime? @map("last_watered_at")
+
+  // Relation : chaque Plant est lié à un User (1-N)
+  user   User   @relation(fields: [userId], references: [id])
+  // Relation : chaque Plant est lié à un Model (1-N)
+  model  Model  @relation(fields: [modelId], references: [id])
+}
+
+model Model {
+  id                Int      @id @default(autoincrement())
+  name              String
+  description       String
+  wateringFrequency Int
+  waterLvlNeeded    Int      @map("water_lvl_needed")
+  sunLvlNeeded      Int      @map("sun_lvl_needed")
+  image             String?
+
+  // Relation : un Model peut être utilisé par plusieurs Plant
+  plants   Plant[]
+  // Relation M-N : un Model peut être lié à plusieurs Disease via la table pivot
+  diseases DiseaseModel[]
+}
+
+model DiseaseModel {
+  diseaseId Int @map("disease_id")
+  modelId   Int @map("model_id")
+
+  // Relations vers Disease et Model
+  disease Disease @relation(fields: [diseaseId], references: [id])
+  model   Model   @relation(fields: [modelId], references: [id])
+
+  // Clé primaire composite sur (diseaseId, modelId)
+  @@id([diseaseId, modelId])
+}
+
+model Disease {
+  id          Int    @id @default(autoincrement())
+  name        String
+  description String?
+  severity    Int
+  treatment   String?
+  image       String?
+
+  // Relation M-N : un Disease peut concerner plusieurs Model
+  models DiseaseModel[]
+}

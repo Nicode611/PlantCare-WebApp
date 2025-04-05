@@ -35,10 +35,10 @@ function PlantsCaroussel() {
     const [plants, setPlants] = useState<Plant[]>([]);
 
     const getPlants = async () => {
-        const userId = 1;
+        const userId = "1";
         const plantsOfUser = await getPlantsFromUser(userId);
 
-        if (plantsOfUser.length !== 0) {
+        if (plantsOfUser && plantsOfUser.length > 0) {
             setPlants(plantsOfUser);
         }
     }
@@ -47,7 +47,6 @@ function PlantsCaroussel() {
         const plantInfos = await getSpecificPlant(plant)
         if (plantInfos) {
             dispatch(select(plantInfos))
-            console.log(plantInfos)
         }
     }
 

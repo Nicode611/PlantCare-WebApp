@@ -22,7 +22,7 @@ export default function Dashboard() {
 
     return (
         <div className="swip flex w-screen h-screen bg-[#fef8ea]">
-            <div className="relative flex w-screen min-w-[1000px] h-full overflow-hidden" >
+            <div className="flex flex-col md:flex-row w-screen h-full overflow-hidden" >
 
                 {/* Background */}
                 <div className="absolute bg-black bg-opacity-10 w-full h-full z-40"></div>
@@ -39,12 +39,12 @@ export default function Dashboard() {
 
 
                 {/* Sidebar */}
-                <div className="w-[20%] max-w-[300px] h-full z-50">
+                <div className="relative  h-12 md:w-[20%] md:h-full md:min-w-44 md:max-w-[300px] w-full z-50">
                     <Sidebar/>
                 </div>
 
                 {/* Main content */}
-                <section className="w-[80%] flex justify-center items-center m-2 z-50" style={{ overscrollBehaviorX: "contain" }}>
+                <section className="w-full md:w-[80%] flex justify-center items-center m-2 z-50" style={{ overscrollBehaviorX: "contain" }}>
                     <div className="w-full h-full flex flex-col justify-center items-center">
                         <div className="flex w-full h-[70%] m-2 mr-0 ml-0">
                             <div className="flex flex-col w-[60%] h-full mt-2 mr-2 mb-2">
