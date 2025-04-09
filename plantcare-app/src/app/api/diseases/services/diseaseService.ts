@@ -1,9 +1,8 @@
 import prisma from "@/app/api/prisma/prismaClient";
 /* import { Disease } from "../types/disease"; */
 
-class ModelService {
 
-    static async getDiseasesFromPlantModel(plantModelId: string) {    
+    export async function getDiseasesFromPlantModel(plantModelId: string) {    
         try {
             const id: number = parseInt(plantModelId, 10)
 
@@ -27,7 +26,3 @@ class ModelService {
             throw new Error("Une erreur est survenue lors de la récupération des models.");
         }
     }
-
-}
-
-export default ModelService

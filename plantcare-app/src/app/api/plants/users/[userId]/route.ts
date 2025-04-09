@@ -3,14 +3,15 @@ import * as PlantController from '../../controller/plantController';
 
 // Récupérer une plante spécifique (GET)
 export async function GET(
-request: Request,
-{ params }: { params: { userId: string } }
+    request: Request,
+    { params }: { params: { userId: string } }
 ) {
 try {
     // Attendre la résolution des params depuis la nouvelle version de next
     const awaitedParams = await Promise.resolve(params);
     const userId = awaitedParams.userId;
 
+    // Call the controller
     const plants = await PlantController.getPlantsFromUser(userId);
     return NextResponse.json(plants);
     
@@ -28,14 +29,16 @@ export async function POST(
     request: Request,
     { params }: { params: { userId: string } }
 ) {
-
 try {
+    // Get the infos
     const awaitedParams = await Promise.resolve(params);
     const userId = awaitedParams.userId;
-
     const body = await request.json(); 
+
+    // Call the controller
     const plant = await PlantController.createPlant(userId, body);
     return NextResponse.json(plant);
+
 } catch (error) {
     console.error(`Error while creating the plant :`, error);
     return NextResponse.json(
