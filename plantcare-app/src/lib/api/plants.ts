@@ -15,8 +15,6 @@ export async function getPlantsFromUser(userId: string): Promise<Plant[]> {
     }
 }
 
-
-
 // Request POST to create a plant 
 export async function createPlant({ userId, modelId, location }: {
     userId: number;
@@ -36,6 +34,7 @@ export async function createPlant({ userId, modelId, location }: {
         return null;
     }
 }
+
 
 // /api/plants/${plantId}
 

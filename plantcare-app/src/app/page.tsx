@@ -1,4 +1,5 @@
 import LandingBg from "../images/landing-page-bg.webp"
+import { signIn } from "@/auth"
 
 export default function Home() {
 
@@ -7,7 +8,13 @@ export default function Home() {
     style={{ backgroundImage: `url(${LandingBg.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <header className=" w-full flex justify-end">
             <span className="p-2">Login</span>
-            <span className="p-2">Sign up</span>
+            <form
+                action={async () => {
+                    "use server"
+                    await signIn()
+                }}>
+              <button type="submit">Signin with Google</button>
+            </form>
         </header>
         
         <h1 className="font-fancy font-extrabold text-[2.5rem] m-2">Landing page</h1>
