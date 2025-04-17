@@ -1,24 +1,36 @@
 import NextAuth from "next-auth"
-import GitHub from "next-auth/providers/github"
 import Google from "next-auth/providers/google"
-import Credentials from "next-auth/providers/credentials"
+import CredentialsProvider from "next-auth/providers/credentials"
 import type { Provider } from "next-auth/providers"
  
 const providers: Provider[] = [
-  Credentials({
-    credentials: { password: { label: "Password", type: "password" } },
-    authorize(c) {
-      if (c.password !== "password") return null
-      return {
-        id: "test",
-        name: "Test User",
-        email: "test@example.com",
-      }
+  CredentialsProvider({
+    name: "Credentials",
+    credentials: {
+      email: { label: "Email", type: "text", placeholder: "name@site.com" },
+      password: { label: "Password", type: "password" }
     },
+    async authorize(
+      credentials: Partial<Record<"email" | "password", unknown>>
+    ) {
+      // Validate and normalize credentials
+      if (
+        typeof credentials.email !== "string" ||
+        typeof credentials.password !== "string"
+      ) {
+        return null;
+      }
+      const email = credentials.email;
+      // TODO: Replace this stub with your database lookup logic
+      const user = { id: "1", name: "Demo User", email };
+      if (user) {
+        return user;
+      }
+      return null;
+    }
   }),
-  GitHub,
   Google,
-]
+];
  
 export const providerMap = providers
   .map((provider) => {

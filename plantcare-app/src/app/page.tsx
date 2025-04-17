@@ -1,20 +1,36 @@
+'use client';
 import LandingBg from "../images/landing-page-bg.webp"
-import { signIn } from "@/auth"
+import { useSession, signIn, signOut } from 'next-auth/react';
 
 export default function Home() {
+
+  const { data: session, status } = useSession();
 
   return (
     <div className={`min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]`} 
     style={{ backgroundImage: `url(${LandingBg.src})`, backgroundSize: 'cover', backgroundPosition: 'center' }}>
         <header className=" w-full flex justify-end">
             <span className="p-2">Login</span>
-            <form
-                action={async () => {
-                    "use server"
-                    await signIn()
-                }}>
-              <button type="submit">Signin with Google</button>
-            </form>
+            {!session ? (
+              <button
+                type="button"
+                onClick={() => signIn('google')}
+                className="p-2"
+              >
+                Sign in with Google
+              </button>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <p>Hello {session.user?.name} ({session.user?.email})</p>
+                <button
+                  type="button"
+                  onClick={() => signOut()}
+                  className="p-2"
+                >
+                  Sign out
+                </button>
+              </div>
+            )}
         </header>
         
         <h1 className="font-fancy font-extrabold text-[2.5rem] m-2">Landing page</h1>
