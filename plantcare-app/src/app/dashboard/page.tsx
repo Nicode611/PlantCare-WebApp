@@ -1,3 +1,4 @@
+"use client"
 
 // CSS
 import "../../styles/dashboard.css"
@@ -17,8 +18,22 @@ import DiseasesModule from "@/components/dashboard/DiseasesModule"
 import BgPlant from "../../images/Background-Illustration.png"
 import LeafTexture from "../../images/leaf-texture.webp"
 
+// Auth.JS
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 export default function Dashboard() {
+
+    const { data: session, status } = useSession();
+    const router = useRouter();
+
+    if (status === 'loading') {
+        return null;
+      }
+      if (!session) {
+        router.push('..');
+        return null;
+      }
 
     return (
         <div className="swip flex w-screen h-screen bg-[#fef8ea]">

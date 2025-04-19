@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation"
-import { signIn, auth, providerMap } from "@/auth"
+import { signIn, providerMap } from "@/auth"
 import { AuthError } from "next-auth"
 import Image from "next/image"
 

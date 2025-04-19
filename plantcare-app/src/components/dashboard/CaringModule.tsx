@@ -54,38 +54,38 @@ function CaringModule() {
             <h2 className="font-sans font-bold text-[1.9rem] whitespace-nowrap truncate mr-3">{plant.model.name}</h2>
             <div>{plant.location}</div>
         </div>
-        <div className="flex h-full p-3">
-            <div className="relative w-3/5">
-            <Image src={`/images/plants-img/${plant.model.image}.png`} alt="Plant" fill sizes="max-width: 100%; max-height: 100%;" style={{ objectFit: "contain" }} />
-            <div className="absolute flex justify-start w-[100px] right-0 bottom-3 z-1">
-                {Array.from({ length: 5 }, (_, i) => (
-                <Image key={i} src={EmptyDrop} alt="Empty drop" width={20} height={20} />
-                ))}
-            </div>
-            <div className="absolute flex justify-start w-[100px] right-0 bottom-3 z-10">
-                {Array.from({ length: plant.model.waterLvlNeeded || 0 }, (_, i) => (
-                <Image key={i} src={FullDrop} alt="Full drop" width={20} height={20} />
-                ))}
-            </div>
-            </div>
-            <div className="w-2/5 p-3">
-            <div className="w-full h-full flex flex-col justify-center items-center bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 shadow-sm rounded-md">
-                <div className="flex items-end w-5 h-3/5 bg-gray-100 m-5 p-1 rounded-full border border-b">
-                <div
-                    className="w-full bg-water rounded-full"
-                    style={{ height: `${plant.actualWaterLvl || 0}%`, transition: "height 0.5s ease-out" }}
-                ></div>
+        <div className="flex flex-col h-full p-3">
+            <div className="relative w-full h-[80%]">
+                <Image src={`/images/plants-img/${plant.model.image}.png`} alt="Plant" fill sizes="max-width: 100%; max-height: 100%;" style={{ objectFit: "contain" }} />
+                <div className="absolute flex justify-start w-[100px] right-0 bottom-3 z-1">
+                    {Array.from({ length: 5 }, (_, i) => (
+                    <Image key={i} src={EmptyDrop} alt="Empty drop" width={20} height={20} />
+                    ))}
                 </div>
-                <div className="w-[80px]">
-                <button
-                    className="w-full p-2 bg-water rounded-lg text-white active:shadow-activeButton"
-                    onClick={handleWatering}
-                >
-                    <span className="liquid"></span>
-                    <span className="btn-txt">Water</span>
-                </button>
+                <div className="absolute flex justify-start w-[100px] right-0 bottom-3 z-10">
+                    {Array.from({ length: plant.model.waterLvlNeeded || 0 }, (_, i) => (
+                    <Image key={i} src={FullDrop} alt="Full drop" width={20} height={20} />
+                    ))}
                 </div>
             </div>
+            <div className="w-full h-[20%] p-3">
+                <div className="w-full h-full flex justify-center items-center bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 shadow-sm rounded-md">
+                    <div className="flex items-end w-full h-5 bg-gray-100 m-5 p-1 rounded-full border border-b">
+                        <div
+                            className="h-full bg-water rounded-full"
+                            style={{ width: `${plant.actualWaterLvl || 0}%`, transition: "width 0.5s ease-out" }}
+                        ></div>
+                    </div>
+                    <div className="w-[80px]">
+                        <button
+                            className="w-auto p-1 bg-water rounded-lg text-white active:shadow-activeButton"
+                            onClick={handleWatering}
+                        >
+                            <span className="liquid"></span>
+                            <span className="btn-txt text-sm pl-1 pr-1">Water</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         </div>
         </div>

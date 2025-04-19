@@ -1,9 +1,7 @@
 import prisma from "@/app/api/prisma/prismaClient";
 /* import { Model } from "../types/model"; */
 
-class ModelService {
-
-    static async getModels() {    
+    export async function getModels() {    
         try {
 
             const models = await prisma.model.findMany();
@@ -18,7 +16,3 @@ class ModelService {
             throw new Error("Une erreur est survenue lors de la récupération des models.");
         }
     }
-
-}
-
-export default ModelService
