@@ -4,6 +4,7 @@ export interface Plant {
     location: string;
     lastWateredAt: string;
     actualWaterLvl: number;
+    nextWateringDate: number
     model: {
         name: string;
         wateringFrequency: number;

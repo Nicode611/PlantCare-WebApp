@@ -25,6 +25,7 @@ model Plant {
   location       String    @map("location")
   actualWaterLvl Int?      @map("actual_water_lvl")
   lastWateredAt  DateTime? @map("last_watered_at")
+  nextWateringDate DateTime? @map("next_watering_date")
 
   // Relation : chaque Plant est lié à un User (1-N)
   user   User   @relation(fields: [userId], references: [id])
