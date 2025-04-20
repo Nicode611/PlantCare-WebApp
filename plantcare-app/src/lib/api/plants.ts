@@ -62,3 +62,5 @@ export async function updateWaterLvl(plantId: number, lastWateredAt: Date) {
         return null;
     }
 }
+
+// /api/plants/${plantId}

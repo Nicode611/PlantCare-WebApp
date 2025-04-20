@@ -31,19 +31,31 @@ export async function PATCH(
   { params }: { params: { plantId: string } }
 ) {
   try {
-    // Get infos 
+    // Extract params and body
     const awaitedParams = await Promise.resolve(params);
     const plantId = awaitedParams.plantId;
     const body = await request.json();
 
-    // Call the controller
-    const updatedPlant = await PlantController.updateWaterLvl(plantId, body);
-    return NextResponse.json(updatedPlant);
+    let updatedPlant;
+    // Decide which controller method to call based on request body
+    if ('actualWaterLvl' in body || 'lastWateredAt' in body) {
+      // Update water level
+      updatedPlant = await PlantController.updateWaterLvl(plantId, body);
+    } else if ('nextWateringDate' in body) {
+      // Update location (assuming you have this method)
+      updatedPlant = await PlantController.updateNextWateringDate(plantId, body);
+    } else {
+      return NextResponse.json(
+        { error: "No valid fields to update provided." },
+        { status: 400 }
+      );
+    }
 
+    return NextResponse.json(updatedPlant);
   } catch (error) {
-    console.error(`Error while updating water lvl. ${params.plantId}:`, error);
+    console.error(`Error while updating plant ${params.plantId}:`, error);
     return NextResponse.json(
-      { error: "Error while updating water lvl." },
+      { error: "Error while updating plant." },
       { status: 500 }
     );
   }

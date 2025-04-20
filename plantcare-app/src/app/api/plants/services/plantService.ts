@@ -84,3 +84,23 @@ import { Plant } from "../types/plant";
         }
     }
 
+    // Update next watering date of a plant
+    export async function updateNextWateringDate(plantId: string, nextWateringDate: Date): Promise<Plant>  {    
+        try {
+            const actualPlantId: number = parseInt(plantId, 10)
+            const plant = await prisma.plant.update({
+                where: { id: actualPlantId },
+                data: {
+                    nextWateringDate: new Date(nextWateringDate)
+                  }
+            });
+
+            if (plant === null) {
+                throw new Error(`Aucune plante trouvée ${plantId}`);
+            }
+            return plant;
+        } catch (error) {
+            console.error(`Erreur lors de la récupération de la plante ${plantId}:`, error);
+            throw new Error("Une erreur est survenue lors de la récupération de la plante.");
+        }
+    }
