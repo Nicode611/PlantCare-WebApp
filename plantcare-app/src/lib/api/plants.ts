@@ -50,11 +50,24 @@ export async function getSpecificPlant(plantId: number): Promise<Plant | null>  
 }
 
 // Request UPDATE to set the water lvl of a plant
-export async function updateWaterLvl(plantId: number, lastWateredAt: Date) {
+export async function updateWaterLvl(plantId: number, lastWateredAt: Date){
     try {
         const response = await axios.patch(`/api/plants/${plantId}`, {
             actualWaterLvl: 100,
-            lastWateredAt: lastWateredAt
+            lastWateredAt: lastWateredAt,
+        });
+        return response.data
+    } catch (error) {
+        console.error("Error when calling the API :", error);
+        return null;
+    }
+}
+
+// Request UPDATE to set the NextWateringDate of a plant
+export async function updateNextWateringDate(plantId: number, nextWateringDate: Date){
+    try {
+        const response = await axios.patch(`/api/plants/${plantId}`, {
+            nextWateringDate: nextWateringDate,
         });
         return response.data
     } catch (error) {

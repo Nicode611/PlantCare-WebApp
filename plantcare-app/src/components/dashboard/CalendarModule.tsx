@@ -22,6 +22,9 @@ import { Droplet } from "lucide-react";
 // Components
 import UnselectedPlant from "../fallbacks/UnselectedPlant";
 
+// API
+import { updateNextWateringDate } from "@/lib/api";
+
 // Types
 import { Event } from "@/types/event";
 
@@ -44,9 +47,8 @@ export default function MyCalendar() {
     }, []);
 
 
-    const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
     const [mounted, setMounted] = useState(false);
-    
+    const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
     const [event, setEvent] = useState<Event[]>([]);
     const [secondWaterDate, setSecondWaterDate] = useState<Date | null>(null);
     
@@ -55,7 +57,7 @@ export default function MyCalendar() {
         setEvent([]);
         return;
       }
-      
+
       // startDate = selectedPlant.lastWateredAt
       const startDate = new Date(selectedPlant.lastWateredAt);
       // endDate = startDate + 2 months
@@ -66,7 +68,13 @@ export default function MyCalendar() {
       const stepDays = selectedPlant.model.wateringFrequency;
       const dates = generateDatesEveryNDays(startDate, endDate, stepDays);
       const secondDate = dates.length > 1 ? dates[1] : null;
+
+      // Set the second watering date
       setSecondWaterDate(secondDate);
+      if (secondDate) {
+        updateNextWateringDate(selectedPlant.id, secondDate);
+      }
+
       const startTimestamp = startDate.getTime();
       const needWaterEvents = dates.map(date => {
         const isFirst = date.getTime() === startTimestamp;
