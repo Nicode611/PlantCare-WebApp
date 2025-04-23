@@ -24,7 +24,8 @@ export async function adjustWaterLevel(){
             const { id: actualPlantId, actualWaterLvl, lastWateredAt, nextWateringDate } = plant;
 
             if (lastWateredAt == null || nextWateringDate == null || actualWaterLvl == null) {
-                throw new Error(`lastWateredAt, nextWateringDate or actualWaterLvl is null for plant ${actualPlantId}`);
+                // Skip this plant if any required field is missing
+                continue;
             }
 
             const now = Date.now();

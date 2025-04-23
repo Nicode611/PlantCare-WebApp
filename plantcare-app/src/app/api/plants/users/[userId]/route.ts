@@ -36,7 +36,9 @@ try {
     const body = await request.json(); 
 
     // Call the controller
-    const plant = await PlantController.createPlant(userId, body);
+    let plant = await PlantController.createPlant(userId, body);
+    plant = await PlantController.updateNextWateringDate(plant.id.toString());
+
     return NextResponse.json(plant);
 
 } catch (error) {

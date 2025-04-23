@@ -22,22 +22,10 @@ import { Droplet } from "lucide-react";
 // Components
 import UnselectedPlant from "../fallbacks/UnselectedPlant";
 
-// API
-import { updateNextWateringDate } from "@/lib/api";
-
 // Types
 import { Event } from "@/types/event";
 
-// Return dates Array with every days between startDate and endDate
-function generateDatesEveryNDays(startDate: Date, endDate: Date, stepDays: number): Date[] {
-    const dates: Date[] = [];
-    let current = new Date(startDate);
-    while (current <= endDate) {
-        dates.push(new Date(current));
-        current = new Date(current.getTime() + stepDays * 24 * 60 * 60 * 1000);
-    }
-    return dates;
-}
+
 
 export default function MyCalendar() {
     // Flag de montage 
@@ -50,33 +38,36 @@ export default function MyCalendar() {
     const [mounted, setMounted] = useState(false);
     const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
     const [event, setEvent] = useState<Event[]>([]);
-    const [secondWaterDate, setSecondWaterDate] = useState<Date | null>(null);
     
     useEffect(() => {
-      if (!selectedPlant) {
-        setEvent([]);
-        return;
-      }
+        if (!selectedPlant) {
+            setEvent([]);
+            return;
+        }
 
-      // startDate = selectedPlant.lastWateredAt
-      const startDate = new Date(selectedPlant.lastWateredAt);
-      // endDate = startDate + 2 months
-      const endDate = new Date(startDate);
-      endDate.setMonth(endDate.getMonth() + 2);
-      
-      // Utilise la fréquence d'arrosage du modèle de la plante
-      const stepDays = selectedPlant.model.wateringFrequency;
-      const dates = generateDatesEveryNDays(startDate, endDate, stepDays);
-      const secondDate = dates.length > 1 ? dates[1] : null;
+        // Return dates Array with every days between startDate and endDate
+        function generateDatesEveryNDays(startDate: Date, endDate: Date, stepDays: number): Date[] {
+            const dates: Date[] = [];
+            let current = new Date(startDate);
+            while (current <= endDate) {
+                dates.push(new Date(current));
+                current = new Date(current.getTime() + stepDays * 24 * 60 * 60 * 1000);
+            }
+            return dates;
+        }
 
-      // Set the second watering date
-      setSecondWaterDate(secondDate);
-      if (secondDate) {
-        updateNextWateringDate(selectedPlant.id, secondDate);
-      }
+        // startDate = selectedPlant.lastWateredAt
+        const startDate = new Date(selectedPlant.lastWateredAt);
+        // endDate = startDate + 2 months
+        const endDate = new Date(startDate);
+        endDate.setMonth(endDate.getMonth() + 2);
+        
+        // Utilise la fréquence d'arrosage du modèle de la plante
+        const stepDays = selectedPlant.model.wateringFrequency;
+        const dates = generateDatesEveryNDays(startDate, endDate, stepDays);
 
-      const startTimestamp = startDate.getTime();
-      const needWaterEvents = dates.map(date => {
+        const startTimestamp = startDate.getTime();
+        const needWaterEvents = dates.map(date => {
         const isFirst = date.getTime() === startTimestamp;
 
         return {
@@ -130,7 +121,6 @@ export default function MyCalendar() {
                     );
                 }}
                 eventClick={() => {
-                    console.log(secondWaterDate);
                 }}
             />
         </div>

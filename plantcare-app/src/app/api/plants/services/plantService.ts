@@ -1,5 +1,8 @@
+import type { Prisma } from "@prisma/client";
 import prisma from "../../prisma/prismaClient";
-import { Plant } from "../types/plant";
+export type Plant = Prisma.PlantGetPayload<{
+    include: { model: true }
+  }>;
 
 
     // Create plant service
@@ -12,9 +15,10 @@ import { Plant } from "../types/plant";
                     userId: parsedUserId,
                     modelId,
                     location,
-                    actualWaterLvl: 10,
+                    actualWaterLvl: 100,
                     lastWateredAt: new Date(),
                 },
+                include: { model: true },
             })
             return plant;
         } catch(error) {
@@ -30,7 +34,7 @@ import { Plant } from "../types/plant";
             const actualPlantId: number = parseInt(plantId, 10)
             const plant = await prisma.plant.findUnique({
             where: { id: actualPlantId },
-            include: { model: true }, // inclut des relations si nécessaire
+            include: { model: true },
           });
           return plant;
         } catch (error) {
@@ -40,7 +44,7 @@ import { Plant } from "../types/plant";
       }
 
     // Get plants from user service
-    export async function getPlantsFromUser(userId: string) {    
+    export async function getPlantsFromUser(userId: string): Promise<Plant[]> {    
         try {
             const id: number = parseInt(userId, 10)
 
@@ -71,7 +75,8 @@ import { Plant } from "../types/plant";
                 data: {
                     actualWaterLvl: actualWaterLvl,
                     lastWateredAt: new Date(lastWateredAt),
-                  }
+                },
+                include: { model: true },
             });
 
             if (plant === null) {
@@ -84,15 +89,51 @@ import { Plant } from "../types/plant";
         }
     }
 
+
     // Update next watering date of a plant
-    export async function updateNextWateringDate(plantId: string, nextWateringDate: Date): Promise<Plant>  {    
+    export async function updateNextWateringDate(plantId: string) : Promise<Plant>  {    
         try {
+            // Return dates Array with every days between startDate and endDate
+            function generateDatesEveryNDays(startDate: Date, endDate: Date, stepDays: number): Date[] {
+                const dates: Date[] = [];
+                let current = new Date(startDate);
+                while (current <= endDate) {
+                    dates.push(new Date(current));
+                    current = new Date(current.getTime() + stepDays * 24 * 60 * 60 * 1000);
+                }
+                return dates;
+            }
+
+            // Get the plant
+            const selectedPlant = await getSpecificPlant(plantId)
+            if (!selectedPlant) {
+                throw new Error(`No plant found : ${plantId}`);
+            }
+
+            // startDate = selectedPlant.lastWateredAt
+            const startDate = new Date(selectedPlant.lastWateredAt);
+            // endDate = startDate + 2 months
+            const endDate = new Date(startDate);
+            endDate.setMonth(endDate.getMonth() + 2);
+            
+            // Utilise la fréquence d'arrosage du modèle de la plante
+            const stepDays = selectedPlant.model.wateringFrequency;
+            if (stepDays <= 0) {
+                throw new Error(`Invalid watering frequency ${stepDays} for plant ${plantId}`);
+            }
+            const dates = generateDatesEveryNDays(startDate, endDate, stepDays);
+            const secondDate = dates.length > 1 ? dates[1] : null;
+            if (!secondDate) {
+                throw new Error(`Impossible de calculer la prochaine date d'arrosage pour la plante ${plantId}`);
+            }
+
             const actualPlantId: number = parseInt(plantId, 10)
             const plant = await prisma.plant.update({
                 where: { id: actualPlantId },
                 data: {
-                    nextWateringDate: new Date(nextWateringDate)
-                  }
+                    nextWateringDate: secondDate
+                },
+                include: { model: true },
             });
 
             if (plant === null) {
@@ -100,7 +141,7 @@ import { Plant } from "../types/plant";
             }
             return plant;
         } catch (error) {
-            console.error(`Erreur lors de la récupération de la plante ${plantId}:`, error);
-            throw new Error("Une erreur est survenue lors de la récupération de la plante.");
+            console.error(`Erreur lors de la mise à jour de la prochaine date d'arrosage pour la plante ${plantId}:`, error);
+            throw new Error("Une erreur est survenue lors de la mise à jour de la prochaine date d'arrosage.");
         }
     }

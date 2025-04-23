@@ -13,6 +13,7 @@ import UnselectedPlant from "../fallbacks/UnselectedPlant";
 
 // API
 import { updateWaterLvl } from "@/lib/api";
+import { updateNextWateringDate } from "@/lib/api/plants";
 
 // Types
 import { Plant } from "@/types/plant";
@@ -34,6 +35,7 @@ function CaringModule() {
     if (plant?.id !== undefined) {
         const actualDate = new Date();
         updateWaterLvl(plant.id, actualDate);
+        updateNextWateringDate(plant.id);
         const updatedPlant = { 
             ...plant, 
             actualWaterLvl: 100, 

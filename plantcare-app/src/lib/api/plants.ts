@@ -64,11 +64,13 @@ export async function updateWaterLvl(plantId: number, lastWateredAt: Date){
 }
 
 // Request UPDATE to set the NextWateringDate of a plant
-export async function updateNextWateringDate(plantId: number, nextWateringDate: Date){
+export async function updateNextWateringDate(plantId: number){
     try {
-        const response = await axios.patch(`/api/plants/${plantId}`, {
-            nextWateringDate: nextWateringDate,
-        });
+        const response = await axios.patch<Plant>(
+          `/api/plants/${plantId}`,
+          {},
+          { params: { action: 'updateNextWateringDate' } }
+        );
         return response.data
     } catch (error) {
         console.error("Error when calling the API :", error);

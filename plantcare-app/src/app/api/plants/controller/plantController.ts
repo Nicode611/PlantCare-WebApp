@@ -19,7 +19,6 @@ import * as PlantService from "../services/plantService";
         return await PlantService.updateWaterLvl(plantId, actualWaterLvl, lastWateredAt);
     }
 
-    export async function updateNextWateringDate(plantId: string, data: { nextWateringDate: Date }) {
-        const { nextWateringDate } = data;
-        return await PlantService.updateNextWateringDate(plantId, nextWateringDate);
+    export async function updateNextWateringDate(plantId: string) {
+        return await PlantService.updateNextWateringDate(plantId);
     }

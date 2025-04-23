@@ -25,28 +25,30 @@ export async function GET(
 }
 
 
-// Mettre à jour le niveau d'eau d'une plante (PATCH)
+// Mettre à jour une plante : utilise ?action=updateNextWateringDate ou body pour waterLvl
 export async function PATCH(
   request: Request,
   { params }: { params: { plantId: string } }
 ) {
   try {
+    console.log('fzezz');
     // Extract params and body
     const awaitedParams = await Promise.resolve(params);
     const plantId = awaitedParams.plantId;
     const body = await request.json();
+    const url = new URL(request.url);
+    const action = url.searchParams.get('action');
 
     let updatedPlant;
-    // Decide which controller method to call based on request body
-    if ('actualWaterLvl' in body || 'lastWateredAt' in body) {
-      // Update water level
+    // Decide which controller method to call based on action in the url or request body
+    if (action === 'updateNextWateringDate') {
+        console.log("Updating next watering date");
+      updatedPlant = await PlantController.updateNextWateringDate(plantId);
+    } else if ('actualWaterLvl' in body || 'lastWateredAt' in body) {
       updatedPlant = await PlantController.updateWaterLvl(plantId, body);
-    } else if ('nextWateringDate' in body) {
-      // Update location (assuming you have this method)
-      updatedPlant = await PlantController.updateNextWateringDate(plantId, body);
     } else {
       return NextResponse.json(
-        { error: "No valid fields to update provided." },
+        { error: "No valid action or fields provided." },
         { status: 400 }
       );
     }
