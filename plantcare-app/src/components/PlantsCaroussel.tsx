@@ -72,7 +72,7 @@ function PlantsCaroussel() {
                 mousewheel={{enabled: true}}
                 centeredSlides={false} 
                 onSwiper={() => console.log("swipe")}
-                onSlideChange={() => {console.log('slide change')}}
+                onSlideChange={async () => {}}
                 >
 
                 {

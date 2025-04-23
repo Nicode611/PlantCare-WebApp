@@ -4,6 +4,14 @@ export interface CreateUserInput {
     password: string;
 }
 
+export interface User {
+    id: number;
+    username: string;
+    email: string;
+    image: string | null;
+}
+
+
 export interface UserInfos {
     id: number;
     username: string;

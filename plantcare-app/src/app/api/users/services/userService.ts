@@ -1,42 +1,14 @@
-import prisma from "@/app/api/prisma/prismaClient";
-import { CreateUserInput, UserInfos } from "../types/user";
+import prisma from "../../prisma/prismaClient";
+import { User } from "../types/user";
 
-class UserService {
-  
-    static async createUser({username, email, password}: CreateUserInput) {
 
-        const existingEmail = await prisma.user.findUnique({
-            where: { email },
-        })
-
-        if (existingEmail) {
-            throw new Error("Someone already used this email adress.")
-        }
-
-        const existingUsername = await prisma.user.findUnique({
-            where: { username },
-        })
-
-        if (existingUsername) {
-            throw new Error("Someone already used this username.")
-        }
-        
-
-        const user = await prisma.user.create({
-            data: {
-                username,
-                email,
-                password,
-            },
-        })
-        return user;
-    }
-
-    static async getUsers(): Promise<UserInfos[]> {
-        const users = await prisma.user.findMany()
+// Get specific User
+export async function getAllUsers(): Promise<User[]> {
+    try {
+        const users = await prisma.user.findMany();
         return users;
+    } catch (error) {
+      console.error("Erreur lors de la récupération de users dans le service:", error);
+      throw error;
     }
-
-}
-
-export default UserService;
+  }
