@@ -16,6 +16,7 @@ model User {
 
   // Relation : un User possède plusieurs Plant
   plants   Plant[]
+  tasks Task[]
 }
 
 model Plant {
@@ -31,6 +32,7 @@ model Plant {
   user   User   @relation(fields: [userId], references: [id])
   // Relation : chaque Plant est lié à un Model (1-N)
   model  Model  @relation(fields: [modelId], references: [id])
+  tasks Task[]
 }
 
 model Model {
@@ -70,4 +72,16 @@ model Disease {
 
   // Relation M-N : un Disease peut concerner plusieurs Model
   models DiseaseModel[]
+}
+
+model Task {
+  id            Int      @id @default(autoincrement())
+  userId        Int      @map("user_id")
+  plantId       Int      @map("plant_id")
+  action        String
+  dateOfAction  DateTime @map("date_of_action")
+  checked       Boolean
+
+  user   User  @relation(fields: [userId], references: [id])
+  plant  Plant @relation(fields: [plantId], references: [id])
 }
