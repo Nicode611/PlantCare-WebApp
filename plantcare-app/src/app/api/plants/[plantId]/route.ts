@@ -31,7 +31,6 @@ export async function PATCH(
   { params }: { params: { plantId: string } }
 ) {
   try {
-    console.log('fzezz');
     // Extract params and body
     const awaitedParams = await Promise.resolve(params);
     const plantId = awaitedParams.plantId;
@@ -42,7 +41,6 @@ export async function PATCH(
     let updatedPlant;
     // Decide which controller method to call based on action in the url or request body
     if (action === 'updateNextWateringDate') {
-        console.log("Updating next watering date");
       updatedPlant = await PlantController.updateNextWateringDate(plantId);
     } else if ('actualWaterLvl' in body || 'lastWateredAt' in body) {
       updatedPlant = await PlantController.updateWaterLvl(plantId, body);

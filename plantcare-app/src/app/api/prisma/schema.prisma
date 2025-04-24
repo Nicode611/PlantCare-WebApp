@@ -80,7 +80,7 @@ model Task {
   plantId       Int      @map("plant_id")
   action        String
   dateOfAction  DateTime @map("date_of_action")
-  checked       Boolean
+  isDone       Boolean
 
   user   User  @relation(fields: [userId], references: [id])
   plant  Plant @relation(fields: [plantId], references: [id])
