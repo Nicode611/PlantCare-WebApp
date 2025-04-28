@@ -7,6 +7,7 @@ import storage from 'redux-persist/lib/storage';
 import modalReducer from "./slices/modalSlice" // State for modals opening
 import selectPlantReducer from "./slices/plants/selectPlantSlice" // State for selected plant
 import updatePlantsReducer from "./slices/plants/updatePlantsSlice" // State to get the plants when updated
+import taskReducer from "./slices/tasks/tasksSlice" // State for tasks
 
 const selectPlantPersistConfig = {
     key: 'selectPlant',
@@ -20,6 +21,7 @@ const store = configureStore({
         modal: modalReducer,
         selectPlant: persistedSelectPlantReducer,
         updatePlants: updatePlantsReducer,
+        tasks: taskReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

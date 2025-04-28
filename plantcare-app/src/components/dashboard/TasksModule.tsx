@@ -1,14 +1,14 @@
 // Next
 import Image from "next/image"
 import { useSession } from "next-auth/react"
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
+
+// Redux
+import { useSelector, useDispatch } from "react-redux"
+import { RootState } from "@/redux/store"
 
 // API
 import { getAllTasksFromUser } from "@/lib/api/tasks"
-
-// Types
-import { Task } from "@/types/task"
-
 
 
 export default function TasksModule() {
@@ -17,22 +17,26 @@ export default function TasksModule() {
     const { data: session } = useSession();
 
     // Get all tasks from user
-    const [tasks, setTasks] = useState<Task[]>([]);
-    const validTasks = tasks.filter(task =>
-      task.severityLvl === "M" || task.severityLvl === "H" || task.severityLvl === "L"
-    );
-    async function getTasks(userId: string) {
-        const tasks = await getAllTasksFromUser(userId);
+    /* const [tasks, setTasks] = useState<Task[]>([]); */
+    const tasks = useSelector((state: RootState) => state.tasks.value);
+    const dispatch = useDispatch();
 
-        setTasks(tasks);
-    }
+    
     useEffect(() => {
-        if (session?.user?.name) {
-            getTasks("1");
-        }
-    }, [session?.user?.name]);
-
-
+        const fetchTasks = async () => {
+            if (session?.user?.name) {
+                const fetchedTasks = await getAllTasksFromUser("1");
+                dispatch({ type: "tasks/add", payload: fetchedTasks });
+            }
+        };
+        
+        fetchTasks();
+    }, [session?.user?.name, dispatch]);
+    
+    const validTasks = tasks.filter(task =>
+      task.severityLvl === "M" || task.severityLvl === "H"
+    );
+    
 
     return (
         <div className="w-full h-full flex items-center rounded-md p-3">
@@ -82,7 +86,7 @@ export default function TasksModule() {
             <div className="flex flex-col justify-center items-center w-[30%] h-full m-1 ">
                 <div className="flex flex-col justify-around items-center bg-primary text-white font-bold rounded-md w-[80%] h-[75%] m-2 pt-3 pb-3 whitespace-nowrap">
                     <span className="text-[0.8rem] ">Total tasks</span>
-                    <span>5</span>
+                    <span>{validTasks.length}</span>
                 </div>
             </div>
         </div>

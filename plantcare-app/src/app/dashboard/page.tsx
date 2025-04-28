@@ -3,6 +3,9 @@
 // CSS
 import "../../styles/dashboard.css"
 
+// React
+import { useEffect } from "react";
+
 // Components
 import Sidebar from "@/components/Sidebar"
 import TasksModule from "@/components/dashboard/TasksModule"
@@ -22,18 +25,34 @@ import LeafTexture from "../../images/leaf-texture.webp"
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 
+// API
+import { refreshData } from "@/lib/api/others";
+
 export default function Dashboard() {
+
+    // Call the signInEvents function when the component mounts
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                await refreshData();
+            } catch (error) {
+                console.error("Cannot refresh the data : ", error);
+                // Handle the error as needed
+            }
+        };
+        fetchData();
+    }, []);
 
     const { data: session, status } = useSession();
     const router = useRouter();
 
     if (status === 'loading') {
         return null;
-      }
+    }
       if (!session) {
         router.push('..');
         return null;
-      }
+    }
 
     return (
         <div className="swip flex w-screen h-screen bg-[#fef8ea]">

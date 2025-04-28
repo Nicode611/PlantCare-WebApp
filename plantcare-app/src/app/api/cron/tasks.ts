@@ -73,7 +73,7 @@ export async function createTaskIfNeeded() {
       });
 
     if (plantsNeedingAction.length === 0) {
-        throw new Error("Aucune plante trouvée");
+        return; // No plants needing action
     } else if (plantsNeedingAction.length > 0) {
         for (const plant of plantsNeedingAction) {
             const { id: actualPlantId, userId, modelId, nextWateringDate } = plant;

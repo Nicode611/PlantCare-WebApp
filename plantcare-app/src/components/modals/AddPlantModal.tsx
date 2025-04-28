@@ -89,7 +89,7 @@ function AddPlantModal() {
                 <Card className="w-[350px]">
                     <CardHeader>
                         <CardTitle>Add a plant</CardTitle>
-                        <CardDescription>Deploy your new project in one-click.</CardDescription>
+                        <CardDescription></CardDescription>
                     </CardHeader>
                     <form onSubmit={submitForm}>
                         <CardContent>
