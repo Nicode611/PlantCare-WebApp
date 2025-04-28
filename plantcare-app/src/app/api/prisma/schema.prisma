@@ -80,6 +80,7 @@ model Task {
   plantId       Int      @map("plant_id")
   action        String
   dateOfAction  DateTime @map("date_of_action")
+  severityLvl   String   @map("severity_lvl")
   isDone       Boolean
 
   user   User  @relation(fields: [userId], references: [id])

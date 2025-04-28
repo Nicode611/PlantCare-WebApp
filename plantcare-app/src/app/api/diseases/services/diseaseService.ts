@@ -2,9 +2,9 @@ import prisma from "@/app/api/prisma/prismaClient";
 /* import { Disease } from "../types/disease"; */
 
 
-    export async function getDiseasesFromPlantModel(plantModelId: string) {    
+    export async function getDiseasesFromPlantModel(modelId: string) {    
         try {
-            const id: number = parseInt(plantModelId, 10)
+            const id: number = parseInt(modelId, 10)
 
             const disease = await prisma.disease.findMany({
                 where: {

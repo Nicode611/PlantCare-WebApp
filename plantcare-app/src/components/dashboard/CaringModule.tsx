@@ -14,6 +14,7 @@ import UnselectedPlant from "../fallbacks/UnselectedPlant";
 // API
 import { updateWaterLvl } from "@/lib/api";
 import { updateNextWateringDate } from "@/lib/api/plants";
+import { updateSeverityLevelFromPlant } from "@/lib/api";
 
 // Types
 import { Plant } from "@/types/plant";
@@ -36,6 +37,7 @@ function CaringModule() {
         const actualDate = new Date();
         updateWaterLvl(plant.id, actualDate);
         updateNextWateringDate(plant.id);
+        updateSeverityLevelFromPlant(plant.id.toString(), "L");
         const updatedPlant = { 
             ...plant, 
             actualWaterLvl: 100, 

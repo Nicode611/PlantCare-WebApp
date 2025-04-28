@@ -9,7 +9,11 @@ import prisma from "../../prisma/prismaClient";
             const parsedUserId: number = parseInt(userId, 10)
             const tasks = await prisma.task.findMany({
                 where: { userId: parsedUserId },
-                include: { plant: true },
+                include: { 
+                    plant: { 
+                        include: { model: true } 
+                    } 
+                },
             });
             return tasks;
         } catch (error) {
@@ -24,7 +28,11 @@ import prisma from "../../prisma/prismaClient";
             const parsedTaskId: number = parseInt(taskId, 10)
             const task = await prisma.task.findUnique({
                 where: { id: parsedTaskId },
-                include: { plant: true },
+                include: { 
+                    plant: { 
+                        include: { model: true } 
+                    } 
+                },
             });
             return task;
         } catch (error) {
@@ -44,9 +52,14 @@ import prisma from "../../prisma/prismaClient";
                     plantId: parsedPlantId,
                     action,
                     dateOfAction,
+                    severityLvl: "L",
                     isDone: false,
                 },
-                include: { plant: true },
+                include: { 
+                    plant: { 
+                        include: { model: true } 
+                    } 
+                },
             });
             return task;
         } catch (error) {
@@ -64,7 +77,11 @@ import prisma from "../../prisma/prismaClient";
                 data: {
                     isDone,
                 },
-                include: { plant: true },
+                include: { 
+                    plant: { 
+                        include: { model: true } 
+                    } 
+                },
             });
             return task;
         } catch (error) {
@@ -73,13 +90,65 @@ import prisma from "../../prisma/prismaClient";
         }
     }
 
+    // UPDATE severity level from taskId
+    export async function updateSeverityLevelFromTask(taskId: string, severityLvl: string): Promise<Task> {
+        try {
+            const parsedTaskId: number = parseInt(taskId, 10)
+            const task = await prisma.task.update({
+                where: { id: parsedTaskId },
+                data: {
+                    severityLvl,
+                },
+                include: { 
+                    plant: { 
+                        include: { model: true } 
+                    } 
+                },
+            });
+            return task;
+        } catch (error) {
+            console.error("Error service, while updating severity level :", error);
+            throw error;
+        }
+    }
+
+// UPDATE severityLvl from plantId
+export async function updateSeverityLevelFromPlant(plantId: string, severityLvl: string): Promise<Task[]> {
+    try {
+        const parsedPlantId: number = parseInt(plantId, 10);
+        // Update all matching tasks
+        await prisma.task.updateMany({
+            where: { plantId: parsedPlantId },
+            data: { severityLvl },
+        });
+        // Fetch and return the updated tasks with their related plant and model
+        const tasks = await prisma.task.findMany({
+            where: { plantId: parsedPlantId },
+            include: {
+                plant: {
+                    include: { model: true },
+                },
+            },
+        });
+        return tasks;
+    } catch (error) {
+        console.error("Error service, while updating severity level from plant :", error);
+        throw error;
+    }
+}
+        
+
     // DELETE task 
     export async function deleteTask(taskId: string): Promise<Task | null> {
         try {
             const parsedTaskId: number = parseInt(taskId, 10)
             const task = await prisma.task.delete({
                 where: { id: parsedTaskId },
-                include: { plant: true },
+                include: { 
+                    plant: { 
+                        include: { model: true } 
+                    } 
+                },
             });
             return task;
         } catch (error) {
@@ -115,8 +184,3 @@ import prisma from "../../prisma/prismaClient";
             throw error;
         }
     }         
-
-
-
-
-

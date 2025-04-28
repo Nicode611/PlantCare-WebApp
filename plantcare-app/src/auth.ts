@@ -2,6 +2,9 @@ import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import type { Provider } from "next-auth/providers"
+
+// Event handlers
+import { signInEvents } from "./app/api/auth/events/signInEvents"
  
 const providers: Provider[] = [
   CredentialsProvider({
@@ -44,8 +47,22 @@ export const providerMap = providers
   .filter((provider) => provider.id !== "credentials")
  
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  providers,
-  pages: {
-    signIn: "/signin",
-  },
+    providers,
+    pages: {
+        signIn: "/signin",
+    },
+    callbacks: {
+    },
+    events: {
+        async signIn({ user }) {
+            try {
+                await signInEvents();
+            } catch (error) {
+                console.error("Error in signIn event :", error);
+                throw error;
+            }
+            
+        console.log("User signed in:", user.id);
+        }
+    },
 })

@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import * as TaskController from '../controller/taskController';
+import * as TaskController from '../../controller/taskController';
 
 // GET all tasks from user
 export async function GET(

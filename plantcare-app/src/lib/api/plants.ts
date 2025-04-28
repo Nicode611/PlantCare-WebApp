@@ -7,7 +7,7 @@ import { Plant } from "@/types/plant";
 // Request GET to get all the plants from a user id
 export async function getPlantsFromUser(userId: string): Promise<Plant[]> {
     try {
-        const response = await axios.get<Plant[]>(`/api/plants/users/${userId}`);
+        const response = await axios.get<Plant[]>(`/api/plants/by-user/${userId}`);
         return response.data;
     } catch (error) {
         console.error("Error when calling the API :", error);
@@ -22,7 +22,7 @@ export async function createPlant({ userId, modelId, location }: {
     location: string;
 }): Promise<Plant | null> {
     try {
-        const response = await axios.post<Plant>(`/api/plants/users/${userId}`, {
+        const response = await axios.post<Plant>(`/api/plants/by-user/${userId}`, {
             userId,
             modelId,
             location,

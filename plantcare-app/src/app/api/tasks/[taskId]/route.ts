@@ -23,7 +23,7 @@ export async function GET(
     }
 }
 
-// PATCH check / uncheck task
+// PATCH check / uncheck task or update severity level
 export async function PATCH(
     request: Request,
     { params }: { params: { taskId: string } }
@@ -33,9 +33,14 @@ export async function PATCH(
         const taskId = awaitedParams.taskId;
         const body = await request.json();
 
-        // Call the controller
-        const updatedTask = await TaskController.checkTask(taskId, body.isDone);
-        return NextResponse.json(updatedTask);
+        if (body.isDone) {
+            const updatedTask = await TaskController.checkTask(taskId, body.isDone);
+            return NextResponse.json(updatedTask);
+        } else if (body.severityLvl) {
+            const updatedTask = await TaskController.updateSeverityLevelFromTask(taskId,body.severityLvl);
+            return NextResponse.json(updatedTask);
+        }
+        
     } catch (error) {
         const awaitedParams = await Promise.resolve(params);
         console.error(`Error while updating task ${awaitedParams.taskId}:`, error);

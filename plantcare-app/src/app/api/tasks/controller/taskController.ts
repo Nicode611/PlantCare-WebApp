@@ -23,6 +23,12 @@ export async function checkTask(taskId: string, data: { isDone: boolean }) {
 }
 
 // [taskId]/route.ts
+export async function updateSeverityLevelFromTask(taskId: string, data: { severityLvl: string }) {
+    const { severityLvl } = data;
+    return await taskService.updateSeverityLevelFromTask(taskId, severityLvl);
+}
+
+// [taskId]/route.ts
 export async function deleteTask(taskId: string) {
     return await taskService.deleteTask(taskId);
 }
@@ -35,4 +41,10 @@ export async function deleteAllTasksFromUser(userId: string) {
 // [plantId]/route.ts
 export async function deleteAllTasksFromPlant(plantId: string) {
     return await taskService.deleteAllTasksFromPlant(plantId);
+}
+
+// [plantId]/route.ts
+export async function updateSeverityLevelFromPlant(plantId: string, data: { severityLvl: string }) {
+    const { severityLvl } = data;
+    return await taskService.updateSeverityLevelFromPlant(plantId, severityLvl);
 }
