@@ -4,55 +4,68 @@ import prisma from "../prisma/prismaClient";
  * Calcule le niveau d'eau actuel d'une plante en fonction du temps écoulé.
  * À la date `lastWateredAt`, on part du niveau `actualWaterLvl` (en %).
  * À la date `nextWateringDate` (et au-delà), on retombe à 25 %. */
-export async function adjustWaterLevel(){
-
+export async function adjustWaterLevel() {
     const plants = await prisma.plant.findMany({
         select: {
-          id: true,
-          userId: true,
-          modelId: true,
-          actualWaterLvl: true,
-          lastWateredAt: true,
-          nextWateringDate: true,
+            id: true,
+            userId: true,
+            modelId: true,
+            actualWaterLvl: true,
+            lastWateredAt: true,
+            nextWateringDate: true,
         },
-      });
+    });
 
     if (plants.length === 0) {
-        throw new Error("Aucune plante trouvée");
-    } else if (plants.length > 0) {
-        for (const plant of plants) {
-            const { id: actualPlantId, actualWaterLvl, lastWateredAt, nextWateringDate } = plant;
+        console.log("Aucune plante trouvée.");
+        return;
+    }
 
-            if (lastWateredAt == null || nextWateringDate == null || actualWaterLvl == null) {
-                // Skip this plant if any required field is missing
-                continue;
-            }
+    const now = Date.now();
 
-            const now = Date.now();
-            const start = lastWateredAt.getTime();
-            const end = nextWateringDate.getTime();
-            
-            // compute normalized time ratio
-            const rawRatio = (now - start) / (end - start);
+    for (const plant of plants) {
+        const { id: actualPlantId, actualWaterLvl, lastWateredAt, nextWateringDate } = plant;
 
-            let newLevel: number;
-            if (rawRatio <= 1) {
-              // Phase 1: interpolate from actualWaterLvl down to 25%
-              newLevel = Math.round((1 - rawRatio) * actualWaterLvl + rawRatio * 25);
-            } else {
-              // Phase 2: after nextWateringDate, interpolate from 25% down to 0 over same duration
-              const secondRatio = Math.min((now - end) / (end - start), 1);
-              newLevel = Math.round((1 - secondRatio) * 25);
-            }
+        if (!lastWateredAt || !nextWateringDate || actualWaterLvl === null) {
+            // Skip this plant if any required field is missing
+            continue;
+        }
 
+        const start = new Date(lastWateredAt).getTime();
+        const end = new Date(nextWateringDate).getTime();
+
+        if (now < start) {
+            // Si la date actuelle est avant `lastWateredAt`, ne rien faire
+            continue;
+        }
+
+        const duration = end - start;
+        const elapsed = now - start;
+
+        let newLevel: number;
+
+        if (elapsed <= duration) {
+            // Phase 1: Interpolation entre 100% et 25% jusqu'à `nextWateringDate`
+            const ratio = elapsed / duration;
+            newLevel = Math.round((1 - ratio) * 100 + ratio * 25);
+        } else {
+            // Phase 2: Après `nextWateringDate`, interpolation entre 25% et 0%
+            const postDuration = now - end;
+            const secondRatio = Math.min(postDuration / duration, 1);
+            newLevel = Math.round((1 - secondRatio) * 25);
+        }
+
+        // Mettre à jour le niveau d'eau uniquement si nécessaire
+        if (newLevel !== actualWaterLvl) {
             await prisma.plant.update({
                 where: { id: actualPlantId },
                 data: { actualWaterLvl: newLevel },
             });
         }
-        console.log("Water levels adjusted successfully.");
     }
-  }
+
+    console.log("Water levels adjusted successfully.");
+}
 
 export async function createTaskIfNeeded() {
 
