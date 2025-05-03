@@ -26,7 +26,7 @@ export default function Home() {
     const router = useRouter();
     useEffect(() => {
     if (status === 'authenticated') {
-        router.push('/dashboard');
+        router.push('/home');
     }
     }, [status, router]);
 
@@ -113,7 +113,7 @@ return (
         {!session ? (
 
             <div className="flex items-center space-x-4">
-                <Button className="bg-primary hover:bg-secondary !rounded-button whitespace-nowrap cursor-pointer" onClick={() => signIn('', { callbackUrl: '/dashboard' })}>Log In</Button>
+                <Button className="bg-primary hover:bg-secondary !rounded-button whitespace-nowrap cursor-pointer" onClick={() => signIn('', { callbackUrl: '/home' })}>Log In</Button>
             </div>
             
             ) : (
@@ -151,7 +151,7 @@ return (
                 The smart companion that helps you nurture your plants with personalized care schedules, expert advice, and advanced health monitoring.
             </p>
             <div className="flex flex-wrap gap-4">
-                <Button className="bg-primary hover:secondary text-white px-8 py-6 text-lg !rounded-button whitespace-nowrap cursor-pointer" onClick={() => signIn('', { callbackUrl: '/dashboard' })}>
+                <Button className="bg-primary hover:secondary text-white px-8 py-6 text-lg !rounded-button whitespace-nowrap cursor-pointer" onClick={() => signIn('', { callbackUrl: '/home' })}>
                 Get Started Free
                 </Button>
             </div>

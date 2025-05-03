@@ -8,6 +8,7 @@ import modalReducer from "./slices/modalSlice" // State for modals opening
 import selectPlantReducer from "./slices/plants/selectPlantSlice" // State for selected plant
 import updatePlantsReducer from "./slices/plants/updatePlantsSlice" // State to get the plants when updated
 import taskReducer from "./slices/tasks/tasksSlice" // State for tasks
+import activeSectionReducer from "./slices/activeSection";
 
 const selectPlantPersistConfig = {
     key: 'selectPlant',
@@ -22,6 +23,7 @@ const store = configureStore({
         selectPlant: persistedSelectPlantReducer,
         updatePlants: updatePlantsReducer,
         tasks: taskReducer,
+        activeSection: activeSectionReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

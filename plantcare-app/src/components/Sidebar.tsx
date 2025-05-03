@@ -3,6 +3,11 @@
 // Next
 import Image from "next/image"
 
+// Redux
+import type { RootState } from "@/redux/store"
+import { useSelector, useDispatch } from "react-redux"
+import { changeSection } from "@/redux/slices/activeSection"
+
 // Components
 import ThemeButton from "./ThemeButton"
 
@@ -11,8 +16,19 @@ import { useSession, signOut } from 'next-auth/react';
 
 
 function Sidebar() {
-    const { data: session } = useSession();
-    const userImage: string = session?.user?.image ?? '/default-avatar.png';
+
+    const { data: session, status } = useSession();
+    const dispatch = useDispatch();
+    const activeSection = useSelector<RootState, string>(
+      (state) => state.activeSection.activeSection
+    );
+
+    if (status === "loading") return;
+    if (status !== "authenticated" || !session.user) {
+        console.error("User is not authenticated");
+        return;
+    }
+    const userImage: string = session.user.image ?? '/default-avatar.png';
 
     return (
         <div className="w-full h-full flex md:flex-col justify-start md:justify-between items-center bg-[#e8e8e8] shadow-spread">
@@ -26,8 +42,12 @@ function Sidebar() {
                 </div>
                 <nav className="hidden md:flex flex-col items-start w-[100%] md:mt-5">
                         <ul className="list-none flex flex-col w-full">
-                            <li className="flex justify-center m-2">
-                                <div className="flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08740C] w-[90%]">
+                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("dashboard"))}>
+                                <div
+                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08740C] w-[90%] ${
+                                    activeSection === "dashboard" ? "bg-[#98C496] bg-opacity-80 text-[#08740C]" : ""
+                                  }`}
+                                >
                                     <Image
                                     src={"/icons/dashboard.svg"}
                                     alt="Dashboard icon"
@@ -38,8 +58,12 @@ function Sidebar() {
                                     <span>Dashboard</span>
                                 </div>
                             </li>
-                            <li className="flex justify-center m-2">
-                                <div className="flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%]">
+                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("tasks"))}>
+                                <div
+                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
+                                    activeSection === "tasks" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
+                                  }`}
+                                >
                                     <Image
                                     src={"/icons/today.svg"}
                                     alt="Task icon"
@@ -50,8 +74,12 @@ function Sidebar() {
                                     <span>Tasks</span>
                                 </div>
                             </li>
-                            <li className="flex justify-center m-2">
-                                <div className="flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%]">
+                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("caring"))}>
+                                <div
+                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
+                                    activeSection === "caring" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
+                                  }`}
+                                >
                                     <Image
                                     src={"/icons/caring.svg"}
                                     alt="Caring icon"
@@ -62,8 +90,12 @@ function Sidebar() {
                                     <span>Caring space</span>
                                 </div>
                             </li>
-                            <li className="flex justify-center m-2">
-                                <div className="flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%]">
+                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("calendar"))}>
+                                <div
+                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
+                                    activeSection === "calendar" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
+                                  }`}
+                                >
                                     <Image
                                     src={"/icons/calendar.svg"}
                                     alt="Calendar icon"
@@ -74,8 +106,12 @@ function Sidebar() {
                                     <span>Calendar</span>
                                 </div>
                             </li>
-                            <li className="flex justify-center m-2">
-                                <div className="flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%]">
+                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("diseases"))}>
+                                <div
+                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
+                                    activeSection === "diseases" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
+                                  }`}
+                                >
                                     <Image
                                     src={"/icons/disease.svg"}
                                     alt="Disease icon"
@@ -86,8 +122,12 @@ function Sidebar() {
                                     <span>Diseases</span>
                                 </div>
                             </li>
-                            <li className="flex justify-center m-2">
-                                <div className="flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%]">
+                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("plants"))}>
+                                <div
+                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
+                                    activeSection === "plants" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
+                                  }`}
+                                >
                                     <Image
                                     src={"/icons/plants.svg"}
                                     alt="Plants icon"

@@ -6,18 +6,17 @@ import "../../styles/dashboard.css"
 // React
 import { useEffect } from "react";
 
+// Redux
+import type { RootState } from "@/redux/store";
+import { useSelector } from "react-redux";
+
 // Components
 import Sidebar from "@/components/Sidebar"
-import TasksModule from "@/components/dashboard/TasksModule"
-import PlantsModule from "@/components/dashboard/PlantsModule"
-import CalendarModule from "@/components/dashboard/CalendarModule"
-import CaringModule from "@/components/dashboard/CaringModule"
-import DiseasesModule from "@/components/dashboard/DiseasesModule"
+import DashboardSection from "@/components/dashboardSection/DashboardSection";
+import MyPlantsSection from "@/components/myPlantsSection/MyPlantsSection";
+import DiseasesSection from "@/components/diseasesSection/DiseasesSection";
 
 // Images
-// import PlantImg from "../../images/plant-card.png"
-// import BlueDrop from "../../images/droplet-blue.png"
-// import BlackDrop from "../../images/droplet-black.png"
 import BgPlant from "../../images/Background-Illustration.png"
 import LeafTexture from "../../images/leaf-texture.webp"
 
@@ -28,7 +27,12 @@ import { useRouter } from 'next/navigation';
 // API
 import { refreshData } from "@/lib/api/others";
 
-export default function Dashboard() {
+export default function Home() {
+    // Redux
+    const activeSection = useSelector<RootState, string>(
+        (state) => state.activeSection.activeSection
+    );
+
 
     // Call the signInEvents function when the component mounts
     useEffect(() => {
@@ -78,33 +82,10 @@ export default function Dashboard() {
                 </div>
 
                 {/* Main content */}
-                <section className="w-full md:w-[80%] flex justify-center items-center m-2 z-50" style={{ overscrollBehaviorX: "contain" }}>
-                    <div className="w-full h-full flex flex-col justify-center items-center">
-                        <div className="flex w-full h-[70%] m-2 mr-0 ml-0">
-                            <div className="flex flex-col w-[60%] h-full mt-2 mr-2 mb-2">
-    
-                                <div className="w-full h-[30%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
-                                    <TasksModule/>
-                                </div>
-    
-                                <div className="w-full h-[70%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
-                                    <CaringModule/>
-                                </div>
-                            </div>
-                            <div className="flex flex-col w-[40%] h-full m-2">
-                                <div className="w-full h-[60%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
-                                    <PlantsModule/>
-                                </div>
-                                <div className="w-full h-[40%] m-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg ">
-                                    <CalendarModule></CalendarModule>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="w-full h-[30%] justify-center m-2 p-2 bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 border border-white/30 rounded-lg shadow-lg overflow-x-auto">
-                            <DiseasesModule/>
-                        </div>
-                    </div>
-                </section>
+                
+                {activeSection === "dashboard" ? <DashboardSection/> : 
+                activeSection === "plants" ? <MyPlantsSection/> :
+                activeSection === "diseases" ? <DiseasesSection/> : ""}
 
             </div>
 
