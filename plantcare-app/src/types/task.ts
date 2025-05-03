@@ -1,6 +1,6 @@
 export interface Task {
     id: number;
-    userId: number;
+    userId: string;
     plantId: number;
     action: string;
     dateOfAction: Date;
@@ -13,7 +13,7 @@ export interface Task {
         location: string;
         modelId: number;
         nextWateringDate: Date | null;
-        userId: number;
+        userId: string;
         model: {
             id: number;
             name: string;

@@ -8,6 +8,9 @@ import { useDispatch } from "react-redux";
 import { close } from "@/redux/slices/modalSlice" 
 import { update } from "@/redux/slices/plants/updatePlantsSlice";
 
+// Session
+import { useSession } from "next-auth/react";
+
 // Shadcn
 import { Button } from "@/components/ui/button"
 import {
@@ -49,6 +52,7 @@ import { Model } from "@/types/model";
 
 
 function AddPlantModal() {
+    const { data: session, status } = useSession();
     const dispatch = useDispatch(); 
 
     const [models, setModels] = useState<Model[]>([]);
@@ -69,8 +73,12 @@ function AddPlantModal() {
     // Handle submit add plant form
     const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault(); // Empêche le rechargement de la page
-        
-        const userId = 1;
+        if (status === "loading") return;
+        if (status !== "authenticated" || !session?.user?.id) {
+            console.error("User is not authenticated");
+            return;
+        }
+        const userId = session.user.id;
         const formData = new FormData(event.currentTarget);
         const location = formData.get("location") as string;
         const modelIdStr = formData.get("modelId") as string;

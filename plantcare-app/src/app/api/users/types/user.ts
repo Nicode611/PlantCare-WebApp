@@ -5,7 +5,7 @@ export interface CreateUserInput {
 }
 
 export interface User {
-    id: number;
+    id: string;
     username: string;
     email: string;
     image: string | null;
@@ -13,7 +13,7 @@ export interface User {
 
 
 export interface UserInfos {
-    id: number;
+    id: string;
     username: string;
     email: string;
     password: string;

@@ -12,7 +12,9 @@ function PlantsModule() {
 
     const dispatch = useDispatch();
 
-    const modalState = useSelector((state: RootState) => state.modal.value);
+    const { activeModal, modalProps } = useSelector((state: RootState) => state.modal);
+    const selectedAction = (modalProps as { actionName?: string }).actionName;
+    const modalState = activeModal === "plant" && selectedAction === "add";
 
 
 
@@ -21,10 +23,10 @@ function PlantsModule() {
             <div className="w-full h-[20%] flex justify-around items-center">
                 <span className="w-[80%] text-[1.9rem] font-sans font-bold ml-7">My plants</span>
                 <div className="w-[20%]">
-                    <button className="bg-secondary shadow-button rounded-md text-white w-[50px] text-[2rem] font-bold m-2 active:shadow-activeButton" onClick={() => {dispatch(open())}}>
+                    <button className="bg-secondary shadow-button rounded-md text-white w-[50px] text-[2rem] font-bold m-2 active:shadow-activeButton" onClick={() => {dispatch(open({ modal: "plant", props: { actionName: "add" } }))}}>
                         +
                     </button>
-                    {modalState == true ? <AddPlantModal/> : ""}
+                    {modalState && <AddPlantModal />}
                 </div>            
             </div>
             <div className="w-full h-[80%] flex justify-center items-center bg-[#0000001c] shadow-inner rounded-md">

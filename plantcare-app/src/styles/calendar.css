@@ -50,7 +50,7 @@
     width: 100% !important;
 }
   
-.fc-day-today {
+.fc .fc-daygrid-day.fc-day-today {
     background-color: #dce5d5 !important;
 }
 

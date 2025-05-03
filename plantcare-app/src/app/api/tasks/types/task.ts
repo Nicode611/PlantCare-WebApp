@@ -1,6 +1,6 @@
 export interface Task {
     id: number;
-    userId: number;
+    userId: string;
     plantId: number;
     action: string;
     dateOfAction: Date;

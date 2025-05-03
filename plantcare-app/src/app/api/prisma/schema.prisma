@@ -8,20 +8,70 @@ datasource db {
 }
 
 model User {
-  id       Int     @id @default(autoincrement())
-  username String  @unique
-  email    String  @unique
-  password String
-  image    String?
+  id            String          @id @default(cuid())
+  name          String?
+  username      String?         @unique
+  email         String?         @unique
+  emailVerified DateTime?
+  image         String?
+  accounts      Account[]
+  sessions      Session[]
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relation : un User possède plusieurs Plant
   plants   Plant[]
   tasks Task[]
 }
+ 
+model Account {
+  id                       String  @id @default(cuid())
+  userId                   String  @unique
+  type                     String
+  provider                 String
+  providerAccountId        String
+  refresh_token            String? @db.Text
+  access_token             String? @db.Text
+  expires_at               Int?
+  token_type               String?
+  scope                    String?
+  id_token                 String? @db.Text
+  session_state            String?
+  refresh_token_expires_in Int?
+  user                     User?   @relation(fields: [userId], references: [id])
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+ 
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id])
+ 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+ 
+  @@index([userId])
+}
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@unique([identifier, token])
+}
 
 model Plant {
   id             Int       @id @default(autoincrement())
-  userId         Int       @map("user_id")
+  userId         String    @map("user_id")
   modelId        Int       @map("model_id")
   location       String    @map("location")
   actualWaterLvl Int      @map("actual_water_lvl")
@@ -29,7 +79,7 @@ model Plant {
   nextWateringDate DateTime? @map("next_watering_date")
 
   // Relation : chaque Plant est lié à un User (1-N)
-  user   User   @relation(fields: [userId], references: [id])
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   // Relation : chaque Plant est lié à un Model (1-N)
   model  Model  @relation(fields: [modelId], references: [id])
   tasks Task[]
@@ -76,13 +126,14 @@ model Disease {
 
 model Task {
   id            Int      @id @default(autoincrement())
-  userId        Int      @map("user_id")
+  userId        String   @map("user_id")
   plantId       Int      @map("plant_id")
   action        String
   dateOfAction  DateTime @map("date_of_action")
   severityLvl   String   @map("severity_lvl")
   isDone       Boolean
 
-  user   User  @relation(fields: [userId], references: [id])
-  plant  Plant @relation(fields: [plantId], references: [id])
+  user   User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  plant  Plant @relation(fields: [plantId], references: [id], onDelete: Cascade)
+  @@unique([plantId, action])
 }

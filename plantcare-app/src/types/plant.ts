@@ -1,5 +1,6 @@
 export interface Plant {
     id: number;
+    userId: string;
     modelId: number;
     location: string;
     lastWateredAt: string;

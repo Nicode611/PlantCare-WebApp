@@ -1,5 +1,5 @@
 import prisma from "../../prisma/prismaClient";
-import { User } from "../types/user";
+import type { User } from "@prisma/client";
 
 
 // Get specific User

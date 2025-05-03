@@ -9,10 +9,9 @@ export type Plant = Prisma.PlantGetPayload<{
     export async function createPlant(userId: string, modelId: number, location: string): Promise<Plant>   {    
 
         try {
-            const parsedUserId: number = parseInt(userId, 10)
             const plant = await prisma.plant.create({
                 data: {
-                    userId: parsedUserId,
+                    userId,
                     modelId,
                     location,
                     actualWaterLvl: 100,
@@ -46,10 +45,9 @@ export type Plant = Prisma.PlantGetPayload<{
     // Get plants from user service
     export async function getPlantsFromUser(userId: string): Promise<Plant[]> {    
         try {
-            const id: number = parseInt(userId, 10)
 
             const plants = await prisma.plant.findMany({
-                where: { userId: id },
+                where: { userId: userId },
                 include: {
                     model: true, 
                 },

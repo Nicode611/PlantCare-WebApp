@@ -7,6 +7,7 @@ import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
+
 // CSS
 import "@/styles/diseaseModule.css"
 
@@ -20,34 +21,46 @@ import { Disease } from "@/types/disease";
 import { getDiseasesFromPlantModel } from "@/lib/api";
 
 function DiseasesModule() {
+    const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
     const [diseases, setDiseases] = useState<Disease[]>([])
 
-    const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
-
-    
-
-    const getDiseases = async () => {
-        if (selectedPlant === null) return;
-        try {
-            const diseases = await getDiseasesFromPlantModel(selectedPlant.modelId);
-            setDiseases(diseases);
-        } catch (error) {
-            console.error("Erreur lors de la récupération des diseases :", error);
-        }
-    }
 
     useEffect(()=> {
+        const getDiseases = async () => {
+                if (selectedPlant === null) return;
+                try {
+                    const diseases = await getDiseasesFromPlantModel(selectedPlant.modelId);
+                    setDiseases(diseases);
+                } catch (error) {
+                    console.error("Erreur lors de la récupération des diseases :", error);
+                }
+            }
+
         getDiseases();
     }, [selectedPlant])
 
 
 
+
     return (
-        <div className="w-full h-full flex items-center p-5">
+      <>
+        <style jsx global>{`
+          @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to   { opacity: 1; transform: translateY(0); }
+          }
+          .diseases-container {
+            opacity: 0;
+            animation: fadeInUp 0.5s ease-out forwards;
+          }
+        `}</style>
+        <div className="diseases-container w-full h-full flex items-center p-5">
             { diseases.map((disease, index) => {
-                return <DiseaseCard key={index} diseaseName={disease.name} diseaseDescription={disease.description} diseaseSeverity={disease.severity} diseaseTreatment={disease.treatment} diseaseImage={disease.image} />
+                return <DiseaseCard
+                 key={index}  diseaseName={disease.name} diseaseDescription={disease.description} diseaseSeverity={disease.severity} diseaseTreatment={disease.treatment} diseaseImage={disease.image} />
             })}
         </div>
+      </>
     )
 }
 

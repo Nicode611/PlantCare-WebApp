@@ -1,11 +1,15 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // Redux 
 import type { RootState } from "@/redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { select } from "@/redux/slices/plants/selectPlantSlice";
+
+// Session
+import { useSession } from "next-auth/react";
+
 
 // Caroussel
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -29,19 +33,26 @@ import { Plant } from "@/types/plant";
 
 
 function PlantsCaroussel() {
+    const { data: session, status } = useSession();
     const dispatch = useDispatch();
     const updatePlants = useSelector((state: RootState) => state.updatePlants.value);
     const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
     const [plants, setPlants] = useState<Plant[]>([]);
 
-    const getPlants = async () => {
-        const userId = "1";
+    const getPlants = useCallback(async () => {
+        if (status === "loading") return;
+        if (status !== "authenticated" || !session?.user?.id) {
+            console.error("User is not authenticated");
+            return;
+        }
+        const userId = session.user.id;
+        if (!userId) return;
         const plantsOfUser = await getPlantsFromUser(userId);
 
         if (plantsOfUser && plantsOfUser.length > 0) {
             setPlants(plantsOfUser);
         }
-    }
+    }, [session?.user?.id , status]);
 
     const fetchSelectedPlant = async (plant: number) => {
         const plantInfos = await getSpecificPlant(plant)
@@ -52,7 +63,7 @@ function PlantsCaroussel() {
 
     useEffect(()=>{ 
         getPlants();
-    },[updatePlants])
+    }, [updatePlants, getPlants])
 
     return (
 

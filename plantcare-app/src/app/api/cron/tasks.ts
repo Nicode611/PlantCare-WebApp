@@ -1,5 +1,7 @@
 import prisma from "../prisma/prismaClient";
 
+import { startOfDay, endOfDay } from "date-fns";
+
 /**
  * Calcule le niveau d'eau actuel d'une plante en fonction du temps écoulé.
  * À la date `lastWateredAt`, on part du niveau `actualWaterLvl` (en %).
@@ -100,11 +102,14 @@ export async function createTaskIfNeeded() {
                 // Skip creating a duplicate task if one already exists for this plant at the same date
                 const existingTask = await prisma.task.findFirst({
                     where: {
-                        plantId: actualPlantId,
-                        action: "water",
-                        dateOfAction: nextWateringDate
+                      plantId: actualPlantId,
+                      action: "water",
+                      dateOfAction: {
+                        gte: startOfDay(new Date(nextWateringDate)),
+                        lte: endOfDay(new Date(nextWateringDate)),
+                      },
                     },
-                });
+                  });
                 if (existingTask) {
                     continue;
                 }

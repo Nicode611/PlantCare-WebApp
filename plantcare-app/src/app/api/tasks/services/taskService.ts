@@ -6,9 +6,8 @@ import prisma from "../../prisma/prismaClient";
     // GET all tasks from user
     export async function getAllTasksFromUser(userId: string): Promise<Task[]> {
         try {
-            const parsedUserId: number = parseInt(userId, 10)
             const tasks = await prisma.task.findMany({
-                where: { userId: parsedUserId },
+                where: { userId },
                 include: { 
                     plant: { 
                         include: { model: true } 
@@ -44,11 +43,10 @@ import prisma from "../../prisma/prismaClient";
     // POST Create task 
     export async function createTask(userId: string, plantId: string, action: string, dateOfAction: Date): Promise<Task> {
         try {
-            const parsedUserId: number = parseInt(userId, 10)
             const parsedPlantId: number = parseInt(plantId, 10)
             const task = await prisma.task.create({
                 data: {
-                    userId: parsedUserId,
+                    userId,
                     plantId: parsedPlantId,
                     action,
                     dateOfAction,
@@ -160,9 +158,8 @@ export async function updateSeverityLevelFromPlant(plantId: string, severityLvl:
     // DELETE all tasks from user
     export async function deleteAllTasksFromUser(userId: string): Promise<number> {
         try { 
-            const parsedUserId: number = parseInt(userId, 10);
             const result = await prisma.task.deleteMany({
-                where: { userId: parsedUserId },
+                where: { userId },
             });
             return result.count;
         } catch (error) {
@@ -174,9 +171,9 @@ export async function updateSeverityLevelFromPlant(plantId: string, severityLvl:
     // DELETE all tasks from plant
     export async function deleteAllTasksFromPlant(plantId: string): Promise<number> {
         try {
-            const parsedUserId: number = parseInt(plantId, 10);
+            const parsedPlantId: number = parseInt(plantId, 10);
             const result = await prisma.task.deleteMany({
-                where: { userId: parsedUserId },
+                where: { plantId: parsedPlantId },
             });
             return result.count;
         } catch (error) {

@@ -1,10 +1,14 @@
 import NextAuth from "next-auth"
 import Google from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
+import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaClient } from "@prisma/client"
 import type { Provider } from "next-auth/providers"
 
 // Event handlers
 import { signInEvents } from "./app/api/auth/events/signInEvents"
+
+const prisma = new PrismaClient()
  
 const providers: Provider[] = [
   CredentialsProvider({
@@ -47,11 +51,17 @@ export const providerMap = providers
   .filter((provider) => provider.id !== "credentials")
  
 export const { handlers, auth, signIn, signOut } = NextAuth({
+    adapter: PrismaAdapter(prisma),
     providers,
     pages: {
         signIn: "/signin",
     },
     callbacks: {
+        async session({ session, user }) {
+            // Ajoute l’ID de l’utilisateur dans session.user
+            session.user.id = user.id;
+            return session;
+          }
     },
     events: {
         async signIn({ user }) {
