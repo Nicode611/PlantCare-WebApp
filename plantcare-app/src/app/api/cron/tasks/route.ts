@@ -1,11 +1,11 @@
-import { createTaskIfNeeded, updateTaskSeverityLevel } from "../tasks";
+import { /* createTaskIfNeeded, */ updateTaskSeverityLevel } from "../tasks";
 
 export const runtime = 'nodejs';
 
 export async function GET() {
   try {
     await updateTaskSeverityLevel();
-    await createTaskIfNeeded();
+    /* await createTaskIfNeeded(); */
     return new Response(JSON.stringify({ ok: true }), { status: 200 });
   } catch (error) {
     console.error('Cron failed:', error);

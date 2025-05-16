@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { persistStore, persistReducer } from 'redux-persist';
 import { FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import sessionStorage from 'redux-persist/lib/storage/session';
 
 // Slices
 import modalReducer from "./slices/modalSlice" // State for modals opening
@@ -12,7 +12,7 @@ import activeSectionReducer from "./slices/activeSection";
 
 const selectPlantPersistConfig = {
     key: 'selectPlant',
-    storage,
+    storage: sessionStorage,
 };
 
 const persistedSelectPlantReducer = persistReducer(selectPlantPersistConfig, selectPlantReducer);

@@ -1,11 +1,13 @@
 // Next
 import Image from "next/image"
-import { useSession } from "next-auth/react"
 import { useEffect } from "react"
 
 // Redux
 import { useSelector, useDispatch } from "react-redux"
 import { RootState } from "@/redux/store"
+
+// session
+import { useSession } from "next-auth/react"
 
 // API
 import { getAllTasksFromUser } from "@/lib/api/tasks"
@@ -15,6 +17,7 @@ export default function TasksModule() {
 
     // Session
     const { data: session } = useSession();
+    
 
     // Get all tasks from user
     /* const [tasks, setTasks] = useState<Task[]>([]); */
@@ -24,14 +27,14 @@ export default function TasksModule() {
     
     useEffect(() => {
         const fetchTasks = async () => {
-            if (session?.user?.name) {
-                const fetchedTasks = await getAllTasksFromUser("1");
-                dispatch({ type: "tasks/add", payload: fetchedTasks });
-            }
+            if (!session?.user?.id) return; // guard against undefined
+            const userId = session.user.id;
+            const fetchedTasks = await getAllTasksFromUser(userId);
+            dispatch({ type: "tasks/add", payload: fetchedTasks });
         };
-        
+
         fetchTasks();
-    }, [session?.user?.name, dispatch]);
+    }, [session?.user?.id, dispatch]); // now depends on user.id
     
     const validTasks = tasks.filter(task =>
       task.severityLvl === "M" || task.severityLvl === "H"

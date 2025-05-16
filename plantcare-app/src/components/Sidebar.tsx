@@ -7,6 +7,7 @@ import Image from "next/image"
 import type { RootState } from "@/redux/store"
 import { useSelector, useDispatch } from "react-redux"
 import { changeSection } from "@/redux/slices/activeSection"
+import { unselect } from "@/redux/slices/plants/selectPlantSlice"
 
 // Components
 import ThemeButton from "./ThemeButton"
@@ -169,7 +170,11 @@ function Sidebar() {
                             </div>
                             <span className="pl-2">{session?.user?.name}</span>
                         </div>
-                        <div className="flex justify-center items-center w-[90%] hover:cursor-pointer" onClick={() => signOut({ callbackUrl: '/' })}>
+                        <div className="flex justify-center items-center w-[90%] hover:cursor-pointer" 
+                          onClick={() =>{ 
+                            dispatch(unselect());
+                            signOut({ callbackUrl: '/' })
+                            }}>
                             <div >
                                 <Image
                                     src={"/icons/log-out.svg"}
