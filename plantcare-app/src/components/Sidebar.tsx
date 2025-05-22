@@ -15,6 +15,8 @@ import ThemeButton from "./ThemeButton"
 // Auth.JS
 import { useSession, signOut } from 'next-auth/react';
 
+import * as Tooltip from "@radix-ui/react-tooltip";
+
 
 function Sidebar() {
     const { data: session, status } = useSession();
@@ -70,25 +72,40 @@ function Sidebar() {
                                     <span>Dashboard</span>
                                 </div>
                             </li>
-                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("tasks"))}>
+                            <Tooltip.Provider>
+                              <Tooltip.Root>
+                                <Tooltip.Trigger asChild>
+                                  <li className="flex justify-center m-2 opacity-50 cursor-not-allowed" /* onClick={() => dispatch(changeSection("tasks"))} */>
+                                    <div
+                                      className={`flex justify-start items-center p-1 rounded-sm w-[90%] ${
+                                        activeSection === "tasks" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
+                                      }`}
+                                    >
+                                      <Image
+                                        src={'/icons/today.svg'}
+                                        alt="Task icon"
+                                        width={20}
+                                        height={20}
+                                        className="mr-3"
+                                      />
+                                      <span>Tasks</span>
+                                    </div>
+                                  </li>
+                                </Tooltip.Trigger>
+                                <Tooltip.Portal>
+                                  <Tooltip.Content side="right" align="center" className="bg-gray-800 text-white px-2 py-1 rounded text-sm z-50">
+                                    ⏳ Available soon
+                                    <Tooltip.Arrow className="fill-gray-800" />
+                                  </Tooltip.Content>
+                                </Tooltip.Portal>
+                              </Tooltip.Root>
+                            </Tooltip.Provider>
+                            <Tooltip.Provider>
+                              <Tooltip.Root>
+                                <Tooltip.Trigger asChild>
+                                  <li className="flex justify-center m-2 opacity-50 cursor-not-allowed" /* onClick={() => dispatch(changeSection("caring"))} */>
                                 <div
-                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
-                                    activeSection === "tasks" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
-                                  }`}
-                                >
-                                    <Image
-                                    src={"/icons/today.svg"}
-                                    alt="Task icon"
-                                    width={20}
-                                    height={20}
-                                    className={"mr-3"}
-                                    />
-                                    <span>Tasks</span>
-                                </div>
-                            </li>
-                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("caring"))}>
-                                <div
-                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
+                                  className={`flex justify-start items-center p-1 rounded-sm w-[90%] ${
                                     activeSection === "caring" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
                                   }`}
                                 >
@@ -102,9 +119,21 @@ function Sidebar() {
                                     <span>Caring space</span>
                                 </div>
                             </li>
-                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("calendar"))}>
+                            </Tooltip.Trigger>
+                                <Tooltip.Portal>
+                                  <Tooltip.Content side="right" align="center" className="bg-gray-800 text-white px-2 py-1 rounded text-sm z-50">
+                                    ⏳ Available soon
+                                    <Tooltip.Arrow className="fill-gray-800" />
+                                  </Tooltip.Content>
+                                </Tooltip.Portal>
+                              </Tooltip.Root>
+                            </Tooltip.Provider>
+                            <Tooltip.Provider>
+                              <Tooltip.Root>
+                                <Tooltip.Trigger asChild>
+                                  <li className="flex justify-center m-2 opacity-50 cursor-not-allowed" /* onClick={() => dispatch(changeSection("calendar"))} */>
                                 <div
-                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
+                                  className={`flex justify-start items-center p-1 rounded-sm w-[90%] ${
                                     activeSection === "calendar" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
                                   }`}
                                 >
@@ -118,9 +147,21 @@ function Sidebar() {
                                     <span>Calendar</span>
                                 </div>
                             </li>
-                            <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("diseases"))}>
+                                </Tooltip.Trigger>
+                                <Tooltip.Portal>
+                                  <Tooltip.Content side="right" align="center" className="bg-gray-800 text-white px-2 py-1 rounded text-sm z-50">
+                                    ⏳ Available soon
+                                    <Tooltip.Arrow className="fill-gray-800" />
+                                  </Tooltip.Content>
+                                </Tooltip.Portal>
+                              </Tooltip.Root>
+                            </Tooltip.Provider>
+                            <Tooltip.Provider>
+                              <Tooltip.Root>
+                                <Tooltip.Trigger asChild>
+                                  <li className="flex justify-center m-2 opacity-50 cursor-not-allowed" /* onClick={() => dispatch(changeSection("diseases"))} */>
                                 <div
-                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
+                                  className={`flex justify-start items-center p-1 rounded-sm w-[90%] ${
                                     activeSection === "diseases" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
                                   }`}
                                 >
@@ -134,6 +175,15 @@ function Sidebar() {
                                     <span>Diseases</span>
                                 </div>
                             </li>
+                                </Tooltip.Trigger>
+                                <Tooltip.Portal>
+                                  <Tooltip.Content side="right" align="center" className="bg-gray-800 text-white px-2 py-1 rounded text-sm z-50">
+                                    ⏳ Available soon
+                                    <Tooltip.Arrow className="fill-gray-800" />
+                                  </Tooltip.Content>
+                                </Tooltip.Portal>
+                              </Tooltip.Root>
+                            </Tooltip.Provider>
                             <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("plants"))}>
                                 <div
                                   className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
