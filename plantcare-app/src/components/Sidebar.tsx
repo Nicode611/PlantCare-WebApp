@@ -17,20 +17,13 @@ import { useSession, signOut } from 'next-auth/react';
 
 
 function Sidebar() {
-
     const { data: session, status } = useSession();
     const dispatch = useDispatch();
     const activeSection = useSelector<RootState, string>(
       (state) => state.activeSection.activeSection
     );
 
-    if (status === "loading") return;
-    if (status !== "authenticated" || !session.user) {
-        console.error("User is not authenticated");
-        return;
-    }
-    const userImage: string = session.user.image ?? '/default-avatar.png';
-
+    // Toujours afficher la structure de base, même pendant le chargement
     return (
         <div className="w-full h-full flex md:flex-col justify-start md:justify-between items-center bg-[#e8e8e8] shadow-spread">
             <div className="flex h-12  md:flex-col items-center w-full">
@@ -41,7 +34,25 @@ function Sidebar() {
                     </svg>
                     <h1 className="ml-3 text-[1.3rem] md:text-[1.5rem] font-bold">PlantCare</h1>
                 </div>
-                <nav className="hidden md:flex flex-col items-start w-[100%] md:mt-5">
+                {status === "loading" ? (
+                    // Animation de chargement élégante pendant le chargement
+                    <nav className="hidden md:flex flex-col items-center justify-center w-[100%] md:mt-5">
+                        <div className="flex flex-col items-center w-full py-10">
+                            <div className="relative w-10 h-10">
+                                <div className="absolute top-0 left-0 w-full h-full border-4 border-[#98C496] border-opacity-20 rounded-full"></div>
+                                <div className="absolute top-0 left-0 w-full h-full border-4 border-t-[#08740C] rounded-full animate-spin"></div>
+                            </div>
+                            <p className="mt-4 text-[#08740C] font-medium">Chargement...</p>
+                        </div>
+                    </nav>
+                ) : status !== "authenticated" || !session?.user ? (
+                    // En cas d'erreur d'authentification
+                    <nav className="hidden md:flex flex-col items-center justify-center w-[100%] md:mt-5">
+                        <p className="text-sm text-gray-500">Merci de vous reconnecter</p>
+                    </nav>
+                ) : (
+                    // Navigation normale quand les données sont disponibles
+                    <nav className="hidden md:flex flex-col items-start w-[100%] md:mt-5">
                         <ul className="list-none flex flex-col w-full">
                             <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("dashboard"))}>
                                 <div
@@ -140,56 +151,68 @@ function Sidebar() {
                                 </div>
                             </li>
                         </ul>
-                </nav>
+                    </nav>
+                )}
             </div>
             <div className="hidden md:flex md:flex-col md:w-full">
-                <div className="flex flex-col items-center w-full">
-                    <div className="flex justify-start w-[100%] bg-primary shadow-md p-2">
-                        <Image
-                        src={"/icons/settings-white.svg"}
-                        alt="Settings icon"
-                        width={30}
-                        height={30}
-                        className="hover:cursor-pointer"
-                        />
-                        <div className="w-full flex items-center justify-end">
-                            <span className="mr-2 text-[0.8rem] text-white">Dark mode</span>
-                            <ThemeButton/>
+                {status === "loading" ? (
+                    // Animation de chargement élégante pour la partie inférieure
+                    <div className="flex flex-col items-center justify-center w-full min-h-[100px]">
+                        <div className="flex space-x-2 justify-center items-center">
+                            <div className="h-2 w-2 bg-[#08740C] rounded-full animate-bounce [animation-delay:-0.3s]"></div>
+                            <div className="h-2 w-2 bg-[#08740C] rounded-full animate-bounce [animation-delay:-0.15s]"></div>
+                            <div className="h-2 w-2 bg-[#08740C] rounded-full animate-bounce"></div>
                         </div>
                     </div>
-                    <div className="mt-10 mb-5 w-full">
-                        <div className="flex justify-center items-center w-[90%]">
-                            <div className="w-[30px] h-[30px] rounded-full border border-black">
-                                <Image
-                                    src={userImage}
-                                    alt="User icon"
-                                    width={30}
-                                    height={30}
-                                    className="rounded-full"
-                                />
+                ) : status === "authenticated" && session?.user ? (
+                    // Zone utilisateur normale quand les données sont disponibles
+                    <div className="flex flex-col items-center w-full">
+                        <div className="flex justify-start w-[100%] bg-primary shadow-md p-2">
+                            <Image
+                            src={"/icons/settings-white.svg"}
+                            alt="Settings icon"
+                            width={30}
+                            height={30}
+                            className="hover:cursor-pointer"
+                            />
+                            <div className="w-full flex items-center justify-end">
+                                <span className="mr-2 text-[0.8rem] text-white">Dark mode</span>
+                                <ThemeButton/>
                             </div>
-                            <span className="pl-2">{session?.user?.name}</span>
                         </div>
-                        <div className="flex justify-center items-center w-[90%] hover:cursor-pointer" 
-                          onClick={() =>{ 
-                            dispatch(unselect());
-                            signOut({ callbackUrl: '/' })
-                            }}>
-                            <div >
-                                <Image
-                                    src={"/icons/log-out.svg"}
-                                    alt="Log out icon"
-                                    width={30}
-                                    height={30}
-                                />
+                        <div className="mt-10 mb-5 w-full">
+                            <div className="flex justify-center items-center w-[90%]">
+                                <div className="w-[30px] h-[30px] rounded-full border border-black">
+                                    <Image
+                                        src={session.user.image ?? '/default-avatar.png'}
+                                        alt="User icon"
+                                        width={30}
+                                        height={30}
+                                        className="rounded-full"
+                                    />
+                                </div>
+                                <span className="pl-2">{session.user.name}</span>
                             </div>
-                            <span>Log out</span>
+                            <div className="flex justify-center items-center w-[90%] hover:cursor-pointer" 
+                              onClick={() =>{ 
+                                dispatch(unselect());
+                                signOut({ callbackUrl: '/' })
+                                }}>
+                                <div >
+                                    <Image
+                                        src={"/icons/log-out.svg"}
+                                        alt="Log out icon"
+                                        width={30}
+                                        height={30}
+                                    />
+                                </div>
+                                <span>Log out</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                ) : null}
             </div>
         </div>
     )
 }
-
 export default Sidebar
