@@ -43,7 +43,7 @@ export default function TasksModule() {
 
     return (
         <div className="w-full h-full flex items-center rounded-md p-3">
-            <div className="w-[70%] h-full flex flex-col items-center m-1 shadow-inner bg-[#0000001c] overflow-y-auto rounded-md p-3">
+            <div className="w-[70%] h-full flex flex-col items-center m-1 shadow-inner bg-secondary bg-opacity-50 overflow-y-auto rounded-md p-3">
                 {validTasks.length > 0 ? (
                     <ul className="flex flex-col items-center w-[95%]">
                         {validTasks.map((task) => (

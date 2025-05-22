@@ -73,7 +73,7 @@ function CaringModule() {
                 </div>
             </div>
             <div className="w-full h-[20%] p-3">
-                <div className="w-full h-full flex justify-center items-center bg-[#f2f2f2] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 shadow-sm rounded-md">
+                <div className="w-full h-full flex justify-center items-center bg-[#bcbcbc] bg-opacity-50 backdrop-blur-lg backdrop-saturate-150 shadow-md rounded-lg">
                     <div className="flex items-end w-full h-5 bg-gray-100 m-5 p-1 rounded-full border border-b">
                         <div
                             className="h-full bg-water rounded-full"

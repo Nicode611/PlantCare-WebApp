@@ -90,8 +90,8 @@ function PlantsCaroussel() {
                     plants.length !== 0 ? plants.map((plant, index) => (
                     <SwiperSlide 
                         key={index}
-                        className="flex justify-center items-center shadow-xl rounded-xl bg-white max-w-[130px] hover:cursor-pointer "
-                        style={selectedPlant ? plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c", boxShadow: "0px 1px 8px #277a1c" } : {} : {}}
+                        className="flex justify-center items-center shadow-md rounded-xl bg-white max-w-[130px] hover:cursor-pointer "
+                        style={selectedPlant ? plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c" } : {} : {}}
                         onClick={()=> {fetchSelectedPlant(plant.id)}}
                     >
                         <div className="h-full flex flex-col justify-center items-center">

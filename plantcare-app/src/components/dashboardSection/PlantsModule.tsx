@@ -29,7 +29,7 @@ function PlantsModule() {
                     {modalState && <AddPlantModal />}
                 </div>            
             </div>
-            <div className="w-full h-[80%] flex justify-center items-center bg-[#0000001c] shadow-inner rounded-md">
+            <div className="w-full h-[80%] flex justify-center items-center bg-secondary bg-opacity-50 shadow-inner rounded-md">
                 <PlantsCaroussel/>
             </div>
         </div>
