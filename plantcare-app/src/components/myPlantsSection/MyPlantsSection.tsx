@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
-import Image from "next/image";
-
 import { useSession } from "next-auth/react"
+import { formatDistanceToNow } from 'date-fns';
 import { useDispatch, useSelector } from "react-redux";
 import { open } from "@/redux/slices/modalSlice";
 import { select } from "@/redux/slices/plants/selectPlantSlice";
@@ -10,6 +9,19 @@ import type { RootState } from "@/redux/store";
 import { getPlantsFromUser } from "@/lib/api";
 import AddPlantModal from "../modals/AddPlantModal";
 
+// Images
+import Image from "next/image";
+import FullDrop from "@/images/droplet-blue.png";
+
+// Lucide
+import { Sun } from "lucide-react";
+import { Shell } from "lucide-react";
+import { Thermometer } from "lucide-react";
+import { Bug } from "lucide-react";
+import { SquarePen } from "lucide-react";
+import { Trash2 } from "lucide-react";
+
+// Types
 import { Plant } from "@/types/plant";
 
 // Lucide
@@ -141,54 +153,70 @@ export default function MyPlantsSection() {
                               </div>
                             </div>
                             <div className="flex items-center justify-center pr-5">
-                              <button className="bg-secondary bg-opacity-40 text-primary font-bold text-sm rounded-lg px-4 py-2 hover:bg-primary/80 hover:text-white transition-all duration-300 ease-in-out" onClick={() => {dispatch(open({ modal: "plant", props: { actionName: "add" } }))}}>Edit</button>
-                              <button className="bg-red-500 bg-opacity-40 text-red-600 font-bold text-sm rounded-lg px-4 py-2 hover:bg-red-600 hover:text-white transition-all duration-300 ease-in-out ml-2">Delete</button>
+                              <button className="flex items-center bg-secondary bg-opacity-40 text-primary font-bold text-sm rounded-lg px-4 py-2 hover:bg-primary/80 hover:text-white transition-all duration-300 ease-in-out" onClick={() => {dispatch(open({ modal: "plant", props: { actionName: "add" } }))}}>
+                              <SquarePen color="#0b5b11" className="w-5 mr-2" />
+                              Edit
+                              </button>
+                              <button className="flex items-center bg-red-500 bg-opacity-40 text-red-600 font-bold text-sm rounded-lg px-4 py-2 hover:bg-red-600 hover:text-white transition-all duration-300 ease-in-out ml-2">
+                                <Trash2 color="#be0e0e" className="w-5 mr-2" />
+                                Delete
+                              </button>
                             </div>
                           </div>
                           <div className="flex justify-around w-full h-full gap-4 p-4">
-                            <div className="flex flex-col w-2/4 h-auto">
+                            <div className="flex flex-col w-5/8 h-auto">
                               <h3 className="text-primary text-lg font-bold">Plant details</h3>
                               <div className="grid grid-cols-2 gap-4 mt-4">
                                 
                                 <div className="flex">
-                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Water level :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant?.model.waterLvlNeeded}</span>
+                                  <Image
+                                  src={FullDrop}
+                                  alt="Water level"
+                                  width={20}
+                                  height={20}
+                                  className="w-4 h-4 mr-2"
+                                  style={{ objectFit: "cover" }}
+                                  loading="lazy"
+                                  />
+                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Water level needed :</span>
+                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant?.model.waterLvlNeeded}/5</span>
                                 </div>
 
                                 <div className="flex">
+                                  <Sun color="#ffc524" className="w-5 mr-2"/>
                                   <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Sun level :</span>
                                     <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant?.model.sunLvlNeeded}</span>
                                 </div>
 
                                 <div className="flex">
+                                  <Shell color="#392604" className="w-5 mr-2"/>
                                   <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Soil :</span>
                                     <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">Well-draining</span>
                                 </div>
 
                                 <div className="flex">
+                                  <Thermometer color="#944efd" className="w-5 mr-2"/>
                                   <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Temperature :</span>
                                     <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">18° - 24°</span>
                                 </div>
 
                                 <div className="flex">
+                                  <Bug color="#0b5b11" className="w-5 mr-2"/>
                                   <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Pest resistant :</span>
                                     <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">No</span>
                                 </div>
 
                               </div>
                             </div>
-                            <div className="flex flex-col w-2/4 h-auto">
+                            <div className="flex flex-col w-3/8 h-auto">
                               <h3 className="text-primary text-lg font-bold">Care schedule</h3>
                               <div className="flex flex-col gap-2 w-full h-auto p-2 mt-4">
 
                                 <div className="flex justify-between items-center w-full bg-water bg-opacity-30 py-4 px-2 rounded-lg">
                                   <span className="text-sm font-bold">Watering :</span>
-                                  <span className="text-primary text-sm font-bold ml-2">{selectedPlant?.lastWateredAt}</span>
-                                </div>
-
-                                <div className="flex justify-between items-center w-full bg-secondary bg-opacity-30 py-4 px-2 rounded-lg">
-                                  <span className="text-sm font-bold">Fertilizing :</span>
-                                  <span className="text-primary text-sm font-bold ml-2"></span>
+                                  <span className="text-primary text-sm font-bold ml-2">
+                                    {formatDistanceToNow(new Date(selectedPlant.nextWateringDate), { addSuffix: true })}
+                                  </span>
                                 </div>
 
                                 <div className="flex justify-between items-center w-full py-4 px-2 ">
