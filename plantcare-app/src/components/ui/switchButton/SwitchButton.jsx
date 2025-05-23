@@ -6,7 +6,7 @@ function SwitchButton(value) {
       <div className="toggle-button-cover">
         <div id="button-3" className="button r">
           {/* Insert the value in input */}
-          <input className="checkbox" type="checkbox" checked={value} />
+          <input className="checkbox" type="checkbox" />
           <div className="knobs"></div>
           <div className="layer"></div>
         </div>
