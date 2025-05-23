@@ -77,6 +77,7 @@ model Plant {
   actualWaterLvl Int      @map("actual_water_lvl")
   lastWateredAt  DateTime @map("last_watered_at")
   nextWateringDate DateTime? @map("next_watering_date")
+  sendWaterMailAlert Boolean  @map("send_water_mail_alert")
 
   // Relation : chaque Plant est lié à un User (1-N)
   user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -93,6 +94,9 @@ model Model {
   waterLvlNeeded    Int      @map("water_lvl_needed")
   sunLvlNeeded      Int      @map("sun_lvl_needed")
   image             String?
+  soil              String?
+  temperature       String?
+  pestResistant     String?   @map("pest_resistant")
 
   // Relation : un Model peut être utilisé par plusieurs Plant
   plants   Plant[]

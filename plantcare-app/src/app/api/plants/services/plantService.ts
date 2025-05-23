@@ -16,6 +16,7 @@ export type Plant = Prisma.PlantGetPayload<{
                     location,
                     actualWaterLvl: 100,
                     lastWateredAt: new Date(),
+                    sendWaterMailAlert: true,
                 },
                 include: { model: true },
             })
