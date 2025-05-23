@@ -93,7 +93,7 @@ export default function MyCalendar() {
     if (!selectedPlant) { return <UnselectedPlant/> }
 
   return (
-        <div className="font-sans p-4 h-[100%]  bg-[#f5f5f5] rounded-lg z-[100]">
+        <div className="font-sans p-4 h-[100%]  bg-[#ffffff] rounded-lg z-[100]">
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="dayGridWeek"
