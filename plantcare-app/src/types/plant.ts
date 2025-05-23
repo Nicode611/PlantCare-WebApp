@@ -6,12 +6,16 @@ export interface Plant {
     lastWateredAt: string;
     actualWaterLvl: number;
     nextWateringDate: number
+    sendWaterMailAlert: boolean;
     model: {
         name: string;
         wateringFrequency: number;
         waterLvlNeeded: number;
         sunLvlNeeded: number;
         image: string;
+        soil: string;
+        pestResistant: string;
+        temperature: string;
     }
 
 }

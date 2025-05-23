@@ -164,7 +164,7 @@ export default function MyPlantsSection() {
                             </div>
                           </div>
                           <div className="flex justify-around w-full h-full gap-4 p-4">
-                            <div className="flex flex-col w-5/8 h-auto">
+                            <div className="flex flex-col w-[55%] h-auto">
                               <h3 className="text-primary text-lg font-bold">Plant details</h3>
                               <div className="grid grid-cols-2 gap-4 mt-4">
                                 
@@ -191,24 +191,24 @@ export default function MyPlantsSection() {
                                 <div className="flex">
                                   <Shell color="#392604" className="w-5 mr-2"/>
                                   <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Soil :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">Well-draining</span>
+                                    <span className="text-primary text-sm font-bold ml-2 whitespace-normal w-[50%]">{selectedPlant.model.soil}</span>
                                 </div>
 
                                 <div className="flex">
                                   <Thermometer color="#944efd" className="w-5 mr-2"/>
                                   <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Temperature :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">18° - 24°</span>
+                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant.model.temperature}</span>
                                 </div>
 
                                 <div className="flex">
                                   <Bug color="#0b5b11" className="w-5 mr-2"/>
                                   <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Pest resistant :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">No</span>
+                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant.model.pestResistant}</span>
                                 </div>
 
                               </div>
                             </div>
-                            <div className="flex flex-col w-3/8 h-auto">
+                            <div className="flex flex-col w-[45%] h-auto">
                               <h3 className="text-primary text-lg font-bold">Care schedule</h3>
                               <div className="flex flex-col gap-2 w-full h-auto p-2 mt-4">
 
@@ -222,7 +222,7 @@ export default function MyPlantsSection() {
                                 <div className="flex justify-between items-center w-full py-4 px-2 ">
                                   {/* send email with resend */}
                                   <span className="text-sm font-bold">Receive water alert by mail :</span>
-                                  <SwitchButton />
+                                  <SwitchButton value={selectedPlant.sendWaterMailAlert} />
                                   <span className="text-primary text-sm font-bold ml-2"></span>
                                 </div>
                               </div>
