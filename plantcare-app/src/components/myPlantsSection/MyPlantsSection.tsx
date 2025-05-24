@@ -113,7 +113,7 @@ export default function MyPlantsSection() {
                                     alt={plant.model.name}
                                     width={100}
                                     height={100}
-                                    className="w-10 h-w-10 rounded-full"
+                                    className="w-10 h-w-10"
                                     style={{ objectFit: "cover" }}
                                     loading="lazy"
                                     /> 
@@ -136,14 +136,14 @@ export default function MyPlantsSection() {
                     <div className="flex flex-col items-center justify-center w-full h-full bg-white rounded-lg shadow-md md:w-[75%]">
                       {selectedPlant && (
                         <div className="flex flex-col items-center justify-center w-full h-full">
-                          <div className="flex items-center justify-between w-full p-2 bg-white rounded-lg">
+                          <div className="flex items-center justify-between w-full p-2 bg-white">
                             <div className="flex items-center w-full">
                               <Image
                               src={`/images/plants-img/${selectedPlant?.model.image}.png`}
                               alt={selectedPlant?.model.name}
                               width={100}
                               height={100}
-                              className="w-20 rounded-full mb-2"
+                              className="w-20 mb-2"
                               style={{ objectFit: "cover" }}
                               loading="lazy"
                               /> 
@@ -189,9 +189,9 @@ export default function MyPlantsSection() {
                                 </div>
 
                                 <div className="flex">
-                                  <Shell color="#392604" className="w-5 mr-2"/>
-                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Soil :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-normal w-[50%]">{selectedPlant.model.soil}</span>
+                                  <Bug color="#0b5b11" className="w-5 mr-2"/>
+                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Pest resistant :</span>
+                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant.model.pestResistant}</span>
                                 </div>
 
                                 <div className="flex">
@@ -199,14 +199,13 @@ export default function MyPlantsSection() {
                                   <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Temperature :</span>
                                     <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant.model.temperature}</span>
                                 </div>
-
-                                <div className="flex">
-                                  <Bug color="#0b5b11" className="w-5 mr-2"/>
-                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Pest resistant :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant.model.pestResistant}</span>
+                              </div>
+                                <div className="flex w-full mt-4">
+                                  <Shell color="#392604" className="w-5 mr-2"/>
+                                  <span className="text-gray-600 whitespace-nowrap text-sm font-bold">Soil :</span>
+                                    <span className="text-primary text-sm font-bold ml-2 whitespace-normal w-full">{selectedPlant.model.soil}</span>
                                 </div>
 
-                              </div>
                             </div>
                             <div className="flex flex-col w-[45%] h-auto">
                               <h3 className="text-primary text-lg font-bold">Care schedule</h3>
@@ -231,7 +230,7 @@ export default function MyPlantsSection() {
                           <div className="flex flex-col w-full h-auto p-4">
                             <h3 className="text-primary text-lg font-bold">Notes</h3>
                             <div className="w-full h-auto p-2 bg-gray-100 rounded-lg mt-4">
-                              <p className="text-gray-700 text-sm font-bold">Lorem ipsum dolor amet</p>
+                              <p className="text-gray-700 text-sm font-bold">{selectedPlant.model.description}</p>
 
                             </div>
                           </div>

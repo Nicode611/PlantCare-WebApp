@@ -9,6 +9,7 @@ export interface Plant {
     sendWaterMailAlert: boolean;
     model: {
         name: string;
+        description: string;
         wateringFrequency: number;
         waterLvlNeeded: number;
         sunLvlNeeded: number;
