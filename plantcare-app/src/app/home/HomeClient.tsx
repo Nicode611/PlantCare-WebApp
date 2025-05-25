@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import DashboardSection from "@/components/dashboardSection/DashboardSection";
 import MyPlantsSection from "@/components/myPlantsSection/MyPlantsSection";
 import DiseasesSection from "@/components/diseasesSection/DiseasesSection";
+import TasksSection from "@/components/tasksSection/TasksSection";
 
 // API
 import { refreshData } from "@/lib/api/others";
@@ -35,10 +36,11 @@ export default function HomeClient() {
     }, []);
 
     return (
-        <div className="flex-1 z-30 relative overflow-auto">
+        <div className="flex-1 z-30 relative overflow-auto bg-[#F5F5F5]">
             {activeSection === "dashboard" ? <DashboardSection/> : 
             activeSection === "plants" ? <MyPlantsSection/> :
-            activeSection === "diseases" ? <DiseasesSection/> : ""}
+            activeSection === "diseases" ? <DiseasesSection/> :
+            activeSection === "tasks" ? <TasksSection/> : ""}
         </div>
     );
 }

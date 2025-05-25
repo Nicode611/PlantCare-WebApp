@@ -27,6 +27,20 @@ export type Plant = Prisma.PlantGetPayload<{
         }
     }
 
+    // Delete plant service
+    export async function deletePlant(plantId: string): Promise<void> {
+        try {
+            const actualPlantId: number = parseInt(plantId, 10);
+            await prisma.plant.delete({
+                where: { id: actualPlantId },
+            });
+            console.log(`Plant with ID ${plantId} deleted successfully.`);
+        } catch (error) {
+            console.error(`Error while deleting plant with ID ${plantId}:`, error);
+            throw new Error(`Failed to delete plant with ID ${plantId}.`);
+        }
+    }
+
     // Get specific plant
     export async function getSpecificPlant(plantId: string): Promise<Plant | null> {
         try {
@@ -142,5 +156,25 @@ export type Plant = Prisma.PlantGetPayload<{
         } catch (error) {
             console.error(`Erreur lors de la mise à jour de la prochaine date d'arrosage pour la plante ${plantId}:`, error);
             throw new Error("Une erreur est survenue lors de la mise à jour de la prochaine date d'arrosage.");
+        }
+    }
+
+    // Update plant information
+    export async function updatePlantInfos(plantId: string, data: Prisma.PlantUpdateInput): Promise<Plant> {
+        try {
+            const actualPlantId: number = parseInt(plantId, 10);
+            const plant = await prisma.plant.update({
+                where: { id: actualPlantId },
+                data,
+                include: { model: true },
+            });
+
+            if (plant === null) {
+                throw new Error(`Aucune plante trouvée ${plantId}`);
+            }
+            return plant;
+        } catch (error) {
+            console.error(`Erreur lors de la mise à jour de la plante ${plantId}:`, error);
+            throw new Error("Une erreur est survenue lors de la mise à jour de la plante.");
         }
     }

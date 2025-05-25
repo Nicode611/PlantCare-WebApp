@@ -1,13 +1,18 @@
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react"
 import { formatDistanceToNow } from 'date-fns';
+
+// Auth
+import { useSession } from "next-auth/react"
+
+// Redux
 import { useDispatch, useSelector } from "react-redux";
 import { open } from "@/redux/slices/modalSlice";
 import { select } from "@/redux/slices/plants/selectPlantSlice";
-
 import type { RootState } from "@/redux/store";
+
+// API
 import { getPlantsFromUser } from "@/lib/api";
-import AddPlantModal from "../modals/AddPlantModal";
+
 
 // Images
 import Image from "next/image";
@@ -31,6 +36,9 @@ import { ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 // Components
+import AddPlantModal from "../modals/AddPlantModal";
+import EditPlantModal from "../modals/EditPlantModal";
+import DeletePlantModal from "../modals/DeletePlantModal";
 import SwitchButton from "@/components/ui/switchButton/SwitchButton";
 
 export default function MyPlantsSection() {
@@ -42,7 +50,6 @@ export default function MyPlantsSection() {
     const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
     const { activeModal, modalProps } = useSelector((state: RootState) => state.modal);
     const selectedAction = (modalProps as { actionName?: string }).actionName;
-    const modalState = activeModal === "plant" && selectedAction === "add";
 
     const [plants, setPlants] = useState<Plant[]>([]);
     const [loading, setLoading] = useState(false);
@@ -71,11 +78,21 @@ export default function MyPlantsSection() {
             className="w-full h-screen flex flex-col justify-start items-center p-5 z-50 backdrop-blur-md"
         style={{ overscrollBehaviorX: "contain", backdropFilter: "blur(5px)" }}
         >
-          {modalState && 
-          <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-black/50 z-50">
-            <AddPlantModal />
-          </div>
-          }
+          {activeModal === "plant" && selectedAction === "add" && (
+            <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-black/50 z-50">
+              <AddPlantModal />
+            </div>
+          )}
+          {activeModal === "plant" && selectedAction === "edit" && selectedPlant && (
+            <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-black/50 z-50">
+              <EditPlantModal />
+            </div>
+          )}
+          {activeModal === "plant" && selectedAction === "delete" && selectedPlant && (
+            <div className="fixed top-0 left-0 w-full h-screen flex justify-center items-center bg-black/50 z-50">
+              <DeletePlantModal selectedPlant={selectedPlant} />
+            </div>
+          )}
           <div className='w-full h-auto flex  justify-between items-center px-10 py-5'>
             <div className='flex flex-col justify-center items-start'>
               <h2 className='text-primary text-3xl font-bold'>My plants</h2>
@@ -101,19 +118,18 @@ export default function MyPlantsSection() {
 
                 // Affichage des plantes
                 <div className="flex flex-col md:flex-row justify-around gap-4 p-4 mt-4">
-                    <div className="flex flex-col items-start justify-center w-full h-full bg-white rounded-lg shadow-md md:w-[25%] p-2 py-5">
-                      <h3 className="text-xl text-left font-semibold text-primary pl-2">My plants</h3>
-                      <input type="text" placeholder="Search" className="w-full p-2 my-4 bg-gray-200 rounded-lg mb-4" />
+                    <div className="flex flex-col items-start justify-center w-full h-full bg-white rounded-lg shadow-md md:w-[25%] p-2  py-4">
+                      <input type="text" placeholder="Search" className="w-full p-2 mb-4 bg-gray-200 rounded-lg" />
                       {plants.length > 0 ? (
                           plants.map((plant) => (
                               <div key={plant.id} className="overflow-x-hidden flex items-center w-full p-2 bg-white rounded-lg my-2 hover:cursor-pointer" style={selectedPlant ? plant.id === selectedPlant!.id ? { background: "#a8cba680", border: "solid 1px #277a1c81"  } : {} : {}} onClick={() => {dispatch(select(plant))}}>
-                                  <div className="flex items-center w-[80%]">
+                                  <div className="flex items-center gap-2 w-[80%]">
                                     <Image
-                                    src={`/images/plants-img/${plant.model.image}.png`}
+                                    src={plant.image !== null ? plant.image : `/images/plants-img/${plant.model.image}.png`}
                                     alt={plant.model.name}
                                     width={100}
                                     height={100}
-                                    className="w-10 h-w-10"
+                                    className="w-10 h-10 rounded-lg"
                                     style={{ objectFit: "cover" }}
                                     loading="lazy"
                                     /> 
@@ -123,7 +139,7 @@ export default function MyPlantsSection() {
                                     </div>
                                   </div>
                                   <div className="w-[20%]">
-                                    <Button variant="outline" size={"icon"} className="bg-primary/10 hover:bg-primary/20 text-primary rounded-full p-2 mr-2">
+                                    <Button size={"icon"} className="bg-primary/0 hover:bg-primary/0 text-primary shadow-none">
                                       <ChevronRight />
                                     </Button>
                                   </div>
@@ -137,14 +153,13 @@ export default function MyPlantsSection() {
                       {selectedPlant && (
                         <div className="flex flex-col items-center justify-center w-full h-full">
                           <div className="flex items-center justify-between w-full p-2 bg-white">
-                            <div className="flex items-center w-full">
+                            <div className="flex items-center gap-2 w-full">
                               <Image
-                              src={`/images/plants-img/${selectedPlant?.model.image}.png`}
+                              src={selectedPlant.image !== null ? selectedPlant.image : `/images/plants-img/${selectedPlant.model.image}.png`}
                               alt={selectedPlant?.model.name}
                               width={100}
                               height={100}
-                              className="w-20 mb-2"
-                              style={{ objectFit: "cover" }}
+                              className="w-24 h-24 mb-2 rounded-lg object-cover border-[1px] border-primary/10"
                               loading="lazy"
                               /> 
                               <div className="flex flex-col w-[80%]">
@@ -152,13 +167,13 @@ export default function MyPlantsSection() {
                                 <p className="text-md text-gray-600 opacity-80 text-left">{selectedPlant?.location}</p>
                               </div>
                             </div>
-                            <div className="flex items-center justify-center pr-5">
-                              <button className="flex items-center bg-secondary bg-opacity-40 text-primary font-bold text-sm rounded-lg px-4 py-2 hover:bg-primary/80 hover:text-white transition-all duration-300 ease-in-out" onClick={() => {dispatch(open({ modal: "plant", props: { actionName: "add" } }))}}>
-                              <SquarePen color="#0b5b11" className="w-5 mr-2" />
+                            <div className="flex justify-center pr-5">
+                              <button className="flex items-center bg-secondary bg-opacity-40 text-primary font-bold text-xs lg:text-sm rounded-lg px-2 py-1 hover:bg-primary/80 hover:text-white transition-all duration-300 ease-in-out" onClick={() => {dispatch(open({ modal: "plant", props: { actionName: "edit" } }))}}>
+                              <SquarePen color="#0b5b11" className="w-4 mr-2" />
                               Edit
                               </button>
-                              <button className="flex items-center bg-red-500 bg-opacity-40 text-red-600 font-bold text-sm rounded-lg px-4 py-2 hover:bg-red-600 hover:text-white transition-all duration-300 ease-in-out ml-2">
-                                <Trash2 color="#be0e0e" className="w-5 mr-2" />
+                              <button className="flex items-center bg-red-500 bg-opacity-40 text-red-600 font-bold text-xs rounded-lg px-2 py-1 hover:bg-red-600 hover:text-white transition-all duration-300 ease-in-out ml-2" onClick={() => {dispatch(open({ modal: "plant", props: { actionName: "delete" } }))}}>
+                                <Trash2 color="#be0e0e" className="w-4 lg:w-5 mr-2" />
                                 Delete
                               </button>
                             </div>
@@ -168,42 +183,51 @@ export default function MyPlantsSection() {
                               <h3 className="text-primary text-lg font-bold">Plant details</h3>
                               <div className="grid grid-cols-2 gap-4 mt-4">
                                 
-                                <div className="flex">
+                                <div className="flex items-center">
                                   <Image
                                   src={FullDrop}
                                   alt="Water level"
                                   width={20}
                                   height={20}
-                                  className="w-4 h-4 mr-2"
-                                  style={{ objectFit: "cover" }}
+                                  className="w-4 h-4 mr-2 object-cover"
                                   loading="lazy"
                                   />
-                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Water level needed :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant?.model.waterLvlNeeded}/5</span>
+                                    <div className="flex flex-col">
+                                      <span className="text-gray-600 whitespace-nowrap truncate text-xs">Water level needed</span>
+                                      <span className="text-primary text-sm font-bold whitespace-nowrap truncate">{selectedPlant?.model.waterLvlNeeded}/5</span>
+                                    </div>
                                 </div>
 
-                                <div className="flex">
+                                <div className="flex items-center">
                                   <Sun color="#ffc524" className="w-5 mr-2"/>
-                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Sun level :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant?.model.sunLvlNeeded}</span>
+                                    <div className="flex flex-col">
+                                      <span className="text-gray-600 whitespace-nowrap truncate text-xs">Sun level :</span>
+                                      <span className="text-primary text-sm font-bold whitespace-nowrap truncate">{selectedPlant?.model.sunLvlNeeded}/100</span>
+                                    </div>
                                 </div>
 
-                                <div className="flex">
+                                <div className="flex items-center">
                                   <Bug color="#0b5b11" className="w-5 mr-2"/>
-                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Pest resistant :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant.model.pestResistant}</span>
+                                    <div className="flex flex-col">
+                                      <span className="text-gray-600 whitespace-nowrap truncate text-xs">Pest resistant :</span>
+                                      <span className="text-primary text-sm font-bold whitespace-nowrap truncate">{selectedPlant.model.pestResistant}</span>
+                                    </div>
                                 </div>
 
-                                <div className="flex">
+                                <div className="flex items-center">
                                   <Thermometer color="#944efd" className="w-5 mr-2"/>
-                                  <span className="text-gray-600 whitespace-nowrap truncate text-sm font-bold">Temperature :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-nowrap truncate">{selectedPlant.model.temperature}</span>
+                                    <div className="flex flex-col">
+                                      <span className="text-gray-600 whitespace-nowrap truncate text-xs">Temperature :</span>
+                                      <span className="text-primary text-sm font-bold whitespace-nowrap truncate">{selectedPlant.model.temperature}</span>
+                                    </div>
                                 </div>
                               </div>
-                                <div className="flex w-full mt-4">
+                                <div className="flex w-full mt-4 items-center">
                                   <Shell color="#392604" className="w-5 mr-2"/>
-                                  <span className="text-gray-600 whitespace-nowrap text-sm font-bold">Soil :</span>
-                                    <span className="text-primary text-sm font-bold ml-2 whitespace-normal w-full">{selectedPlant.model.soil}</span>
+                                    <div className="flex flex-col">
+                                      <span className="text-gray-600 whitespace-nowrap text-xs">Soil :</span>
+                                      <span className="text-primary text-sm font-bold whitespace-normal w-full">{selectedPlant.model.soil}</span>
+                                    </div>
                                 </div>
 
                             </div>

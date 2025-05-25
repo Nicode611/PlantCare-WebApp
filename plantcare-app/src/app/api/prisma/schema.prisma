@@ -74,6 +74,7 @@ model Plant {
   userId         String    @map("user_id")
   modelId        Int       @map("model_id")
   location       String    @map("location")
+  image          String? 
   actualWaterLvl Int      @map("actual_water_lvl")
   lastWateredAt  DateTime @map("last_watered_at")
   nextWateringDate DateTime? @map("next_watering_date")

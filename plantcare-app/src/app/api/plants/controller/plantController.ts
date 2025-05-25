@@ -1,8 +1,9 @@
+import { Prisma } from '@prisma/client';
 import * as PlantService from "../services/plantService";
 import * as TaskService from "../../tasks/services/taskService";
 
 
-export async function createPlant(userId: string, data: { modelId: number, location: string }) {
+    export async function createPlant(userId: string, data: { modelId: number, location: string }) {
     const { modelId, location } = data;
     // 1) Create the plant
     const newPlant = await PlantService.createPlant(userId, modelId, location);
@@ -21,7 +22,11 @@ export async function createPlant(userId: string, data: { modelId: number, locat
     }
     // 3) Return the newly created plant
     return newPlant;
-}
+    }
+
+    export async function deletePlant(plantId: string) {
+        return await PlantService.deletePlant(plantId);
+    }
 
     export async function getSpecificPlant(plantId: string) {
         return await PlantService.getSpecificPlant(plantId);
@@ -38,4 +43,8 @@ export async function createPlant(userId: string, data: { modelId: number, locat
 
     export async function updateNextWateringDate(plantId: string) {
         return await PlantService.updateNextWateringDate(plantId);
+    }
+
+    export async function updatePlantInfos(plantId: string, data: Prisma.PlantUpdateInput) {
+        return await PlantService.updatePlantInfos(plantId, data);
     }

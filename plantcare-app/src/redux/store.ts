@@ -14,8 +14,13 @@ const selectPlantPersistConfig = {
     key: 'selectPlant',
     storage: sessionStorage,
 };
-
 const persistedSelectPlantReducer = persistReducer(selectPlantPersistConfig, selectPlantReducer);
+
+const activeSectionPersistConfig = {
+    key: 'activeSection',
+    storage: sessionStorage,
+};
+const persistedActiveSectionReducer = persistReducer(activeSectionPersistConfig, activeSectionReducer);
 
 const store = configureStore({
     reducer : {
@@ -23,7 +28,7 @@ const store = configureStore({
         selectPlant: persistedSelectPlantReducer,
         updatePlants: updatePlantsReducer,
         tasks: taskReducer,
-        activeSection: activeSectionReducer,
+        activeSection: persistedActiveSectionReducer,
     },
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({

@@ -91,17 +91,17 @@ function PlantsCaroussel() {
                     <SwiperSlide 
                         key={index}
                         className="flex justify-center items-center shadow-md rounded-xl bg-white max-w-[130px] hover:cursor-pointer "
-                        style={selectedPlant ? plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c" } : {} : {}}
                         onClick={()=> {fetchSelectedPlant(plant.id)}}
                     >
                         <div className="h-full flex flex-col justify-center items-center">
-                        <div className="relative h-[90%] w-full">
+                        <div className="relative h-[90%] w-[90%]">
                                 <Image
-                                src={`/images/plants-img/${plant.model.image}.png`}
+                                src={plant.image !== null ? plant.image : `/images/plants-img/${plant.model.image}.png`}
                                 alt="Plant Image"
                                 fill
                                 sizes="max-width: 100%; max-height: 100%;"
-                                style={{ objectFit: "contain" }}
+                                className="rounded-lg object-cover border-[1px] border-primary/20"
+                                style={selectedPlant ? plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c" } : {} : {}}
                                 />
                         </div>
                         </div>

@@ -140,7 +140,7 @@ function AddPlantModal() {
                                         </SelectTrigger>
                                         <SelectContent position="popper">
                                             <SelectItem value="Kitchen">
-                                                <CookingPot strokeWidth={1.75} fill="#277A1C" color="#277A1C" className="h-5 w-5 inline-block mr-1" />
+                                                <CookingPot strokeWidth={1.75} color="#277A1C" className="h-5 w-5 inline-block mr-1" />
                                                 Kitchen
                                             </SelectItem>
                                             <SelectItem value="Bedroom">

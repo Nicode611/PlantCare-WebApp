@@ -10,6 +10,7 @@ body {
   @apply font-sans;
   overscroll-behavior-x: none;
   overflow: hidden;
+  background-color: "#F5F5F5";
 }
 
 

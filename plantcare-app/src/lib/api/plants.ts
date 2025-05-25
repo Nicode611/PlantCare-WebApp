@@ -65,17 +65,37 @@ export async function updateWaterLvl(plantId: number, lastWateredAt: Date){
 
 // Request UPDATE to set the NextWateringDate of a plant
 export async function updateNextWateringDate(plantId: number){
+  try {
+    const response = await axios.patch<Plant>(
+      `/api/plants/${plantId}`,
+      {},
+      { params: { action: 'updateNextWateringDate' } }
+    );
+    return response.data
+  } catch (error) {
+    console.error("Error when calling the API :", error);
+    return null;
+  }
+}
+
+// Request Update to update infos
+export async function updatePlantInfos(plantId: number, data: Partial<Plant>) {
     try {
-        const response = await axios.patch<Plant>(
-          `/api/plants/${plantId}`,
-          {},
-          { params: { action: 'updateNextWateringDate' } }
-        );
-        return response.data
+        const response = await axios.patch<Plant>(`/api/plants/${plantId}`, data);
+        return response.data;
     } catch (error) {
         console.error("Error when calling the API :", error);
         return null;
     }
 }
 
-// /api/plants/${plantId}
+// Request DELETE to remove a plant
+export async function deletePlant(plantId: number): Promise<boolean> {
+    try {
+        await axios.delete(`/api/plants/${plantId}`);
+        return true;
+    } catch (error) {
+        console.error("Error when calling the API to delete plant:", error);
+        return false;
+    }
+}

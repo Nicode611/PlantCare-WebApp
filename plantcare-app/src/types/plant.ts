@@ -3,6 +3,7 @@ export interface Plant {
     userId: string;
     modelId: number;
     location: string;
+    image: string | null;
     lastWateredAt: string;
     actualWaterLvl: number;
     nextWateringDate: number

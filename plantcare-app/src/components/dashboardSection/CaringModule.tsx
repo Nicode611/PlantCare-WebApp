@@ -60,7 +60,7 @@ function CaringModule() {
         </div>
         <div className="flex flex-col h-full p-3">
             <div className="relative w-full h-[80%]">
-                <Image src={`/images/plants-img/${plant.model.image}.png`} alt="Plant" fill sizes="max-width: 100%; max-height: 100%;" style={{ objectFit: "contain" }} />
+                <Image src={plant.image !== null ? plant.image : `/images/plants-img/${plant.model.image}.png`} alt="Plant" fill sizes="max-width: 100%; max-height: 100%;" style={{ objectFit: "contain" }} />
                 <div className="absolute flex justify-start w-[100px] right-0 bottom-3 z-1">
                     {Array.from({ length: 5 }, (_, i) => (
                     <Image key={i} src={EmptyDrop} alt="Empty drop" width={20} height={20} />
