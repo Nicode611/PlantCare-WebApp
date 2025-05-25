@@ -40,6 +40,7 @@ import AddPlantModal from "../modals/AddPlantModal";
 import EditPlantModal from "../modals/EditPlantModal";
 import DeletePlantModal from "../modals/DeletePlantModal";
 import SwitchButton from "@/components/ui/switchButton/SwitchButton";
+import UnselectedPlant from "../fallbacks/UnselectedPlant";
 
 export default function MyPlantsSection() {
     const { data: session, status } = useSession();
@@ -150,7 +151,7 @@ export default function MyPlantsSection() {
                       )}
                     </div>
                     <div className="flex flex-col items-center justify-center w-full h-full bg-white rounded-lg shadow-md md:w-[75%]">
-                      {selectedPlant && (
+                      {selectedPlant == null ? ( <UnselectedPlant />) : (
                         <div className="flex flex-col items-center justify-center w-full h-full">
                           <div className="flex items-center justify-between w-full p-2 bg-white">
                             <div className="flex items-center gap-2 w-full">

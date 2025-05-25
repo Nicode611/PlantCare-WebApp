@@ -4,6 +4,7 @@ import Image from "next/image";
 
 // Redux
 import { useDispatch } from "react-redux";
+import { unselect } from "@/redux/slices/plants/selectPlantSlice";
 import { close } from "@/redux/slices/modalSlice";
 import { update } from "@/redux/slices/plants/updatePlantsSlice";
 
@@ -42,7 +43,8 @@ function DeletePlantModal({ selectedPlant }: { selectedPlant: Plant }) {
 
     try {
       await deletePlant(selectedPlant.id);
-      dispatch(update());
+      dispatch(unselect()); // Clear the selected plant
+      dispatch(update()); // Update the plants list in the store
       dispatch(close());
     } catch (error) {
       console.error("Failed to delete plant:", error);

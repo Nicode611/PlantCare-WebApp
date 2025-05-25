@@ -13,6 +13,7 @@ import "@/styles/diseaseModule.css"
 
 // Components
 import DiseaseCard from "../DiseaseCard"
+import UnselectedPlant from "../fallbacks/UnselectedPlant";
 
 // Types
 import { Disease } from "@/types/disease";
@@ -39,7 +40,8 @@ function DiseasesModule() {
         getDiseases();
     }, [selectedPlant])
 
-
+    // If no plant selected
+    if (!selectedPlant) return (<UnselectedPlant/>); 
 
 
     return (
