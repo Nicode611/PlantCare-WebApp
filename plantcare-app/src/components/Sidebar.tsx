@@ -6,6 +6,7 @@ import Image from "next/image"
 // Redux
 import type { RootState } from "@/redux/store"
 import { useSelector, useDispatch } from "react-redux"
+import { useRouter } from 'next/navigation';
 import { changeSection } from "@/redux/slices/activeSection"
 import { unselect } from "@/redux/slices/plants/selectPlantSlice"
 
@@ -21,6 +22,7 @@ import * as Tooltip from "@radix-ui/react-tooltip";
 function Sidebar() {
     const { data: session, status } = useSession();
     const dispatch = useDispatch();
+    const router = useRouter();
     const activeSection = useSelector<RootState, string>(
       (state) => state.activeSection.activeSection
     );
@@ -224,6 +226,7 @@ function Sidebar() {
                             width={30}
                             height={30}
                             className="hover:cursor-pointer"
+                            onClick={() => router.push('../settings') }
                             />
                             <div className="w-full flex items-center justify-end">
                                 <span className="mr-2 text-[0.8rem] text-white">Dark mode</span>

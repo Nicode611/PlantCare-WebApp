@@ -100,8 +100,11 @@ function PlantsCaroussel() {
                                 alt="Plant Image"
                                 fill
                                 sizes="max-width: 100%; max-height: 100%;"
-                                className="rounded-lg object-cover border-[1px] border-primary/20"
-                                style={selectedPlant ? plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c" } : {} : {}}
+                                className="rounded-lg border-[1px] border-primary/20"
+                                style={{
+                                  ...(selectedPlant && plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c" } : {}),
+                                  objectFit: plant.image !== null ? "cover" : "contain"
+                                }}
                                 />
                         </div>
                         </div>

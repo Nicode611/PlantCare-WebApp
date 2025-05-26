@@ -58,9 +58,16 @@ function CaringModule() {
             <h2 className="font-sans font-bold text-[1.9rem] whitespace-nowrap truncate mr-3">{plant.model.name}</h2>
             <div>{plant.location}</div>
         </div>
-        <div className="flex flex-col h-full p-3">
+        <div className="flex flex-col h-[90%] p-3">
             <div className="relative w-full h-[80%]">
-                <Image src={plant.image !== null ? plant.image : `/images/plants-img/${plant.model.image}.png`} alt="Plant" fill sizes="max-width: 100%; max-height: 100%;" style={{ objectFit: "contain" }} />
+                  <Image 
+                    src={plant.image !== null ? plant.image : `/images/plants-img/${plant.model.image}.png`} 
+                    alt={plant.model.name} 
+                    width={500}
+                    height={500}
+                    className="h-full rounded-lg" 
+                    style={plant.image !== null ? { objectFit: "cover" } : { objectFit: "contain" }} 
+                  />
                 <div className="absolute flex justify-start w-[100px] right-0 bottom-3 z-1">
                     {Array.from({ length: 5 }, (_, i) => (
                     <Image key={i} src={EmptyDrop} alt="Empty drop" width={20} height={20} />

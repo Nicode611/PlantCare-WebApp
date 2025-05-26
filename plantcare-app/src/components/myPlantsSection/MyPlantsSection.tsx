@@ -120,7 +120,7 @@ export default function MyPlantsSection() {
                 // Affichage des plantes
                 <div className="flex flex-col md:flex-row justify-around gap-4 p-4 mt-4">
                     <div className="flex flex-col items-start justify-center w-full h-full bg-white rounded-lg shadow-md md:w-[25%] p-2  py-4">
-                      <input type="text" placeholder="Search" className="w-full p-2 mb-4 bg-gray-200 rounded-lg" />
+                      <input type="text" placeholder="Search" className="w-full p-2 mb-4 bg-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent" />
                       {plants.length > 0 ? (
                           plants.map((plant) => (
                               <div key={plant.id} className="overflow-x-hidden flex items-center w-full p-2 bg-white rounded-lg my-2 hover:cursor-pointer" style={selectedPlant ? plant.id === selectedPlant!.id ? { background: "#a8cba680", border: "solid 1px #277a1c81"  } : {} : {}} onClick={() => {dispatch(select(plant))}}>
@@ -131,7 +131,7 @@ export default function MyPlantsSection() {
                                     width={100}
                                     height={100}
                                     className="w-10 h-10 rounded-lg"
-                                    style={{ objectFit: "cover" }}
+                                    style={{objectFit: plant.image !== null ? "cover" : "contain"}}
                                     loading="lazy"
                                     /> 
                                     <div className="flex flex-col w-[80%]">
@@ -160,7 +160,8 @@ export default function MyPlantsSection() {
                               alt={selectedPlant?.model.name}
                               width={100}
                               height={100}
-                              className="w-24 h-24 mb-2 rounded-lg object-cover border-[1px] border-primary/10"
+                              className="w-24 h-24 mb-2 rounded-lg  border-[1px] border-primary/10"
+                              style={{objectFit: selectedPlant.image !== null ? "cover" : "contain"}}
                               loading="lazy"
                               /> 
                               <div className="flex flex-col w-[80%]">
