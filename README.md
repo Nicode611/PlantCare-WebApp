@@ -2,6 +2,11 @@
 
 **PlantCare** is a plant management web app built with **Next.js**. It helps users track watering schedules, plant health, and other important care information through a clean and modern interface. The project leverages a set of powerful libraries and tools such as ShadCN UI for the design system, FullCalendar for task planning, and Axios for HTTP requests.
 
+**Screenshot of the project**
+![Landing page](/plantcare-app/public/images/presentation/landing-page.png)
+![Dashboard](/plantcare-app/public/images/presentation/dashboard.png)
+![My plants section](/plantcare-app/public/images/presentation/my-plants.png)
+
 ## Getting Started
 
 ### Frontend
