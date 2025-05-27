@@ -45,6 +45,6 @@ import * as TaskService from "../../tasks/services/taskService";
         return await PlantService.updateNextWateringDate(plantId);
     }
 
-    export async function updatePlantInfos(plantId: string, data: Prisma.PlantUpdateInput) {
+    export async function updatePlantInfos(plantId: string, data: Prisma.PlantUpdateArgs['data']) {
         return await PlantService.updatePlantInfos(plantId, data);
     }
