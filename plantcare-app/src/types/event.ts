@@ -1,5 +1,6 @@
+import type { ReactElement } from 'react';
 export interface Event {
-    title: JSX.Element,
+    title: ReactElement;
     start: Date,
     tooltip?: string;
 }
