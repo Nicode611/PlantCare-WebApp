@@ -4,7 +4,7 @@ import * as TaskController from '../controller/taskController';
 // GET task from taskId
 export async function GET(
     request: Request,
-    { params }: { params: { taskId: string } }
+    { params }: { params: Promise<{ taskId: string }> }
 ) {
     try {
         const awaitedParams = await Promise.resolve(params);
@@ -26,7 +26,7 @@ export async function GET(
 // PATCH check / uncheck task or update severity level
 export async function PATCH(
     request: Request,
-    { params }: { params: { taskId: string } }
+    { params }: { params: Promise<{ taskId: string }> }
 ) {
     try {
         const awaitedParams = await Promise.resolve(params);
@@ -54,7 +54,7 @@ export async function PATCH(
 // DELETE delete task
 export async function DELETE(
     request: Request,
-    { params }: { params: { taskId: string } }
+    { params }: { params: Promise<{ taskId: string }> }
 ) {
     try {
         const awaitedParams = await Promise.resolve(params);

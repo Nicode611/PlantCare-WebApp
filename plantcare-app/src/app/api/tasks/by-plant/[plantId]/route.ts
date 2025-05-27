@@ -4,7 +4,7 @@ import * as TaskController from '../../controller/taskController';
 // PATCH update severity level
 export async function PATCH(
     request: Request,
-    { params }: { params: { plantId: string } }
+    { params }: { params: Promise<{ plantId: string }> }
 ) {
     try {
         const awaitedParams = await Promise.resolve(params);
@@ -35,7 +35,7 @@ export async function PATCH(
 // DELETE all tasks from plant
 export async function DELETE(
     request: Request,
-    { params }: { params: { plantId: string } }
+    { params }: { params: Promise<{ plantId: string }> }
 ) {
     try {
         const awaitedParams = await Promise.resolve(params);

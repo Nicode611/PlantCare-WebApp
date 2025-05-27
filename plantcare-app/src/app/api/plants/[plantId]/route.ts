@@ -4,7 +4,7 @@ import * as PlantController from '../controller/plantController';
 // Récupérer une plante spécifique (GET)
 export async function GET(
   request: Request,
-  { params }: { params: { plantId: string } }
+  { params }: { params: Promise<{ plantId: string }> }
 ) {
   try {
     // Attendre la résolution des params depuis la nouvelle version de next
@@ -27,7 +27,7 @@ export async function GET(
 // Supprimer une plante (DELETE)
 export async function DELETE(
   request: Request,
-  { params }: { params: { plantId: string } }
+  { params }: { params: Promise<{ plantId: string }> }
 ) {
   try {
     // Attendre la résolution des params depuis la nouvelle version de next
@@ -50,7 +50,7 @@ export async function DELETE(
 // Mettre à jour une plante : utilise ?action=updateNextWateringDate ou body pour waterLvl
 export async function PATCH(
   request: Request,
-  { params }: { params: { plantId: string } }
+  { params }: { params: Promise<{ plantId: string }> }
 ) {
   try {
     // Extract params and body
@@ -73,7 +73,8 @@ export async function PATCH(
 
     return NextResponse.json(updatedPlant);
   } catch (error) {
-    console.error(`Error while updating plant ${params.plantId}:`, error);
+    const awaitedParams = await Promise.resolve(params);
+    console.error(`Error while updating plant ${awaitedParams.plantId}:`, error);
     return NextResponse.json(
       { error: "Error while updating plant." },
       { status: 500 }
