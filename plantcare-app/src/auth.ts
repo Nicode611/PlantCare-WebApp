@@ -1,5 +1,5 @@
 import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
+import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
@@ -36,7 +36,11 @@ const providers: Provider[] = [
       return null;
     }
   }),
-  Google,
+  GoogleProvider({
+    clientId: process.env.AUTH_GOOGLE_ID!,
+    clientSecret: process.env.AUTH_GOOGLE_SECRET!,
+    checks: ["pkce", "state"],
+  }),
 ];
  
 export const providerMap = providers
@@ -51,8 +55,20 @@ export const providerMap = providers
   .filter((provider) => provider.id !== "credentials")
  
 export const { handlers, auth, signIn, signOut } = NextAuth({
+    secret: process.env.AUTH_SECRET,
     adapter: PrismaAdapter(prisma),
     providers,
+    cookies: {
+      pkceCodeVerifier: {
+        name: "authjs.pkce.code_verifier",
+        options: {
+          httpOnly: true,
+          sameSite: "lax",
+          path: "/",
+          secure: process.env.NODE_ENV === "production",
+        },
+      },
+    },
     pages: {
         signIn: "/signin",
     },
