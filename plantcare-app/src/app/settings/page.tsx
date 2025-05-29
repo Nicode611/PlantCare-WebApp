@@ -4,13 +4,22 @@ import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { UserRound, Camera, Bell, Globe, ArrowLeft, Save, Eye, EyeOff, SquarePen } from 'lucide-react';
+import { UserRound, Camera, Bell, Globe, ArrowLeft, Save, SquarePen } from 'lucide-react';
 import SwitchButton from '@/components/ui/switchButton/SwitchButton';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import {
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 export default function Settings() {
   const { data: session } = useSession();
   const [activeTab, setActiveTab] = useState('profile');
-  const [showPassword, setShowPassword] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
   const [formData, setFormData] = useState({
@@ -35,6 +44,7 @@ export default function Settings() {
     }
   }, [session]);
 
+  // Handle select language change
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -58,15 +68,41 @@ export default function Settings() {
   };
 
   const handleSaveChanges = () => {
-    // Ici, tu pourrais implémenter l'API pour sauvegarder les changements
+    // Mettre appel API
+    
+
     console.log('Modifications sauvegardées:', formData);
     setSaveSuccess(true);
     setEditMode(false);
     
-    // Cacher le message de succès après 3 secondes
+    // Hide success message 
     setTimeout(() => {
       setSaveSuccess(false);
     }, 3000);
+  };
+
+  // Typage pour React Hook Form
+  interface ProfileFormValues {
+    name: string;
+    email: string;
+    image?: FileList;
+    currentPassword?: string;
+    newPassword?: string;
+    confirmPassword?: string;
+  }
+  const form = useForm<ProfileFormValues>({
+    defaultValues: {
+      name: formData.name,
+      email: formData.email,
+      image: undefined,
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
+    },
+  });
+  const onSubmit: SubmitHandler<ProfileFormValues> = (values) => {
+    console.log('Submitted values:', values);
+    handleSaveChanges();
   };
 
   return (
@@ -77,7 +113,7 @@ export default function Settings() {
           <div className="flex items-center">
             <Link href="/home" className="flex items-center text-primary hover:text-primary/80 transition-colors">
               <ArrowLeft className="mr-2" size={20} />
-              <span className="text-lg font-medium">Retour au tableau de bord</span>
+              <span className="text-lg font-medium">Back to dashboard</span>
             </Link>
           </div>
         </div>
@@ -85,7 +121,7 @@ export default function Settings() {
         <div className="bg-white rounded-xl shadow-md overflow-hidden">
           {/* Titre de la page */}
           <div className="border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-primary p-6">Paramètres du compte</h1>
+            <h1 className="text-2xl font-bold text-primary p-6">Account settings</h1>
           </div>
           
           {/* Structure en deux colonnes sur grands écrans */}
@@ -139,156 +175,143 @@ export default function Settings() {
                     </div>
                   )}
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-semibold">Informations du profil</h2>
+                    <h2 className="text-xl font-semibold">Profile info</h2>
                     <button 
                       onClick={handleToggleEditMode}
                       className={`flex items-center ${editMode ? 'bg-gray-200 text-gray-700' : 'bg-primary text-white'} rounded-md px-3 py-2 text-sm font-medium`}
                     >
                       {editMode ? (
-                        <>Annuler</>
+                        <>Cancel</>
                       ) : (
                         <>
                           <SquarePen size={16} className="mr-2" />
-                          Modifier
+                          Modify
                         </>
                       )}
                     </button>
                   </div>
                   
-                  {/* Photo de profil */}
-                  <div className="flex flex-col items-center md:items-start mb-8">
-                    <div className="relative mb-4">
-                      {session?.user?.image ? (
-                        <Image 
-                          src={session.user.image} 
-                          alt="Photo de profil"
-                          width={100}
-                          height={100}
-                          className="rounded-full object-cover"
-                        />
-                      ) : (
-                        <div className="w-24 h-24 rounded-full bg-gray-200 flex items-center justify-center">
-                          <UserRound size={40} className="text-gray-400" />
-                        </div>
-                      )}
-                      {editMode && <button className="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full">
-                         <Camera size={16} />
-                      </button>}
-                    </div>
-                    {editMode && <p className="text-sm text-gray-500">
-                       Formats acceptés: JPG, PNG. Taille max: 1MB
-                    </p>}
-                  </div>
-                  
                   {/* Formulaire d'informations personnelles */}
-                  <div className="space-y-4 transition-all duration-300 ease-in-out">
-                     <div>
-                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                         Nom complet
-                       </label>
-                      {editMode ? (
-                        <input
-                          type="text"
-                          id="name"
-                          name="name"
-                          value={formData.name}
-                          onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300"
-                        />
-                      ) : (
-                        <div className="w-full px-4 py-2 bg-gray-50 rounded-md text-gray-700 transition-all duration-300">
-                          {formData.name || "Non défini"}
-                        </div>
+                  <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                      {/* Photo de profil gérée par React Hook Form */}
+                      <FormField
+                        control={form.control}
+                        name="image"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormControl>
+                              <div className="flex flex-col items-center md:items-start mb-8">
+                                <div className="relative mb-4">
+                                  <Image
+                                    src={
+                                      field.value && field.value.length > 0
+                                        ? URL.createObjectURL(field.value[0])
+                                        : session?.user?.image || '/images/default-profile.png'
+                                    }
+                                    alt="Photo de profil"
+                                    width={100}
+                                    height={100}
+                                    className="rounded-full object-cover aspect-square"
+                                  />
+                                  {editMode && (
+                                    <>
+                                      <input
+                                        id="profile-image-upload"
+                                        type="file"
+                                        accept="image/*"
+                                        className="hidden"
+                                        onChange={(e) => e.target.files && field.onChange(e.target.files)}
+                                      />
+                                      <label
+                                        htmlFor="profile-image-upload"
+                                        className="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full cursor-pointer"
+                                      >
+                                        <Camera size={16} />
+                                      </label>
+                                    </>
+                                  )}
+                                </div>
+                                {editMode && (
+                                  <p className="text-sm text-gray-500">
+                                    Formats acceptés: JPG, PNG. Taille max: 1MB
+                                  </p>
+                                )}
+                              </div>
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                  
+                      <FormField
+                        control={form.control}
+                        name="name"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Nom complet</FormLabel>
+                            <FormControl>
+                              <Input {...field} disabled={!editMode}/>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Adresse email</FormLabel>
+                            <FormControl>
+                              <Input type="email" {...field} disabled={!editMode} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      {/* Password fields in editMode only */}
+                      {editMode && (
+                        <>
+                          <FormField
+                            control={form.control}
+                            name="newPassword"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Nouveau mot de passe</FormLabel>
+                                <FormControl>
+                                  <Input type="password" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="confirmPassword"
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>Confirmer mot de passe</FormLabel>
+                                <FormControl>
+                                  <Input type="password" {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </>
                       )}
-                    </div>
-                    
-                    <div>
-                      <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                        Adresse email
-                      </label>
-                      {editMode ? (
-                        <input
-                          type="email"
-                          id="email"
-                          name="email"
-                          value={formData.email}
-                          onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        />
-                      ) : (
-                        <div className="w-full px-4 py-2 bg-gray-50 rounded-md text-gray-700">
-                          {formData.email || "Non défini"}
-                        </div>
-                      )}
-                    </div>
-
-                    {/* Changement de mot de passe */}
-                    {editMode && <div>
-                      <label htmlFor="currentPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                        Mot de passe actuel
-                      </label>
-                      <div className="relative">
-                        <input
-                          type={showPassword ? 'text' : 'password'}
-                          id="currentPassword"
-                          name="currentPassword"
-                          value={formData.currentPassword}
-                          onChange={handleChange}
-                          className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                        />
+                      <div className="pt-4">
                         <button
-                          type="button"
-                          onClick={() => setShowPassword(prev => !prev)}
-                          className="absolute inset-y-0 right-0 flex items-center pr-3"
+                          type="submit"
+                          className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center"
+                          style={{ display: editMode ? 'flex' : 'none' }}
                         >
-                          {showPassword ? <EyeOff size={18} className="text-gray-400" /> : <Eye size={18} className="text-gray-400" />}
+                          <Save size={16} className="mr-2" />
+                          Sauvegarder les modifications
                         </button>
                       </div>
-                    </div>}
-                    
-                    {editMode && <div>
-                      <label htmlFor="newPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                        Nouveau mot de passe
-                      </label>
-                      <input
-                        type="password"
-                        id="newPassword"
-                        name="newPassword"
-                        value={formData.newPassword}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
-                    </div>}
-                    
-                    {editMode && <div>
-                      <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-1">
-                        Confirmer le nouveau mot de passe
-                      </label>
-                      <input
-                        type="password"
-                        id="confirmPassword"
-                        name="confirmPassword"
-                        value={formData.confirmPassword}
-                        onChange={handleChange}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-                      />
-                      {formData.newPassword && formData.confirmPassword && 
-                        formData.newPassword !== formData.confirmPassword && (
-                          <p className="text-red-500 text-sm mt-1">Les mots de passe ne correspondent pas</p>
-                      )}
-                    </div>}
-                    
-                    {editMode && <div className="pt-4">
-                      <button
-                        type="button"
-                        onClick={handleSaveChanges}
-                        className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center"
-                      >
-                        <Save size={16} className="mr-2" />
-                        Sauvegarder les modifications
-                      </button>
-                    </div>}
-                  </div>
+                    </form>
+                  </Form>
                 </div>
               )}
               

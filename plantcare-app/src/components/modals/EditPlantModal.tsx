@@ -41,9 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-
 import { Input } from "@/components/ui/input"
-
 
 // Lucide
 import { SquarePen } from "lucide-react";
@@ -116,7 +114,7 @@ function EditPlantModal() {
       };
       dispatch(select(updatedPlant));
 
-      dispatch(update());
+      dispatch(update()); // Refresh the plant list
       dispatch(close());
 
 

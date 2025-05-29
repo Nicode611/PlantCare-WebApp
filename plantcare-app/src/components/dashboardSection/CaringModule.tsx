@@ -59,7 +59,7 @@ function CaringModule() {
             <div>{plant.location}</div>
         </div>
         <div className="flex flex-col h-[90%] p-3">
-            <div className="relative w-full h-[80%]">
+            <div className="flex justify-center relative w-full h-[80%]">
                   <Image 
                     src={plant.image !== null ? plant.image : `/images/plants-img/${plant.model.image}.png`} 
                     alt={plant.model.name} 

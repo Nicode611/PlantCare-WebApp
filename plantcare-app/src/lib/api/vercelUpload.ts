@@ -5,7 +5,7 @@ export async function uploadImageToVercel(file: File): Promise<string | null> {
   try {
     const blob = await upload(file.name, file, {
       access: 'public',
-      handleUploadUrl: '/api/upload',  // route ci-dessus
+      handleUploadUrl: '/api/vercelStorage',
     });
     console.log('URL du blob:', blob.url);
     return blob.url || null;
