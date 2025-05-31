@@ -18,11 +18,15 @@ declare module "next-auth" {
     user: {
       /** Propriétés usuelles : id, name, email, image, etc. */
       id: string
-      name?: string | null
-      email?: string | null
+      name: string | null
+      email: string | null
       image?: string | null
 
       /** Notre champ ajouté */
+      acceptAnyMail?: boolean
+      acceptPlantcareMail?: boolean
+      acceptTipsMail?: boolean
+      language?: string
       theme?: string
     }
   }
@@ -35,6 +39,10 @@ declare module "next-auth" {
 declare module "next-auth/jwt" {
   interface JWT {
     /** On ajoute `theme` dans le token JWT si besoin */
+    acceptAnyMail?: boolean
+    acceptPlantcareMail?: boolean
+    acceptTipsMail?: boolean
+    language?: string
     theme?: string
   }
 }

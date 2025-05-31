@@ -15,6 +15,8 @@ export async function PATCH(
     // Call th controller to update infos
     const updatedUser = await UserController.updateInfosUser(userId, body);
 
+    console.log(updatedUser);
+
     return NextResponse.json(updatedUser);
   } catch (error) {
     console.error(`Error while updating plant ${params.userId}:`, error);

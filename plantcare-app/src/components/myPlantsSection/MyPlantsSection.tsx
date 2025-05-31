@@ -35,7 +35,7 @@ import { ChevronRight } from "lucide-react"
 // Shadcn
 import { Button } from "@/components/ui/button"
 
-// Components
+/// Components
 import AddPlantModal from "../modals/AddPlantModal";
 import EditPlantModal from "../modals/EditPlantModal";
 import DeletePlantModal from "../modals/DeletePlantModal";
@@ -247,7 +247,8 @@ export default function MyPlantsSection() {
                                 <div className="flex justify-between items-center w-full py-4 px-2 ">
                                   {/* send email with resend */}
                                   <span className="text-sm font-bold">Receive water alert by mail :</span>
-                                  <SwitchButton value={selectedPlant.sendWaterMailAlert} />
+                                  {/* Repair the switch button to toggle email alert */}
+                                  <SwitchButton checked={selectedPlant.sendWaterMailAlert} onCheckedChange={""} />
                                   <span className="text-primary text-sm font-bold ml-2"></span>
                                 </div>
                               </div>

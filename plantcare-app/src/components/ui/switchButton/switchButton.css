@@ -63,7 +63,7 @@
 
 .layer {
   width: 100%;
-  background-color: #E5EFE4;
+  background-color: #fcebeb;
   transition: 0.3s ease all;
   z-index: 1;
 }
@@ -86,7 +86,7 @@
   text-align: center;
   line-height: 0;
   padding: 9px 4px;
-  background-color: #277A1C;
+  background-color: #f44336;
   border-radius: 50%;
   transition: 0.3s ease all, left 0.3s cubic-bezier(0.18, 0.89, 0.35, 1.15);
 }
@@ -107,9 +107,13 @@
 #button-3 .checkbox:checked + .knobs:before {
   content: "";
   left: 26px;
-  background-color: #f44336;
+  background-color: #277A1C;
 }
 
 #button-3 .checkbox:checked ~ .layer {
-  background-color: #fcebeb;
+  background-color: #E5EFE4;
 }
+
+
+
+
