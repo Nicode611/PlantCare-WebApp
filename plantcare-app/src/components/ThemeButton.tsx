@@ -1,7 +1,27 @@
+"use client"
+import { useEffect } from "react";
+import { useSession } from "next-auth/react"
+import { useState } from "react";
+
 function ThemeButton() {
+  const { data: session, status } = useSession();
+  const [isChecked, setIsChecked] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (status === "authenticated" && session?.user?.theme) {
+      setIsChecked(session.user.theme === "dark");
+    }
+  }, [session, status]);
+
   return (
         <label className="inline-flex items-center relative">
-            <input className="peer hidden" id="toggle" type="checkbox" />
+            <input
+              className="peer hidden"
+              id="toggle"
+              type="checkbox"
+              checked={isChecked}
+              onChange={() => setIsChecked(prev => !prev)}
+            />
             <div className="relative w-[60px] h-[30px] bg-gray-200 peer-checked:bg-zinc-500 rounded-full after:absolute after:content-[''] after:w-[20px] after:h-[20px] after:bg-gradient-to-r from-[#23551d] to-[#277A1C] peer-checked:after:from-zinc-900 peer-checked:after:to-zinc-900 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[25px] peer-checked:after:left-[55px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md">
             </div>
             <svg

@@ -9,13 +9,18 @@ datasource db {
 
 model User {
   id            String          @id @default(cuid())
-  name          String?
-  username      String?         @unique
-  email         String?         @unique
+  name          String
+  username      String?          @unique
+  email         String          @unique
   emailVerified DateTime?
   image         String?
   // Bcrypt-hashed password
   password      String?  @db.VarChar(255)
+  acceptAnyMail      Boolean   @default(false)
+  acceptPlantcareMail Boolean  @default(false)
+  acceptTipsMail     Boolean   @default(false)
+  language           String    @default("en")
+  theme              String    @default("light")
   accounts      Account[]
   sessions      Session[]
  
@@ -93,7 +98,7 @@ model Model {
   id                Int      @id @default(autoincrement())
   name              String
   description       String
-  wateringFrequency Int
+  wateringFrequency Int      @map("watering_frequency")
   waterLvlNeeded    Int      @map("water_lvl_needed")
   sunLvlNeeded      Int      @map("sun_lvl_needed")
   image             String?

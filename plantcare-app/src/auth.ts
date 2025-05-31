@@ -1,8 +1,9 @@
 import NextAuth from "next-auth"
-import Google from "next-auth/providers/google"
+import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { PrismaClient } from "@prisma/client"
+import type { Session, User } from "next-auth";
 import type { Provider } from "next-auth/providers"
 
 // Event handlers
@@ -36,7 +37,10 @@ const providers: Provider[] = [
       return null;
     }
   }),
-  Google,
+  GoogleProvider({
+    clientId: process.env.GOOGLE_CLIENT_ID!,
+    clientSecret: process.env.GOOGLE_CLIENT_SECRET!
+  }),
 ];
  
 export const providerMap = providers
@@ -57,14 +61,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         signIn: "/signin",
     },
     callbacks: {
-        async session({ session, user }) {
+        async session({ session, user }: { session: Session; user: User }) {
             // Ajoute l’ID de l’utilisateur dans session.user
             session.user.id = user.id;
+            session.user.theme = user.theme;
             return session;
           }
     },
     events: {
-        async signIn({ user }) {
+        async signIn({ user }: { user: User }) {
             try {
                 await signInEvents();
             } catch (error) {

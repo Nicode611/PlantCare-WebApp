@@ -1,12 +1,17 @@
 'use client';
 
+// React
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { UserRound, Camera, Bell, Globe, ArrowLeft, Save, SquarePen } from 'lucide-react';
-import SwitchButton from '@/components/ui/switchButton/SwitchButton';
 import { useForm, SubmitHandler } from 'react-hook-form';
+
+// Lucide
+import { UserRound, Camera, Bell, Globe, ArrowLeft, Save, SquarePen } from 'lucide-react';
+
+// ShadCN UI
+import SwitchButton from '@/components/ui/switchButton/SwitchButton';
 import {
   Form,
   FormField,
@@ -16,6 +21,9 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+
+// API
+import { updateInfosUser } from '@/lib/api/users';
 
 export default function Settings() {
   const { data: session } = useSession();
@@ -69,7 +77,18 @@ export default function Settings() {
 
   const handleSaveChanges = () => {
     // Mettre appel API
-    
+    updateInfosUser(session?.user?.id || '', {
+      name: formData.name,
+      email: formData.email,
+    }).then((updatedUser) => {
+      if (updatedUser) {
+        console.log('User updated successfully:', updatedUser);
+      } else {
+        console.error('Failed to update user');
+      }
+    }).catch((error) => {
+      console.error('Error updating user:', error);
+    });
 
     console.log('Modifications sauvegardées:', formData);
     setSaveSuccess(true);

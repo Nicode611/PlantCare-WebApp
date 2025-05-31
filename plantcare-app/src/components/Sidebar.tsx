@@ -230,7 +230,7 @@ function Sidebar() {
                             />
                             <div className="w-full flex items-center justify-end">
                                 <span className="mr-2 text-[0.8rem] text-white">Dark mode</span>
-                                <ThemeButton/>
+                                <ThemeButton />
                             </div>
                         </div>
                         <div className="mt-10 mb-5 w-full">
