@@ -235,13 +235,13 @@ function Sidebar() {
                         </div>
                         <div className="mt-10 mb-5 w-full">
                             <div className="flex justify-center items-center w-[90%]">
-                                <div className="w-[30px] h-[30px] rounded-full border border-black">
+                                <div className="w-[30px] h-[30px] flex rounded-full border border-black">
                                     <Image
                                         src={session.user.image ?? '/default-avatar.png'}
                                         alt="User icon"
                                         width={30}
                                         height={30}
-                                        className="rounded-full"
+                                        className="rounded-full object-cover"
                                     />
                                 </div>
                                 <span className="pl-2">{session.user.name}</span>

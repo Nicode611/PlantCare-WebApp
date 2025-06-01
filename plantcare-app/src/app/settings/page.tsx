@@ -7,9 +7,10 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import { User } from '@/types/user';
+import { heicTo } from "heic-to";
 
 // Lucide
-import { UserRound, Camera, Bell, Globe, ArrowLeft, Save, SquarePen } from 'lucide-react';
+import { UserRound, Camera, Bell, Globe, ArrowLeft, Save, SquarePen, Loader2 } from 'lucide-react';
 
 // ShadCN UI
 import SwitchButton from '@/components/ui/switchButton/SwitchButton';
@@ -28,11 +29,14 @@ import { updateInfosUser } from '@/lib/api';
 import { uploadImageToVercel } from '@/lib/api';
 
 export default function Settings() {
-  const { data: session } = useSession();
+  const { data: session, update: refreshSession } = useSession();
 
   const [activeTab, setActiveTab] = useState<'profile' | 'notifications' | 'preferences'>('profile');
   const [editMode, setEditMode] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
+  const [profileLoading, setProfileLoading] = useState(false);
+  const [notificationsLoading, setNotificationsLoading] = useState(false);
+  const [preferencesLoading, setPreferencesLoading] = useState(false);
 
   // 1) Profil
   interface ProfileFormValues { 
@@ -60,8 +64,14 @@ export default function Settings() {
     }
     const payload: Partial<User> = { name: vals.name, email: vals.email, image: imgUrl };
     if (vals.newPassword) payload.password=vals.newPassword;
-    await updateInfosUser(session.user.id, payload);
-    setSaveSuccess(true);
+    setProfileLoading(true);
+    try {
+      await updateInfosUser(session.user.id, payload);
+      setSaveSuccess(true);
+      await refreshSession();
+    } finally {
+      setProfileLoading(false);
+    }
   };
   // 2) Notifications
   interface NotificationsFormValues { 
@@ -79,8 +89,14 @@ export default function Settings() {
   const onNotificationsSubmit: SubmitHandler<NotificationsFormValues> = async (vals) => {
     if (!session?.user?.id) return;
     const payload: Partial<User> = { acceptPlantcareMail: vals.emailNotifications, acceptAnyMail: vals.maintenanceNotifications, acceptTipsMail: vals.weeklyTips };
-    await updateInfosUser(session.user.id, payload);
-    setSaveSuccess(true);
+    setNotificationsLoading(true);
+    try {
+      await updateInfosUser(session.user.id, payload);
+      setSaveSuccess(true);
+      await refreshSession();
+    } finally {
+      setNotificationsLoading(false);
+    }
   };
   // 3) Préférences
   interface PreferencesFormValues { 
@@ -93,17 +109,22 @@ export default function Settings() {
       darkMode: session?.user?.theme === 'dark' } 
     });
   const onPreferencesSubmit: SubmitHandler<PreferencesFormValues> = async (vals) => {
+    setPreferencesLoading(true);
     if (!session?.user?.id) return;
     const payload: Partial<User> = { language: vals.language, theme: vals.darkMode?'dark':'light' };
     try {
-    const test = await updateInfosUser(session.user.id, payload);
-    if (test) {
-      setSaveSuccess(true);
-      console.log("Preferences updated successfully.");
-    }
+      const test = await updateInfosUser(session.user.id, payload);
+      if (test) {
+        setSaveSuccess(true);
+        await refreshSession();
+        console.log("Preferences updated successfully.");
+      }
     }
     catch (error) {
       console.error("Error updating preferences:", error);
+    }
+    finally {
+      setPreferencesLoading(false);
     }
   };
 
@@ -261,9 +282,32 @@ export default function Settings() {
                                       <input
                                         id="profile-image-upload"
                                         type="file"
-                                        accept="image/*"
+                                        accept="image/*,.heic"
                                         className="hidden"
-                                        onChange={(e) => e.target.files && field.onChange(e.target.files)}
+                                        onChange={async (e) => {
+                                          if (e.target.files && e.target.files.length > 0) {
+                                            const file = e.target.files[0];
+                                            // If the file is a HEIC, use heicTo to convert it to JPEG
+                                            if (file.name.toLowerCase().endsWith('.heic')) {
+                                              try {
+                                                const convertedBuffer = await heicTo({ blob: file, type: 'uint8array' });
+                                                const jpegFile = new File(
+                                                  [convertedBuffer],
+                                                  file.name.replace(/\.heic$/i, '.jpg'),
+                                                  { type: 'image/jpeg' }
+                                                );
+                                                // Pass the converted JPEG file as a FileList-like array
+                                                field.onChange([jpegFile] as unknown as FileList);
+                                              } catch (conversionError) {
+                                                console.error('Error converting HEIC to JPEG:', conversionError);
+                                                // Fallback to the original file if conversion fails
+                                                field.onChange(e.target.files);
+                                              }
+                                            } else {
+                                              field.onChange(e.target.files);
+                                            }
+                                          }
+                                        }}
                                       />
                                       <label
                                         htmlFor="profile-image-upload"
@@ -345,10 +389,11 @@ export default function Settings() {
                       <div className="pt-4">
                         <button
                           type="submit"
+                          disabled={!editMode || profileLoading}
                           className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center"
                           style={{ display: editMode ? 'flex' : 'none' }}
                         >
-                          <Save size={16} className="mr-2" />
+                          {profileLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}  
                           Sauvegarder le profil
                         </button>
                       </div>
@@ -418,8 +463,12 @@ export default function Settings() {
                       )}
                     />
                     <div className="pt-4">
-                      <button type="submit" className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center">
-                        <Save size={16} className="mr-2" />
+                      <button
+                        type="submit"
+                        disabled={notificationsLoading}
+                        className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center"
+                      >
+                        {notificationsLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
                         Sauvegarder
                       </button>
                     </div>
@@ -476,8 +525,12 @@ export default function Settings() {
                       )}
                     />
                     <div className="pt-4">
-                      <button type="submit" className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center">
-                        <Save size={16} className="mr-2" />
+                      <button
+                        type="submit"
+                        disabled={preferencesLoading}
+                        className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center"
+                      >
+                        {preferencesLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
                         Sauvegarder
                       </button>
                     </div>
