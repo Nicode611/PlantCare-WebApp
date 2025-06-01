@@ -16,9 +16,9 @@ model User {
   image         String?
   // Bcrypt-hashed password
   password      String?  @db.VarChar(255)
-  acceptAnyMail      Boolean   @default(false)
-  acceptPlantcareMail Boolean  @default(false)
-  acceptTipsMail     Boolean   @default(false)
+  acceptAnyMail      Boolean   @default(true)
+  acceptPlantcareMail Boolean  @default(true)
+  acceptTipsMail     Boolean   @default(true)
   language           String    @default("en")
   theme              String    @default("light")
   accounts      Account[]

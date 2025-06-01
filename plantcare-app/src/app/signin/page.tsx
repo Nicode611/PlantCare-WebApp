@@ -1,4 +1,5 @@
 import { redirect } from "next/navigation"
+import { AuthError } from "next-auth"
 import { signIn, providerMap } from "@/auth"
 import Image from "next/image"
 
@@ -101,13 +102,15 @@ export default async function SignInPage({ searchParams }: {
                     <form
                         key={index}
                         action={async () => {
-                          "use server";
-                          const result = await signIn(provider.id, { redirect: false, callbackUrl });
-                          if (result?.error) {
-                            return redirect(`${SIGNIN_ERROR_URL}?error=${result.error}`);
-                          }
-                          // On success, redirect to callbackUrl (or default path)
-                          return redirect(callbackUrl || "/");
+                        "use server";
+                        try {
+                            await signIn(provider.id, { redirectTo: callbackUrl });
+                        } catch (error) {
+                            if (error instanceof AuthError) {
+                            return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
+                            }
+                            throw error;
+                        }
                         }}
                     >
                         <button
