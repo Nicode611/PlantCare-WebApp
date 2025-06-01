@@ -39,7 +39,7 @@ export default function dashboardSection() {
                     </div>
                 </div>
                 {/* Module des maladies */}
-                <div className="w-full h-[250px] lg:h-[30%] justify-center m-2 p-2 bg-[#ffffff] border border-white/30 rounded-lg shadow-lg overflow-x-auto">
+                <div className="w-full h-[250px] lg:h-[30%] justify-center m-2 bg-[#ffffff] border border-white/30 rounded-lg shadow-lg overflow-x-auto">
                     <DiseasesModule/>
                 </div>
             </div>

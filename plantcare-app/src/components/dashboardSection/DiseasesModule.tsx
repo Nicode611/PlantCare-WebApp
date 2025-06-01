@@ -45,24 +45,23 @@ function DiseasesModule() {
 
 
     return (
-      <>
-        <style jsx global>{`
-          @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to   { opacity: 1; transform: translateY(0); }
-          }
-          .diseases-container {
-            opacity: 0;
-            animation: fadeInUp 0.5s ease-out forwards;
-          }
-        `}</style>
-        <div className="diseases-container w-full h-full flex items-center p-5">
-            { diseases.map((disease, index) => {
-                return <DiseaseCard
-                 key={index}  diseaseName={disease.name} diseaseDescription={disease.description} diseaseSeverity={disease.severity} diseaseTreatment={disease.treatment} diseaseImage={disease.image} />
-            })}
+        <div className="w-full h-full flex flex-col items-start overflow-hidden">
+            <div className="w-full h-[50px] flex items-center justify-start bg-white border-b border-gray-200">
+              <h3 className="text-primary text-2xl font-bold mt-0 p-3">Possible diseases</h3>
+            </div>
+            <div className="w-full h-full flex flex-col md:flex-row items-center justify-start gap-4 p-3 overflow-x-auto bg-[#F9FAFB]">
+              { diseases.map((disease, index) => {
+                  return <DiseaseCard
+                   key={index}  
+                   diseaseName={disease.name} 
+                   diseaseDescription={disease.description} 
+                   diseaseSeverity={disease.severity} 
+                   diseaseTreatment={disease.treatment} 
+                   diseaseImage={disease.image} 
+                  />
+              })}
+            </div>
         </div>
-      </>
     )
 }
 
