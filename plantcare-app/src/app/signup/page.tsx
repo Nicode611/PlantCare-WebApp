@@ -6,10 +6,10 @@ import Image from "next/image"
 // Assurez-vous que SIGNIN_ERROR_URL est défini ou importé
 const SIGNIN_ERROR_URL = "/signin-error";
 
-export default async function SignInPage({ searchParams }: {
+export default async function SignUpPage({ searchParams }: {
     searchParams: Promise<{ callbackUrl?: string }>
 }) {
-    const callbackUrl = (await searchParams).callbackUrl ?? "/home";
+    const callbackUrl = (await searchParams).callbackUrl ?? "";
 
   return (
     <div className="flex flex-col gap-2">
@@ -27,31 +27,57 @@ export default async function SignInPage({ searchParams }: {
           <div className="w-full bg-white rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700">
             <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
               <h1 className="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl dark:text-white">
-                Sign in to your account
+                Create an account
               </h1>
 
-              {/* Formulaire d'email et de password */}
+              {/* Formulaire d'inscription */}
               <form
                 className="space-y-4 md:space-y-6"
                 action={async (formData: FormData) => {
                   "use server";
-                  const email = formData.get("email");
-                  const password = formData.get("password");
-                  if (typeof email !== "string" || typeof password !== "string") {
-                    throw new Error("Invalid form data");
-                  }
                   try {
-                      await signIn("credentials", { email, password, redirectTo: callbackUrl });
+                    const fullname = formData.get("fullname");
+                    const email = formData.get("email");
+                    const password = formData.get("password");
+                    const confirm = formData.get("confirm-password");
+                    if (
+                      typeof fullname !== "string" ||
+                      typeof email !== "string" ||
+                      typeof password !== "string" ||
+                      typeof confirm !== "string"
+                    ) {
+                      throw new Error("Invalid form data");
+                    }
+                    if (password !== confirm) {
+                      return redirect(`${SIGNIN_ERROR_URL}?error=password_mismatch`);
+                    }
+                    await signIn("credentials", {
+                      fullname,
+                      email,
+                      password,
+                      redirectTo: callbackUrl
+                    });
                   } catch (error) {
-                      if (error instanceof AuthError) {
-                        console.error("Authentication error:", error);
+                    if (error instanceof AuthError) {
                       return redirect(`${SIGNIN_ERROR_URL}?error=${error.type}`);
-                      }
-                      throw error;
+                    }
+                    throw error;
                   }
-                  // Retourne la redirection et le cookie session
                 }}
               >
+                <div>
+                  <label htmlFor="fullname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Your full name
+                  </label>
+                  <input
+                    type="text"
+                    name="fullname"
+                    id="fullname"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    placeholder="John Doe"
+                    required
+                  />
+                </div>
                 <div>
                   <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
                     Your email
@@ -78,32 +104,40 @@ export default async function SignInPage({ searchParams }: {
                     required
                   />
                 </div>
-                <div className="flex items-center justify-between">
-                  <div className="flex items-start">
-                    <div className="flex items-center h-5">
-                      <input
-                        id="remember"
-                        aria-describedby="remember"
-                        type="checkbox"
-                        className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
-                        required
-                      />
-                    </div>
-                    <div className="ml-3 text-sm">
-                      <label htmlFor="remember" className="text-gray-500 dark:text-gray-300">
-                        Remember me
-                      </label>
-                    </div>
+                <div>
+                  <label htmlFor="confirm-password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
+                    Confirm password
+                  </label>
+                  <input
+                    type="password"
+                    name="confirm-password"
+                    id="confirm-password"
+                    placeholder="••••••••"
+                    className="bg-gray-50 border border-gray-300 text-gray-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    required
+                  />
+                </div>
+                <div className="flex items-start">
+                  <div className="flex items-center h-5">
+                    <input
+                      id="terms"
+                      aria-describedby="terms"
+                      type="checkbox"
+                      className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300 dark:bg-gray-700 dark:border-gray-600 dark:focus:ring-primary-600 dark:ring-offset-gray-800"
+                      required
+                    />
                   </div>
-                  <a href="#" className="text-sm font-medium text-primary-600 hover:underline dark:text-primary-500">
-                    Forgot password?
-                  </a>
+                  <div className="ml-3 text-sm">
+                    <label htmlFor="terms" className="text-gray-500 dark:text-gray-300">
+                      I accept the <a className="font-medium text-primary-600 hover:underline dark:text-primary-500" href="#">Terms and Conditions</a>
+                    </label>
+                  </div>
                 </div>
                 <button
                   type="submit"
                   className="w-full text-white bg-[#abcba5] hover:bg-[#277a1c] focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
                 >
-                  Sign in
+                  Create account
                 </button>
               </form>
 
@@ -142,7 +176,7 @@ export default async function SignInPage({ searchParams }: {
                                 width={25}
                                 height={25}
                                 />
-                            <span className="pl-2">Sign in with {provider.name}</span>
+                            <span className="pl-2">Sign up with {provider.name}</span>
                             </div>
                         </button>
                     </form>
@@ -150,9 +184,9 @@ export default async function SignInPage({ searchParams }: {
                 </div>
 
               <p className="text-sm font-light text-gray-500 dark:text-gray-400">
-                Don’t have an account yet?{' '}
-                <a href="../signup" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
-                  Sign up
+                Already have an account?{' '}
+                <a href="../signin" className="font-medium text-primary-600 hover:underline dark:text-primary-500">
+                  Log in
                 </a>
               </p>
             </div>
