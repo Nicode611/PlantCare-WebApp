@@ -56,7 +56,7 @@ function DiseaseCard({ diseaseName, diseaseDescription, diseaseSeverity, disease
               treatment={disease.treatment}
             />
           )}
-          <div className="w-[250px] min-w-[200px] h-[100px] mr-[35px] bg-white rounded-lg hover:cursor-pointer " onClick={()=> {handleOpenModal()}}>
+          <div className="w-[250px] min-w-[200px] h-[100px] bg-white rounded-lg hover:cursor-pointer self-center " onClick={()=> {handleOpenModal()}}>
                   <div className="relative h-full w-full rounded-lg overflow-hidden">
                       <div className="absolute inset-0 bg-gradient-to-b from-black to-transparent opacity-100">
                         <Image

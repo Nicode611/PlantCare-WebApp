@@ -50,6 +50,8 @@ import { CookingPot } from "lucide-react";
 import { BedDouble } from 'lucide-react';
 import { Armchair } from 'lucide-react';
 import { Package } from 'lucide-react';
+import { Loader2 } from "lucide-react";
+import { Plus } from "lucide-react";
 
 // API
 import { uploadImageToVercel } from "@/lib/api";
@@ -68,6 +70,7 @@ function EditPlantModal() {
     const { data: session, status } = useSession();
     const dispatch = useDispatch();
     const [hasNewImage, setHasNewImage] = useState(false);
+    const [formLoading, setFormLoading] = useState(false);
     const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
 
     
@@ -90,39 +93,46 @@ function EditPlantModal() {
         console.error("User is not authenticated");
         return;
       }
-      const plantId = selectedPlant?.id;
-      const plantImage = values.image;
-      const location = values.locationInput || values.locationSelect;
-      
-      // Upload image and get its URL
-      let imageUrl: string | null = null;
-      if (hasNewImage && plantImage.length > 0) {
-        imageUrl = await uploadImageToVercel(plantImage[0]);
-        if (!imageUrl) {
-          console.error("Upload failed");
-          return;
+
+      try {
+        setFormLoading(true);
+        const plantId = selectedPlant?.id;
+        const plantImage = values.image;
+        const location = values.locationInput || values.locationSelect;
+        
+        // Upload image and get its URL
+        let imageUrl: string | null = null;
+        if (hasNewImage && plantImage.length > 0) {
+          imageUrl = await uploadImageToVercel(plantImage[0]);
+          if (!imageUrl) {
+            console.error("Upload failed");
+            return;
+          }
         }
+        // Prepare update payload
+        const data: { location: string; image?: string } = { location };
+
+        // Update the plant in the Redux store
+        const updatedPlant = {
+          ...selectedPlant,
+          location: data.location,
+          image: imageUrl || selectedPlant.image,
+        };
+        dispatch(select(updatedPlant));
+
+        
+        
+        if (imageUrl) {
+          data.image = imageUrl;
+        }
+        await updatePlantInfos(plantId, data);
+      } catch (error) {
+        console.error("Failed to update plant:", error);
       }
-      // Prepare update payload
-      const data: { location: string; image?: string } = { location };
-
-      // Update the plant in the Redux store
-      const updatedPlant = {
-        ...selectedPlant,
-        location: data.location,
-        image: imageUrl || selectedPlant.image,
-      };
-      dispatch(select(updatedPlant));
-
+      
+      setFormLoading(false);
       dispatch(update()); // Refresh the plant list
       dispatch(close());
-
-
-      if (imageUrl) {
-        data.image = imageUrl;
-      }
-      await updatePlantInfos(plantId, data);
-
 
     };
 
@@ -277,7 +287,10 @@ function EditPlantModal() {
                                 <Button variant="outline" type="button" onClick={() => dispatch(close())}>
                                 Cancel
                                 </Button>
-                                <Button type="submit">Add</Button>
+                                <Button type="submit">
+                              {formLoading ? <Loader2 size={16} className="mr-1 animate-spin" /> : <Plus size={16} className="mr-1" />}  
+                              Add
+                            </Button>
                             </CardFooter>
                           </form>
                         </Form>

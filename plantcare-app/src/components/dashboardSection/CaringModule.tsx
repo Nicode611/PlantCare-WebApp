@@ -58,12 +58,12 @@ function CaringModule() {
         
         <div className="w-full h-full flex flex-col">
           <div className="w-full flex items-center justify-start bg-white border-b border-gray-200">
-            <h3 className="text-primary text-2xl font-bold mt-0 p-3">Your plant</h3>
+            <h3 className="text-primary text-2xl font-bold py-1 px-3">Your plant</h3>
           </div>
           <div className="w-full h-full flex flex-col bg-[#F9FAFB] overflow-hidden">
-            <div className="p-2 flex flex-col justify-center items-center">
+            <div className="p-2 flex flex-col justify-center items-start">
                 <span className="font-sans font-bold text-2xl whitespace-nowrap truncate mr-3">{plant.model.name}</span>
-                <div className="flex items-center gap-2 text-gray-500">
+                <div className="flex items-center gap-1 text-gray-500">
                   <MapPin className="w-4" color="#277A1C"></MapPin>
                   <span className="text-xs">{plant.location}</span>
                 </div>

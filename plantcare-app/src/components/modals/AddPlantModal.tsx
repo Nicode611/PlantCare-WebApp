@@ -42,6 +42,8 @@ import { CookingPot } from "lucide-react";
 import { BedDouble } from 'lucide-react';
 import { Armchair } from 'lucide-react';
 import { Package } from 'lucide-react';
+import { Loader2 } from "lucide-react";
+import { Plus } from "lucide-react";
 
 // API
 import { createPlant } from "@/lib/api";
@@ -56,6 +58,7 @@ function AddPlantModal() {
     const dispatch = useDispatch(); 
 
     const [models, setModels] = useState<Model[]>([]);
+    const [formLoading, setFormLoading] = useState(false);
 
     const getModels = async () => {
         const plantModels = await getPlantsModel()
@@ -72,12 +75,14 @@ function AddPlantModal() {
     
     // Handle submit add plant form
     const submitForm = async (event: React.FormEvent<HTMLFormElement>) => {
+      try {
         event.preventDefault(); // Empêche le rechargement de la page
         if (status === "loading") return;
         if (status !== "authenticated" || !session?.user?.id) {
             console.error("User is not authenticated");
             return;
         }
+        setFormLoading(true);
         const userId = session.user.id;
         const formData = new FormData(event.currentTarget);
         const location = formData.get("location") as string;
@@ -85,9 +90,14 @@ function AddPlantModal() {
         const modelId = Number(modelIdStr);
 
         await createPlant({ userId, modelId, location });
-        
+
         dispatch(update());
         dispatch(close());
+      } catch (error) {
+        console.error("Failed to create plant:", error);
+        setFormLoading(false);
+        dispatch(close());
+      }
     };
 
     
@@ -164,7 +174,10 @@ function AddPlantModal() {
                             <Button variant="outline" type="button" onClick={() => dispatch(close())}>
                             Cancel
                             </Button>
-                            <Button type="submit">Add</Button>
+                            <Button type="submit">
+                              {formLoading ? <Loader2 size={16} className="mr-1 animate-spin" /> : <Plus size={16} className="mr-1" />}  
+                              Add
+                            </Button>
                         </CardFooter>
                         </form>
                 </Card>

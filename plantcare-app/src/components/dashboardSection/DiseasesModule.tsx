@@ -47,9 +47,9 @@ function DiseasesModule() {
     return (
         <div className="w-full h-full flex flex-col items-start overflow-hidden">
             <div className="w-full h-[50px] flex items-center justify-start bg-white border-b border-gray-200">
-              <h3 className="text-primary text-2xl font-bold mt-0 p-3">Possible diseases</h3>
+              <h3 className="text-primary text-2xl font-bold py-1 px-3">Possible diseases</h3>
             </div>
-            <div className="w-full h-full flex flex-col md:flex-row items-center justify-start gap-4 p-3 overflow-x-auto bg-[#F9FAFB]">
+            <div className="w-full h-full flex flex-col md:flex-row items-center justify-around space-x-10 p-3 overflow-x-auto bg-[#F9FAFB]">
               { diseases.map((disease, index) => {
                   return <DiseaseCard
                    key={index}  

@@ -26,14 +26,12 @@ import UnselectedPlant from "../fallbacks/UnselectedPlant";
 import { Event } from "@/types/event";
 
 
-
 export default function MyCalendar() {
     // Flag de montage 
     useEffect(() => {
       setMounted(true);
 
     }, []);
-
 
     const [mounted, setMounted] = useState(false);
     const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
@@ -93,7 +91,11 @@ export default function MyCalendar() {
     if (!selectedPlant) { return <UnselectedPlant/> }
 
   return (
-        <div className="font-sans p-4 h-[100%]  bg-[#ffffff] rounded-lg z-[100]">
+        <div className="font-sans h-full  bg-[#F9FAFB] rounded-lg z-[100]">
+          <div className="w-full flex items-center justify-end border-b border-gray-200 bg-[#FFFFFF]">
+            <h3 className="text-primary text-right text-2xl font-bold mt-0 px-3 py-1">Calendar</h3>
+          </div>
+          <div className="w-full h-[calc(100%-50px)] p-3 bg-[#F9FAFB]">
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="dayGridWeek"
@@ -123,6 +125,7 @@ export default function MyCalendar() {
                 eventClick={() => {
                 }}
             />
+          </div>
         </div>
   );
 }

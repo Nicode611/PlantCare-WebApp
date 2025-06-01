@@ -25,6 +25,7 @@ import { Thermometer } from "lucide-react";
 import { Bug } from "lucide-react";
 import { SquarePen } from "lucide-react";
 import { Trash2 } from "lucide-react";
+import { MapPin } from "lucide-react";
 
 // Types
 import { Plant } from "@/types/plant";
@@ -166,7 +167,10 @@ export default function MyPlantsSection() {
                               /> 
                               <div className="flex flex-col w-[80%]">
                                 <h3 className="text-xl text-primary whitespace-nowrap truncate w-[80%] font-semibold">{selectedPlant?.model.name}</h3>
-                                <p className="text-md text-gray-600 opacity-80 text-left">{selectedPlant?.location}</p>
+                                <div className="flex items-center gap-1 text-gray-500">
+                                  <MapPin className="w-4" color="#277A1C"></MapPin>
+                                  <span className="text-xs">{selectedPlant.location}</span>
+                                </div>
                               </div>
                             </div>
                             <div className="flex justify-center pr-5">

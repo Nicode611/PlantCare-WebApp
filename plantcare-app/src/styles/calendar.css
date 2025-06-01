@@ -1,10 +1,18 @@
+
+
 .fc-media-screen {
-    background-color: #ffffff;
+    background-color: #F9FAFB;
     height: 100%;
 }
 
 .fc-header-toolbar {
-    height: 10%;
+    height: 50px;
+    margin-bottom: 0px !important;
+}
+
+.fc-view-harness {
+    height: 90%;
+    max-height: 90%;
 }
 
 .fc-toolbar-title {

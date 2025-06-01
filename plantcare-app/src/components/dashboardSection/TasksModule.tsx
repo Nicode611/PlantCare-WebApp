@@ -42,8 +42,12 @@ export default function TasksModule() {
     
 
     return (
-        <div className="w-full h-full flex items-center rounded-md p-3">
-            <div className="w-[70%] h-full flex flex-col items-center m-1 shadow-inner bg-secondary bg-opacity-50 overflow-y-auto rounded-md p-3">
+        <div className="w-full h-full flex flex-col items-center rounded-md">
+          <div className="w-full flex items-center justify-start bg-white border-b border-gray-200">
+            <h3 className="text-primary text-2xl font-bold py-1 px-3">Tasks</h3>
+          </div>
+          <div className="flex w-full h-full p-3 bg-[#F9FAFB]">
+            <div className="w-[70%] h-full flex flex-col items-center shadow-inner bg-secondary bg-opacity-50 overflow-y-auto rounded-md">
                 {validTasks.length > 0 ? (
                     <ul className="flex flex-col items-center w-[95%]">
                         {validTasks.map((task) => (
@@ -92,6 +96,7 @@ export default function TasksModule() {
                     <span>{validTasks.length}</span>
                 </div>
             </div>
+          </div>
         </div>
     )
 }
