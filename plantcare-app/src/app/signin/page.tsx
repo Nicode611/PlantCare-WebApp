@@ -2,6 +2,7 @@ import { redirect } from "next/navigation"
 import { AuthError } from "next-auth"
 import { signIn, providerMap } from "@/auth"
 import Image from "next/image"
+import googleLogo from "../../../public/icons/google-logo.svg"
 
 // Assurez-vous que SIGNIN_ERROR_URL est défini ou importé
 const SIGNIN_ERROR_URL = "/signin-error";
@@ -137,7 +138,7 @@ export default async function SignInPage({ searchParams }: {
                         >
                             <div className="flex justify-center">
                                 <Image
-                                src={"/icons/" + provider.name + "-logo.svg"}
+                                src={googleLogo}
                                 alt={provider.name + " logo"}
                                 width={25}
                                 height={25}

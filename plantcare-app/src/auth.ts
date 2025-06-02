@@ -39,7 +39,7 @@ const providers: Provider[] = [
         if (!existingUser && fullname) {
           const hashed = await bcrypt.hash(password, 10);
           const newUser = await prisma.user.create({
-            data: { email, name: fullname, password: hashed, theme: "light" }
+            data: { email: email, name: fullname, password: hashed, theme: "light" }
           });
           console.log("authorize: created newUser:", newUser);
           return { id: newUser.id, name: newUser.name, email: newUser.email, theme: newUser.theme };
@@ -49,7 +49,7 @@ const providers: Provider[] = [
           const match = await bcrypt.compare(password, existingUser.password);
           if (match) {
             console.log("authorize: returning existing user:", { id: existingUser.id, name: existingUser.name, email: existingUser.email });
-            return { id: existingUser.id, name: existingUser.name, email: existingUser.email, theme: existingUser.theme ?? null };
+            return { id: existingUser.id, name: existingUser.name, email: existingUser.email, theme: existingUser.theme };
           }
         }
         console.log("Invalid credentials provided");
@@ -92,6 +92,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       async session({ session, user }: { session: Session; user: User }) {
           session.user.id = user.id!;
           session.user.theme = user.theme!;
+          console.log("Session callback:", session);
           return session;
         }
   },
