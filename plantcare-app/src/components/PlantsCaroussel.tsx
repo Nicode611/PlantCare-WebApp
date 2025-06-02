@@ -55,7 +55,7 @@ const PlantImage: React.FC<PlantImageProps> = ({ plant, selectedPlantId }) => {
         alt="Plant Image"
         fill
         sizes="max-width: 100%; max-height: 100%;"
-        className={`rounded-lg border-[1px] border-primary/20 ${isSelected ? "border-solid border-1 border-[#277a1c]" : ""}`}
+        className={`rounded-lg ${isSelected ? "border-[1px] border-[#277a1c]" : "border border-primary/20"}`}
         style={{ objectFit: objectFitValue }}
         onLoadingComplete={() => setIsLoaded(true)}
       />
