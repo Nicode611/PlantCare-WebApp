@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import * as PlantController from '../../controller/plantController';
 
-// Récupérer une plante spécifique (GET)
+// Récupérer toute les plantes d'un user (GET)
 export async function GET(
     request: Request,
     { params }: { params: { userId: string } }

@@ -88,10 +88,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: {
     strategy: "database"
   },
-  debug: true,
   callbacks: {
       async session({ session, user }: { session: Session; user: User }) {
-          console.log("Session callback triggered: ", session, user, session.user.id, session.user.theme);
           session.user.id = user.id!;
           session.user.theme = user.theme!;
           return session;

@@ -22,26 +22,39 @@ import { Disease } from "@/types/disease";
 import { getDiseasesFromPlantModel } from "@/lib/api";
 
 function DiseasesModule() {
-    const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
+    const selectedPlant = useSelector((state: RootState) => state.selectPlant.value)
     const [diseases, setDiseases] = useState<Disease[]>([])
+    const [isLoading, setIsLoading] = useState<boolean>(false)
 
 
-    useEffect(()=> {
+    useEffect(() => {
         const getDiseases = async () => {
-                if (selectedPlant === null) return;
-                try {
-                    const diseases = await getDiseasesFromPlantModel(selectedPlant.modelId);
-                    setDiseases(diseases);
-                } catch (error) {
-                    console.error("Erreur lors de la récupération des diseases :", error);
-                }
+            if (selectedPlant === null) return
+            setIsLoading(true)
+            try {
+                const diseases = await getDiseasesFromPlantModel(selectedPlant.modelId)
+                setDiseases(diseases)
+                setIsLoading(false)
+            } catch (error) {
+                console.error("Erreur lors de la récupération des diseases :", error)
+                setIsLoading(false)
             }
-
-        getDiseases();
+        }
+        getDiseases()
     }, [selectedPlant])
 
     // If no plant selected
-    if (!selectedPlant) return (<UnselectedPlant/>); 
+    if (!selectedPlant) return (<UnselectedPlant/>)
+    if (isLoading) {
+      return (
+        <div className="w-full h-full flex items-center justify-center bg-[#F9FAFB]">
+          <div className="flex flex-col items-center">
+            <div className="w-16 h-16 border-4 border-[#87b57d] border-solid rounded-full border-t-transparent animate-spin"></div>
+            <p className="mt-4 text-lg font-medium text-[#3e663a]">Chargement...</p>
+          </div>
+        </div>
+      )
+    }
 
 
     return (

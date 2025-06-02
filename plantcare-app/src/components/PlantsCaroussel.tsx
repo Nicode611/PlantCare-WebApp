@@ -1,14 +1,12 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-
 // Redux 
 import type { RootState } from "@/redux/store";
 import { useSelector, useDispatch } from "react-redux";
 import { select } from "@/redux/slices/plants/selectPlantSlice";
 
 // Session
-import { useSession } from "next-auth/react";
+/* import { useSession } from "next-auth/react"; */
 
 
 // Caroussel
@@ -23,47 +21,61 @@ import "../styles/plantsCaroussel.css"
 import { Navigation, A11y, Grid, FreeMode, Scrollbar, Mousewheel } from 'swiper/modules';
 
 // Image
+
 import Image from "next/image";
+import React, { useState } from "react";
+// PlantImage component
+type PlantImageProps = {
+  plant: {
+    id: number;
+    image: string | null;
+    model: { image: string };
+  };
+  selectedPlantId: number | null;
+};
 
-// API
-import { getPlantsFromUser, getSpecificPlant } from "@/lib/api/plants"
+const PlantImage: React.FC<PlantImageProps> = ({ plant, selectedPlantId }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
+  // Determine source URL and object-fit
+  const src = plant.image !== null ? plant.image : `/images/plants-img/${plant.model.image}.png`;
+  const objectFitValue = plant.image !== null ? "cover" : "contain";
+  const isSelected = selectedPlantId === plant.id;
 
-// Types
-import { Plant } from "@/types/plant";
+  return (
+    <div className="relative h-full w-full flex justify-center items-center">
+      {!isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-[#F5F5F5]">
+          <div className="flex flex-col items-center">
+            <div className="w-8 h-8 border-4 border-[#87b57d] border-solid rounded-full border-t-transparent animate-spin"></div>
+          </div>
+        </div>
+      )}
+      <Image
+        src={src}
+        alt="Plant Image"
+        fill
+        sizes="max-width: 100%; max-height: 100%;"
+        className={`rounded-lg border-[1px] border-primary/20 ${isSelected ? "border-solid border-1 border-[#277a1c]" : ""}`}
+        style={{ objectFit: objectFitValue }}
+        onLoadingComplete={() => setIsLoaded(true)}
+      />
+    </div>
+  );
+};
 
 
 function PlantsCaroussel() {
-    const { data: session, status } = useSession();
+    /* const { data: session, status } = useSession(); */
     const dispatch = useDispatch();
-    const updatePlants = useSelector((state: RootState) => state.updatePlants.value);
+    const plants = useSelector((state: RootState) => state.allThePlants.value);
     const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
-    const [plants, setPlants] = useState<Plant[]>([]);
 
-    const getPlants = useCallback(async () => {
-        if (status === "loading") return;
-        if (status !== "authenticated" || !session?.user?.id) {
-            console.error("User is not authenticated");
-            return;
-        }
-        const userId = session.user.id;
-        if (!userId) return;
-        const plantsOfUser = await getPlantsFromUser(userId);
-
-        if (plantsOfUser && plantsOfUser.length > 0) {
-            setPlants(plantsOfUser);
-        }
-    }, [session?.user?.id , status]);
-
-    const fetchSelectedPlant = async (plant: number) => {
-        const plantInfos = await getSpecificPlant(plant)
-        if (plantInfos) {
-            dispatch(select(plantInfos))
-        }
-    }
-
-    useEffect(()=>{ 
-        getPlants();
-    }, [updatePlants, getPlants])
+    const fetchSelectedPlant = (plantId: number) => {
+      const plantInfos = plants.find((p) => p.id === plantId);
+      if (plantInfos) {
+        dispatch(select(plantInfos));
+      }
+    };
 
     return (
 
@@ -94,18 +106,8 @@ function PlantsCaroussel() {
                         onClick={()=> {fetchSelectedPlant(plant.id)}}
                     >
                         <div className="h-full flex flex-col justify-center items-center">
-                        <div className="relative h-[90%] w-[90%]">
-                                <Image
-                                src={plant.image !== null ? plant.image : `/images/plants-img/${plant.model.image}.png`}
-                                alt="Plant Image"
-                                fill
-                                sizes="max-width: 100%; max-height: 100%;"
-                                className="rounded-lg border-[1px] border-primary/20"
-                                style={{
-                                  ...(selectedPlant && plant.id === selectedPlant!.id ? { border: "solid 1px #277a1c" } : {}),
-                                  objectFit: plant.image !== null ? "cover" : "contain"
-                                }}
-                                />
+                        <div className="h-[90%] w-[90%]">
+                          <PlantImage plant={plant} selectedPlantId={selectedPlant ? selectedPlant.id : null} />
                         </div>
                         </div>
                     </SwiperSlide>

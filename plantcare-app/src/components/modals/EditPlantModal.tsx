@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/store";
 import { close } from "@/redux/slices/modalSlice" 
 import { select } from "@/redux/slices/plants/selectPlantSlice";
-import { update } from "@/redux/slices/plants/updatePlantsSlice";
+import { updatePlant } from "@/redux/slices/plants/allThePlantsSlice";
 
 // Session
 import { useSession } from "next-auth/react";
@@ -73,9 +73,7 @@ function EditPlantModal() {
     const [formLoading, setFormLoading] = useState(false);
     const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
 
-    
     const form = useForm<EditPlantFormValues>({
-      
       defaultValues: {
         locationSelect: selectedPlant?.location ?? "",
         locationInput: "",
@@ -112,28 +110,28 @@ function EditPlantModal() {
         // Prepare update payload
         const data: { location: string; image?: string } = { location };
 
-        // Update the plant in the Redux store
         const updatedPlant = {
           ...selectedPlant,
           location: data.location,
           image: imageUrl || selectedPlant.image,
         };
-        dispatch(select(updatedPlant));
-
-        
-        
         if (imageUrl) {
           data.image = imageUrl;
         }
-        await updatePlantInfos(plantId, data);
+        const result = await updatePlantInfos(plantId, data);
+        
+        if (result) { 
+          // Update the plant in the Redux store
+          dispatch(updatePlant({ id: plantId, changes: updatedPlant }));
+          dispatch(select(updatedPlant));
+        }
+        
       } catch (error) {
         console.error("Failed to update plant:", error);
       }
       
       setFormLoading(false);
-      dispatch(update()); // Refresh the plant list
       dispatch(close());
-
     };
 
     

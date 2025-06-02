@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { unselect } from "@/redux/slices/plants/selectPlantSlice";
 import { close } from "@/redux/slices/modalSlice";
-import { update } from "@/redux/slices/plants/updatePlantsSlice";
+import { deletePlant as deletePlantFromState } from "@/redux/slices/plants/allThePlantsSlice";
 
 // Session
 import { useSession } from "next-auth/react";
@@ -42,10 +42,12 @@ function DeletePlantModal({ selectedPlant }: { selectedPlant: Plant }) {
     }
 
     try {
-      await deletePlant(selectedPlant.id);
-      dispatch(unselect()); // Clear the selected plant
-      dispatch(update()); // Update the plants list in the store
-      dispatch(close());
+      const result = await deletePlant(selectedPlant.id);
+      if (result) {
+        dispatch(deletePlantFromState(selectedPlant.id)); // Remove the plant from the state
+        dispatch(unselect()); // Clear the selected plant
+        dispatch(close());
+      }
     } catch (error) {
       console.error("Failed to delete plant:", error);
     }

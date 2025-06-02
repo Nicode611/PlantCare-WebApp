@@ -7,7 +7,10 @@ import Sidebar from "@/components/Sidebar";
 import CookieConsent from "react-cookie-consent";
 
 
+
+
 export default function HomeLayout({ children }: { children: React.ReactNode }) {
+
     return (
         <div className="swip flex w-screen h-screen overflow-hidden bg-[#f5f5f5]">
             <div className="flex flex-col md:flex-row w-screen h-full overflow-hidden">

@@ -2,6 +2,7 @@
 
 // Next
 import Image from "next/image"
+import { useEffect } from "react";
 
 // Redux
 import type { RootState } from "@/redux/store"
@@ -9,6 +10,10 @@ import { useSelector, useDispatch } from "react-redux"
 import { useRouter } from 'next/navigation';
 import { changeSection } from "@/redux/slices/activeSection"
 import { unselect } from "@/redux/slices/plants/selectPlantSlice"
+import { setPlants, clearPlants } from "@/redux/slices/plants/allThePlantsSlice";
+
+// API 
+import { getPlantsFromUser } from "@/lib/api/plants"
 
 // Components
 import ThemeButton from "./ThemeButton"
@@ -23,10 +28,27 @@ function Sidebar() {
     const { data: session, status } = useSession();
     const dispatch = useDispatch();
     const router = useRouter();
-    const activeSection = useSelector<RootState, string>(
-      (state) => state.activeSection.activeSection
-    );
 
+    // Sélecteurs Redux
+    const plants = useSelector((state: RootState) => state.allThePlants.value);
+    const activeSection = useSelector<RootState, string>((state) => state.activeSection.activeSection);
+
+    useEffect(() => {
+      if (status === "authenticated" && session?.user?.id && plants.length === 0) {
+        getPlantsFromUser(session.user.id).then((fetchedPlants) => {
+          dispatch(setPlants(fetchedPlants));
+        });
+      }
+    }, [status, session?.user?.id, plants.length, dispatch]);
+
+    // Quand l’utilisateur est déconnecté, on vide le slice des plantes
+    useEffect(() => {
+      if (status === "unauthenticated") {
+        dispatch(clearPlants());
+      }
+    }, [status, dispatch]);
+
+    
     // Toujours afficher la structure de base, même pendant le chargement
     return (
         <div className="w-full h-full flex md:flex-col justify-start md:justify-between items-center bg-[#dfdfdf] shadow-spread">
@@ -246,6 +268,7 @@ function Sidebar() {
                             </div>
                         </div>
                         <div className="py-5 w-full bg-[#E8E8E8] hover:cursor-pointer" onClick={() =>{ 
+                              dispatch(clearPlants());
                               dispatch(unselect());
                               signOut({ callbackUrl: '/' })
                               }}>

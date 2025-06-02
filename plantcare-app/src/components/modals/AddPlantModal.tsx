@@ -7,6 +7,7 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { close } from "@/redux/slices/modalSlice" 
 import { update } from "@/redux/slices/plants/updatePlantsSlice";
+import { addPlant } from "@/redux/slices/plants/allThePlantsSlice";
 
 // Session
 import { useSession } from "next-auth/react";
@@ -35,7 +36,6 @@ import {
     TooltipProvider,
     TooltipTrigger,
   } from "@/components/ui/tooltip"
-
 
 // Lucide
 import { CookingPot } from "lucide-react";
@@ -89,8 +89,14 @@ function AddPlantModal() {
         const modelIdStr = formData.get("modelId") as string;
         const modelId = Number(modelIdStr);
 
-        await createPlant({ userId, modelId, location });
-
+        const createdPlant = await createPlant({ userId, modelId, location });
+        if (!createdPlant) {
+          console.error("Failed to create plant");
+          setFormLoading(false);
+          return;
+        }
+        
+        dispatch(addPlant(createdPlant));
         dispatch(update());
         dispatch(close());
       } catch (error) {

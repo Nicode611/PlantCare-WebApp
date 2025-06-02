@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { formatDistanceToNow } from 'date-fns';
 
 // Auth
@@ -9,10 +8,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { open } from "@/redux/slices/modalSlice";
 import { select } from "@/redux/slices/plants/selectPlantSlice";
 import type { RootState } from "@/redux/store";
-
-// API
-import { getPlantsFromUser } from "@/lib/api";
-
 
 // Images
 import Image from "next/image";
@@ -27,8 +22,6 @@ import { SquarePen } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { MapPin } from "lucide-react";
 
-// Types
-import { Plant } from "@/types/plant";
 
 // Lucide
 import { ChevronRight } from "lucide-react"
@@ -48,31 +41,11 @@ export default function MyPlantsSection() {
 
     const dispatch = useDispatch();
 
-    const updatePlants = useSelector((state: RootState) => state.updatePlants.value);
     const selectedPlant = useSelector((state: RootState) => state.selectPlant.value);
+    const plants = useSelector((state: RootState) => state.allThePlants.value);
+
     const { activeModal, modalProps } = useSelector((state: RootState) => state.modal);
     const selectedAction = (modalProps as { actionName?: string }).actionName;
-
-    const [plants, setPlants] = useState<Plant[]>([]);
-    const [loading, setLoading] = useState(false);
-
-    useEffect(() => {
-      const fetchPlants = async () => {
-        if (session?.user?.id) {
-          setLoading(true);
-          try {
-            const plantsData = await getPlantsFromUser(session.user.id);
-            setPlants(plantsData);
-          } catch (error) {
-            console.error("Error fetching plants:", error);
-          } finally {
-            setLoading(false);
-          }
-        }
-      };
-
-      fetchPlants();
-    }, [session, updatePlants]);
 
 
     return (
@@ -103,7 +76,7 @@ export default function MyPlantsSection() {
             <button className='bg-primary text-white text-sm rounded-lg px-4 py-2 hover:bg-primary/80 transition-all duration-300 ease-in-out' onClick={() => {dispatch(open({ modal: "plant", props: { actionName: "add" } }))}}>+ Add a plant</button>
           </div>
           <div className="w-full h-auto ">
-            {loading || status === "loading" ? (
+            {status === "loading" ? (
               <div className="flex flex-col items-center w-full py-10">
                   <div className="relative w-10 h-10">
                       <div className="absolute top-0 left-0 w-full h-full border-4 border-[#98C496] border-opacity-20 rounded-full"></div>

@@ -10,7 +10,7 @@ import { useSelector } from "react-redux";
 // Components
 import DashboardSection from "@/components/dashboardSection/DashboardSection";
 import MyPlantsSection from "@/components/myPlantsSection/MyPlantsSection";
-import DiseasesSection from "@/components/diseasesSection/DiseasesSection";
+/* import DiseasesSection from "@/components/diseasesSection/DiseasesSection"; */
 import TasksSection from "@/components/tasksSection/TasksSection";
 
 // API
@@ -39,7 +39,7 @@ export default function HomeClient() {
         <div className="flex-1 z-30 relative overflow-auto bg-[#F5F5F5]">
             {activeSection === "dashboard" ? <DashboardSection/> : 
             activeSection === "plants" ? <MyPlantsSection/> :
-            activeSection === "diseases" ? <DiseasesSection/> :
+            activeSection === "diseases" ?/*  <DiseasesSection/> */ "" :
             activeSection === "tasks" ? <TasksSection/> : ""}
         </div>
     );
