@@ -53,7 +53,7 @@ function Sidebar() {
     
     // Toujours afficher la structure de base, même pendant le chargement
     return (
-        <div className={`w-full h-full flex md:flex-col justify-start md:justify-between items-center ${session?.user.theme === "light" ? "bg-[#dfdfdf]" : "bg-[#363636]" }  shadow-spread`}>
+        <div className={`w-full h-full flex md:flex-col justify-start md:justify-between items-center ${session?.user.theme === "light" ? "bg-bgLight" : "bg-bgDark" }  shadow-spread`}>
             <div className="flex md:flex-col items-center w-full">
                 <div className={`flex justify-start md:justify-center items-center h-full md:w-full ml-5 md:mx-0 md:py-5 border-b ${session?.user.theme === "light" ? "bg-[#dfdfdf] border-gray-300" : "bg-[#2f2f2f] border-black" }`}>
                     <svg className="w-[30px] md:w-[40px] h-auto" xmlns="http://www.w3.org/2000/svg" version="1.1" id="Layer_1" x="0px" y="0px" viewBox="0 0 544 544" enableBackground="new 0 0 544 544">

@@ -60,10 +60,10 @@ function CaringModule() {
     return (
         
         <div className="w-full h-full flex flex-col">
-          <div className={`w-full flex items-center justify-start ${session?.user.theme === "light" ? "bg-white border-b border-gray-200" : "bg-[#c9c9c9]" } `}>
+          <div className={`w-full flex items-center justify-start ${session?.user.theme === "light" ? "bg-white border-b border-gray-200" : "bg-black" } `}>
             <h3 className="text-primary text-2xl font-bold py-1 px-3">Your plant</h3>
           </div>
-          <div className={`w-full h-full flex flex-col ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" }  overflow-hidden`}>
+          <div className={`w-full h-full flex flex-col ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-bgDarkSection" }  overflow-hidden`}>
             <div className="p-2 flex flex-col justify-center items-start">
                 <span className="font-sans font-bold text-2xl whitespace-nowrap truncate mr-3">{selectPlant.model.name}</span>
                 <div className="flex items-center gap-1 text-gray-500">

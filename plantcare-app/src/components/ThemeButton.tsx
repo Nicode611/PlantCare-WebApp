@@ -35,7 +35,7 @@ function ThemeButton() {
   
 
   return (
-        <label className="inline-flex items-center relative">
+        <label className="inline-flex items-center relative hover:cursor-pointer">
             <input
               className="peer hidden"
               id="toggle"

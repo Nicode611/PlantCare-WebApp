@@ -26,6 +26,21 @@ export default {
           DEFAULT: '#AACCA6',
           foreground: 'hsl(var(--secondary-foreground))'
         },
+        bgLight: {
+          DEFAULT: '#DFDFDF',
+        },
+        bgLighter: {
+          DEFAULT: '#F5F5F5',
+        },
+        bgDark: {
+          DEFAULT: '#252526',
+        },
+        bgDarker: {
+          DEFAULT: '#1E1E1E',
+        },
+        bgDarkSection: {
+          DEFAULT: '#2F2F2F',
+        },
         water: '#188396',
         card: {
           DEFAULT: 'hsl(var(--card))',

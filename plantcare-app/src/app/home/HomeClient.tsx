@@ -43,7 +43,7 @@ export default function HomeClient() {
     }, []);
 
     return (
-        <div className={`flex-1 z-30 relative overflow-auto ${session?.user.theme === "light" ? "bg-[#F5F5F5]": "bg-[#454545]" }`}>
+        <div className={`flex-1 z-30 relative overflow-auto ${session?.user.theme === "light" ? "bg-bgLighter": "bg-bgDarker" }`}>
             {activeSection === "dashboard" ? <DashboardSection/> : 
             activeSection === "plants" ? <MyPlantsSection/> :
             activeSection === "diseases" ?/*  <DiseasesSection/> */ "" :
