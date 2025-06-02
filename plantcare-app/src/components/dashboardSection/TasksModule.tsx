@@ -18,7 +18,6 @@ export default function TasksModule() {
     // Session
     const { data: session } = useSession();
     
-
     // Get all tasks from user
     /* const [tasks, setTasks] = useState<Task[]>([]); */
     const tasks = useSelector((state: RootState) => state.tasks.value);
@@ -43,10 +42,10 @@ export default function TasksModule() {
 
     return (
         <div className="w-full h-full flex flex-col items-center rounded-md">
-          <div className="w-full flex items-center justify-start bg-white border-b border-gray-200">
+          <div className={`w-full flex items-center justify-start ${session?.user.theme === "light" ? "bg-white border-b border-gray-200" : "bg-[#c9c9c9]" }`}>
             <h3 className="text-primary text-2xl font-bold py-1 px-3">Tasks</h3>
           </div>
-          <div className="flex w-full h-full p-3 bg-[#F9FAFB]">
+          <div className={`flex w-full h-full p-3 ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" }`}>
             <div className="w-[70%] h-full flex flex-col items-center shadow-inner bg-secondary bg-opacity-50 overflow-y-auto rounded-md">
                 {validTasks.length > 0 ? (
                     <ul className="flex flex-col items-center w-[95%]">

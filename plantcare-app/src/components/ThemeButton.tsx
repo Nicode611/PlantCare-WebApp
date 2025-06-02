@@ -3,8 +3,11 @@ import { useEffect } from "react";
 import { useSession } from "next-auth/react"
 import { useState } from "react";
 
+// API
+import { updateInfosUser } from "@/lib/api";
+
 function ThemeButton() {
-  const { data: session, status } = useSession();
+  const { data: session, status, update: refreshSession } = useSession();
   const [isChecked, setIsChecked] = useState<boolean>(false);
 
   useEffect(() => {
@@ -13,6 +16,24 @@ function ThemeButton() {
     }
   }, [session, status]);
 
+  // Handle change theme
+  const handleThemeChange = async () => {
+    if (session?.user) {
+      // Determine the new theme based on current state
+      const newTheme = isChecked ? "light" : "dark";
+      // Optimistically update local state
+      setIsChecked(!isChecked);
+      const payload = { theme: newTheme };
+      try {
+        await updateInfosUser(session.user.id, payload);
+        await refreshSession();
+      } catch (error) {
+        console.error("Error updating user theme:", error);
+      }
+    }
+  };
+  
+
   return (
         <label className="inline-flex items-center relative">
             <input
@@ -20,7 +41,7 @@ function ThemeButton() {
               id="toggle"
               type="checkbox"
               checked={isChecked}
-              onChange={() => setIsChecked(prev => !prev)}
+              onChange={handleThemeChange}
             />
             <div className="relative w-[60px] h-[30px] bg-gray-200 peer-checked:bg-zinc-500 rounded-full after:absolute after:content-[''] after:w-[20px] after:h-[20px] after:bg-gradient-to-r from-[#23551d] to-[#277A1C] peer-checked:after:from-zinc-900 peer-checked:after:to-zinc-900 after:rounded-full after:top-[5px] after:left-[5px] active:after:w-[25px] peer-checked:after:left-[55px] peer-checked:after:translate-x-[-100%] shadow-sm duration-300 after:duration-300 after:shadow-md">
             </div>

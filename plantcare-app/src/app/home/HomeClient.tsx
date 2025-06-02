@@ -7,6 +7,9 @@ import { useEffect } from "react";
 import type { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 
+// Session
+import { useSession } from 'next-auth/react';
+
 // Components
 import DashboardSection from "@/components/dashboardSection/DashboardSection";
 import MyPlantsSection from "@/components/myPlantsSection/MyPlantsSection";
@@ -17,10 +20,14 @@ import TasksSection from "@/components/tasksSection/TasksSection";
 import { refreshData } from "@/lib/api/others";
 
 export default function HomeClient() {
+    // Session
+    const { data: session } = useSession();
     // Redux
     const activeSection = useSelector<RootState, string>(
         (state) => state.activeSection.activeSection
     );
+
+
 
     // Call the data refresh function when the component mounts
     useEffect(() => {
@@ -36,7 +43,7 @@ export default function HomeClient() {
     }, []);
 
     return (
-        <div className="flex-1 z-30 relative overflow-auto bg-[#F5F5F5]">
+        <div className={`flex-1 z-30 relative overflow-auto ${session?.user.theme === "light" ? "bg-[#F5F5F5]": "bg-[#454545]" }`}>
             {activeSection === "dashboard" ? <DashboardSection/> : 
             activeSection === "plants" ? <MyPlantsSection/> :
             activeSection === "diseases" ?/*  <DiseasesSection/> */ "" :

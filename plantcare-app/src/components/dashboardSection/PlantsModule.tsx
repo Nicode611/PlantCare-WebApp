@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from "react-redux"
 import type { RootState } from "@/redux/store";
 import { open} from "@/redux/slices/modalSlice"
 
+// Session
+import { useSession } from 'next-auth/react';
+
 // Components
 import PlantsCaroussel from "../PlantsCaroussel"
 import AddPlantModal from "../modals/AddPlantModal";
@@ -12,7 +15,7 @@ import AddPlantModal from "../modals/AddPlantModal";
 import { Plus } from "lucide-react";
 
 function PlantsModule() {
-
+    const { data: session } = useSession();
     const dispatch = useDispatch();
 
     const { activeModal, modalProps } = useSelector((state: RootState) => state.modal);
@@ -22,8 +25,8 @@ function PlantsModule() {
 
 
     return (
-        <div className="w-full h-full flex flex-col items-center rounded-md p-3">
-            <div className="w-full flex justify-between items-center">
+        <div className={`w-full h-full flex flex-col items-center rounded-md p-3 ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" }`}>
+            <div className={`w-full flex justify-between items-center `}>
                 <h3 className="text-primary text-2xl font-bold mt-0 p-3">Plants</h3>
                 <div className="">
                     <button className="flex justify-center items-center bg-secondary shadow-button rounded-md text-white h-[40px] w-[40px] my-3 mr-1 active:shadow-activeButton" onClick={() => {dispatch(open({ modal: "plant", props: { actionName: "add" } }))}}>

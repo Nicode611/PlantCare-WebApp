@@ -11,6 +11,9 @@ import type { RootState } from "@/redux/store";
 import { select } from "@/redux/slices/plants/selectPlantSlice"
 import { updatePlant } from "@/redux/slices/plants/allThePlantsSlice";
 
+// Session
+import { useSession } from 'next-auth/react';
+
 // Components
 import UnselectedPlant from "../fallbacks/UnselectedPlant";
 
@@ -23,6 +26,7 @@ import { updateNextWateringDate } from "@/lib/api/plants";
 import { updateSeverityLevelFromPlant } from "@/lib/api";
 
 function CaringModule() {
+    const { data: session } = useSession();
     const dispatch = useDispatch();
     const selectPlant = useSelector((state: RootState) => state.selectPlant.value);
 
@@ -56,10 +60,10 @@ function CaringModule() {
     return (
         
         <div className="w-full h-full flex flex-col">
-          <div className="w-full flex items-center justify-start bg-white border-b border-gray-200">
+          <div className={`w-full flex items-center justify-start ${session?.user.theme === "light" ? "bg-white border-b border-gray-200" : "bg-[#c9c9c9]" } `}>
             <h3 className="text-primary text-2xl font-bold py-1 px-3">Your plant</h3>
           </div>
-          <div className="w-full h-full flex flex-col bg-[#F9FAFB] overflow-hidden">
+          <div className={`w-full h-full flex flex-col ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" }  overflow-hidden`}>
             <div className="p-2 flex flex-col justify-center items-start">
                 <span className="font-sans font-bold text-2xl whitespace-nowrap truncate mr-3">{selectPlant.model.name}</span>
                 <div className="flex items-center gap-1 text-gray-500">

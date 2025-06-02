@@ -16,6 +16,9 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction"; // Drag & drop
 
+// Session
+import { useSession } from 'next-auth/react';
+
 // Lucide
 import { Droplet } from "lucide-react";
 
@@ -27,6 +30,7 @@ import { Event } from "@/types/event";
 
 
 export default function MyCalendar() {
+    const { data: session } = useSession();
     // Flag de montage 
     useEffect(() => {
       setMounted(true);
@@ -91,11 +95,25 @@ export default function MyCalendar() {
     if (!selectedPlant) { return <UnselectedPlant/> }
 
   return (
-        <div className="font-sans h-full  bg-[#F9FAFB] rounded-lg z-[100]">
-          <div className="w-full flex items-center justify-end border-b border-gray-200 bg-[#FFFFFF]">
+        <div className={`font-sans h-full ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" } rounded-lg z-[100]`}>
+          <div className={`w-full flex items-center justify-end border-b ${session?.user.theme === "light" ? "bg-white border-b border-gray-200" : "bg-[#c9c9c9]" }`}>
             <h3 className="text-primary text-right text-2xl font-bold mt-0 px-3 py-1">Calendar</h3>
           </div>
-          <div className="w-full h-[calc(100%-50px)] p-3 bg-[#F9FAFB]">
+          <div className={`w-full h-[calc(100%-50px)] p-3 ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" }`}>
+
+            <style>
+              {`
+                .fc-media-screen {
+                    ${session?.user.theme === "light" ? "background-color: #F9FAFB" : "background-color: #e4e4e4" }
+                    background-color: #F9FAFB;
+                    height: 100%;
+                }
+                .fc-header-toolbar {
+                  ${session?.user.theme === "light" ? "background-color: #F9FAFB" : "background-color: #e4e4e4" }
+                }
+              `}
+            </style>
+
             <FullCalendar
                 plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="dayGridWeek"
