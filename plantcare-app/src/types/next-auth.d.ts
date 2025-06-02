@@ -1,8 +1,5 @@
 // types/next-auth.d.ts
 
-import NextAuth from "next-auth"
-import { JWT } from "next-auth/jwt"
-
 /**
  * Module augmentation pour NextAuth v5 :
  * on étend ici l’interface User (celle que NextAuth utilise en interne),
