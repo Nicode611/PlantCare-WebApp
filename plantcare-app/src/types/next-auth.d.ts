@@ -1,5 +1,10 @@
 // types/next-auth.d.ts
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import NextAuth from "next-auth"
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { JWT } from "next-auth/jwt"
+
 /**
  * Module augmentation pour NextAuth v5 :
  * on étend ici l’interface User (celle que NextAuth utilise en interne),

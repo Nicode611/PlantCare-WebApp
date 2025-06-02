@@ -6,7 +6,7 @@ import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useForm, SubmitHandler } from 'react-hook-form';
-import { User } from '@/types/user';
+import { User} from '@/types/user';
 import { heicTo } from "heic-to";
 
 // Lucide
