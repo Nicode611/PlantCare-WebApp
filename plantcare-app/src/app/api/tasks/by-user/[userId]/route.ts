@@ -4,7 +4,7 @@ import * as TaskController from '../../controller/taskController';
 // GET all tasks from user
 export async function GET(
     request: Request,
-    { params }: { params: { userId: string } }
+    { params }: { params: Promise<{ userId: string }> }
 ) {
     try {
         const awaitedParams = await Promise.resolve(params);
@@ -26,7 +26,7 @@ export async function GET(
 // POST create task
 export async function POST(
     request: Request,
-    { params }: { params: { userId: string } }
+    { params }: { params: Promise<{ userId: string }> }
 ) {
     try {
         const awaitedParams = await Promise.resolve(params);
@@ -49,7 +49,7 @@ export async function POST(
 // DELETE delete all tasks from user
 export async function DELETE(
     request: Request,
-    { params }: { params: { userId: string } }
+    { params }: { params: Promise<{ userId: string }> }
 ) {
     try {
         const awaitedParams = await Promise.resolve(params);

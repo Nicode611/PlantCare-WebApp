@@ -4,7 +4,7 @@ import * as UserController from '../controllers/userController';
 // Mettre à jour les informations d'un utilisateur (PATCH)
 export async function PATCH(
   request: Request,
-  { params }: { params: { userId: string } }
+  { params }: { params: Promise<{ userId: string }> }
 ) {
   try {
     // Extract params and body
@@ -19,7 +19,7 @@ export async function PATCH(
 
     return NextResponse.json(updatedUser);
   } catch (error) {
-    console.error(`Error while updating plant ${params.userId}:`, error);
+    console.error(`Error while updating user infos :`, error);
     return NextResponse.json(
       { error: "Error while updating plant." },
       { status: 500 }
