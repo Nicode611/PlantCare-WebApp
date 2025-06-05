@@ -28,6 +28,70 @@ import { Input } from '@/components/ui/input';
 import { updateInfosUser } from '@/lib/api';
 import { uploadImageToVercel } from '@/lib/api';
 
+// Traductions
+const translations = {
+  fr: {
+    backToDashboard: "Retour au tableau de bord",
+    accountSettings: "Paramètres du compte",
+    profile: "Profil",
+    notifications: "Notifications",
+    preferences: "Préférences",
+    profileInfo: "Informations du profil",
+    modify: "Modifier",
+    cancel: "Annuler",
+    saveProfile: "Sauvegarder le profil",
+    fullName: "Nom complet",
+    email: "Adresse email",
+    newPassword: "Nouveau mot de passe",
+    confirmPassword: "Confirmer mot de passe",
+    acceptedFormats: "Formats acceptés: JPG, PNG. Taille max: 1MB",
+    saveSuccess: "Modifications enregistrées avec succès!",
+    notifSuccess: "Paramètres de notifications enregistrés !",
+    prefSuccess: "Préférences enregistrées !",
+    emailAlerts: "Alertes par email",
+    emailAlertsDesc: "Recevez des rappels d'arrosage par email",
+    maintenanceNotifs: "Notifications d'entretien",
+    maintenanceNotifsDesc: "Recevez des alertes sur l'entretien de vos plantes",
+    weeklyTips: "Conseils hebdomadaires",
+    weeklyTipsDesc: "Recevez des astuces pour prendre soin de vos plantes",
+    save: "Sauvegarder",
+    language: "Langue",
+    darkMode: "Mode sombre",
+    darkModeDesc: "Activez le mode sombre pour une meilleure visibilité la nuit",
+    loading: "Chargement...",
+  },
+  en: {
+    backToDashboard: "Back to dashboard",
+    accountSettings: "Account settings",
+    profile: "Profile",
+    notifications: "Notifications",
+    preferences: "Preferences",
+    profileInfo: "Profile info",
+    modify: "Modify",
+    cancel: "Cancel",
+    saveProfile: "Save profile",
+    fullName: "Full name",
+    email: "Email address",
+    newPassword: "New password",
+    confirmPassword: "Confirm password",
+    acceptedFormats: "Accepted formats: JPG, PNG. Max size: 1MB",
+    saveSuccess: "Changes successfully saved!",
+    notifSuccess: "Notification settings saved!",
+    prefSuccess: "Preferences saved!",
+    emailAlerts: "Email alerts",
+    emailAlertsDesc: "Receive watering reminders by email",
+    maintenanceNotifs: "Maintenance notifications",
+    maintenanceNotifsDesc: "Receive alerts about your plants' maintenance",
+    weeklyTips: "Weekly tips",
+    weeklyTipsDesc: "Receive tips on how to take care of your plants",
+    save: "Save",
+    language: "Language",
+    darkMode: "Dark mode",
+    darkModeDesc: "Activate dark mode for better visibility at night",
+    loading: "Loading...",
+  }
+};
+
 export default function Settings() {
   const { data: session, update: refreshSession } = useSession();
 
@@ -37,6 +101,13 @@ export default function Settings() {
   const [profileLoading, setProfileLoading] = useState(false);
   const [notificationsLoading, setNotificationsLoading] = useState(false);
   const [preferencesLoading, setPreferencesLoading] = useState(false);
+
+  // Mode thème - Light ou Dark selon la préférence utilisateur
+  const isDarkMode = session?.user?.theme === "dark";
+  
+  // Langue - FR ou EN selon la préférence utilisateur
+  const userLanguage = session?.user?.language || 'fr';
+  const t = translations[userLanguage as 'fr' | 'en'];
 
   // 1) Profil
   interface ProfileFormValues { 
@@ -169,55 +240,61 @@ export default function Settings() {
   };
 
   return (
-    <div className="w-full min-h-screen bg-[#f8f9fa] p-4 md:p-10">
+    <div className={`w-full min-h-screen ${isDarkMode ? "bg-bgDarker" : "bg-[#f8f9fa]"} p-4 md:p-10`}>
       <div className="max-w-5xl mx-auto">
         {/* Header avec navigation retour */}
         <div className="flex items-center justify-between mb-8">
           <div className="flex items-center">
-            <Link href="/home" className="flex items-center text-primary hover:text-primary/80 transition-colors">
+            <Link href="/home" className={`flex items-center ${isDarkMode ? "text-secondary hover:text-secondary/80" : "text-primary hover:text-primary/80"} transition-colors`}>
               <ArrowLeft className="mr-2" size={20} />
-              <span className="text-lg font-medium">Back to dashboard</span>
+              <span className="text-lg font-medium">{t.backToDashboard}</span>
             </Link>
           </div>
         </div>
 
-        <div className="bg-white rounded-xl shadow-md overflow-hidden">
+        <div className={`${isDarkMode ? "bg-bgDarkSection border border-gray-700" : "bg-white"} rounded-xl shadow-md overflow-hidden`}>
           {/* Titre de la page */}
-          <div className="border-b border-gray-200">
-            <h1 className="text-2xl font-bold text-primary p-6">Account settings</h1>
+          <div className={`border-b ${isDarkMode ? "border-gray-700" : "border-gray-200"}`}>
+            <h1 className={`text-2xl font-bold ${isDarkMode ? "text-secondary" : "text-primary"} p-6`}>{t.accountSettings}</h1>
           </div>
           
           {/* Structure en deux colonnes sur grands écrans */}
           <div className="flex flex-col md:flex-row">
             {/* Menu latéral */}
-            <div className="md:w-1/4 bg-gray-50 p-4">
+            <div className={`md:w-1/4 ${isDarkMode ? "bg-bgDark" : "bg-gray-50"} p-4`}>
               <nav>
                 <ul>
                   <li>
                     <button 
                       onClick={() => setActiveTab('profile')}
-                      className={`flex items-center w-full text-left p-3 rounded-md ${activeTab === 'profile' ? 'bg-primary text-white' : 'hover:bg-gray-200'}`}
+                      className={`flex items-center w-full text-left p-3 rounded-md ${activeTab === 'profile' ? 
+                        isDarkMode ? 'bg-secondary text-black' : 'bg-primary text-white' 
+                        : isDarkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-200'}`}
                     >
                       <UserRound size={18} className="mr-2" />
-                      <span>Profil</span>
+                      <span>{t.profile}</span>
                     </button>
                   </li>
                   <li>
                     <button 
                       onClick={() => setActiveTab('notifications')}
-                      className={`flex items-center w-full text-left p-3 rounded-md mt-1 ${activeTab === 'notifications' ? 'bg-primary text-white' : 'hover:bg-gray-200'}`}
+                      className={`flex items-center w-full text-left p-3 rounded-md mt-1 ${activeTab === 'notifications' ? 
+                        isDarkMode ? 'bg-secondary text-black' : 'bg-primary text-white' 
+                        : isDarkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-200'}`}
                     >
                       <Bell size={18} className="mr-2" />
-                      <span>Notifications</span>
+                      <span>{t.notifications}</span>
                     </button>
                   </li>
                   <li>
                     <button 
                       onClick={() => setActiveTab('preferences')}
-                      className={`flex items-center w-full text-left p-3 rounded-md mt-1 ${activeTab === 'preferences' ? 'bg-primary text-white' : 'hover:bg-gray-200'}`}
+                      className={`flex items-center w-full text-left p-3 rounded-md mt-1 ${activeTab === 'preferences' ? 
+                        isDarkMode ? 'bg-secondary text-black' : 'bg-primary text-white' 
+                        : isDarkMode ? 'hover:bg-gray-800 text-gray-300' : 'hover:bg-gray-200'}`}
                     >
                       <Globe size={18} className="mr-2" />
-                      <span>Préférences</span>
+                      <span>{t.preferences}</span>
                     </button>
                   </li>
                 </ul>
@@ -225,7 +302,7 @@ export default function Settings() {
             </div>
 
             {/* Contenu principal */}
-            <div className="md:w-3/4 p-6 overflow-y-auto max-h-[80vh]">
+            <div className={`md:w-3/4 p-6 overflow-y-auto max-h-[80vh] ${isDarkMode ? "text-white" : ""}`}>
               {/* Onglet Profil */}
               {activeTab === 'profile' && (
                 <div className=''>
@@ -234,21 +311,23 @@ export default function Settings() {
                       <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                       </svg>
-                      Modifications enregistrées avec succès!
+                      {t.saveSuccess}
                     </div>
                   )}
                   <div className="flex justify-between items-center mb-6">
-                    <h2 className="text-xl font-semibold">Profile info</h2>
+                    <h2 className={`text-xl font-semibold ${isDarkMode ? "text-gray-200" : ""}`}>{t.profileInfo}</h2>
                     <button 
                       onClick={handleToggleEditMode}
-                      className={`flex items-center ${editMode ? 'bg-gray-200 text-gray-700' : 'bg-primary text-white'} rounded-md px-3 py-2 text-sm font-medium`}
+                      className={`flex items-center ${editMode ? 
+                        isDarkMode ? 'bg-gray-700 text-gray-300' : 'bg-gray-200 text-gray-700' 
+                        : isDarkMode ? 'bg-secondary text-black' : 'bg-primary text-white'} rounded-md px-3 py-2 text-sm font-medium`}
                     >
                       {editMode ? (
-                        <>Cancel</>
+                        <>{t.cancel}</>
                       ) : (
                         <>
                           <SquarePen size={16} className="mr-2" />
-                          Modify
+                          {t.modify}
                         </>
                       )}
                     </button>
@@ -311,7 +390,7 @@ export default function Settings() {
                                       />
                                       <label
                                         htmlFor="profile-image-upload"
-                                        className="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full cursor-pointer"
+                                        className={`absolute bottom-0 right-0 ${isDarkMode ? "bg-secondary text-black" : "bg-primary text-white"} p-2 rounded-full cursor-pointer`}
                                       >
                                         <Camera size={16} />
                                       </label>
@@ -319,8 +398,8 @@ export default function Settings() {
                                   )}
                                 </div>
                                 {editMode && (
-                                  <p className="text-sm text-gray-500">
-                                    Formats acceptés: JPG, PNG. Taille max: 1MB
+                                  <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>
+                                    {t.acceptedFormats}
                                   </p>
                                 )}
                               </div>
@@ -334,9 +413,13 @@ export default function Settings() {
                         name="name"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Nom complet</FormLabel>
+                            <FormLabel className={isDarkMode ? "text-gray-300" : ""}>{t.fullName}</FormLabel>
                             <FormControl>
-                              <Input {...field} disabled={!editMode}/>
+                              <Input 
+                                {...field} 
+                                disabled={!editMode}
+                                className={isDarkMode ? "bg-gray-700 border-gray-600 text-white" : ""}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -347,9 +430,14 @@ export default function Settings() {
                         name="email"
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Adresse email</FormLabel>
+                            <FormLabel className={isDarkMode ? "text-gray-300" : ""}>{t.email}</FormLabel>
                             <FormControl>
-                              <Input type="email" {...field} disabled={!editMode} />
+                              <Input 
+                                type="email" 
+                                {...field} 
+                                disabled={!editMode} 
+                                className={isDarkMode ? "bg-gray-700 border-gray-600 text-white" : ""}
+                              />
                             </FormControl>
                             <FormMessage />
                           </FormItem>
@@ -363,9 +451,13 @@ export default function Settings() {
                             name="newPassword"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Nouveau mot de passe</FormLabel>
+                                <FormLabel className={isDarkMode ? "text-gray-300" : ""}>{t.newPassword}</FormLabel>
                                 <FormControl>
-                                  <Input type="password" {...field} />
+                                  <Input 
+                                    type="password" 
+                                    {...field}
+                                    className={isDarkMode ? "bg-gray-700 border-gray-600 text-white" : ""} 
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -376,9 +468,13 @@ export default function Settings() {
                             name="confirmPassword"
                             render={({ field }) => (
                               <FormItem>
-                                <FormLabel>Confirmer mot de passe</FormLabel>
+                                <FormLabel className={isDarkMode ? "text-gray-300" : ""}>{t.confirmPassword}</FormLabel>
                                 <FormControl>
-                                  <Input type="password" {...field} />
+                                  <Input 
+                                    type="password" 
+                                    {...field}
+                                    className={isDarkMode ? "bg-gray-700 border-gray-600 text-white" : ""} 
+                                  />
                                 </FormControl>
                                 <FormMessage />
                               </FormItem>
@@ -390,11 +486,11 @@ export default function Settings() {
                         <button
                           type="submit"
                           disabled={!editMode || profileLoading}
-                          className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center"
+                          className={`${isDarkMode ? "bg-secondary hover:bg-secondary/90 text-black" : "bg-primary hover:bg-primary/90 text-white"} px-5 py-2 rounded-md flex items-center`}
                           style={{ display: editMode ? 'flex' : 'none' }}
                         >
                           {profileLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}  
-                          Sauvegarder le profil
+                          {t.saveProfile}
                         </button>
                       </div>
                     </form>
@@ -411,17 +507,17 @@ export default function Settings() {
                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        Paramètres de notifications enregistrés !
+                        {t.notifSuccess}
                       </div>
                     )}
                     <FormField
                       control={notificationsForm.control}
                       name="emailNotifications"
                       render={({ field }) => (
-                        <FormItem className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
+                        <FormItem className={`flex items-center justify-between p-4 ${isDarkMode ? "bg-gray-800" : "bg-gray-50"} rounded-lg`}>
                           <div>
-                            <FormLabel className='font-medium'>Alertes par email</FormLabel>
-                            <p className="text-sm text-gray-500">Recevez des rappels d&apos;arrosage par email</p>
+                            <FormLabel className={`font-medium ${isDarkMode ? "text-gray-200" : ""}`}>{t.emailAlerts}</FormLabel>
+                            <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{t.emailAlertsDesc}</p>
                           </div>
                           <FormControl>
                             <SwitchButton checked={field.value} onCheckedChange={field.onChange} />
@@ -434,10 +530,10 @@ export default function Settings() {
                       control={notificationsForm.control}
                       name="maintenanceNotifications"
                       render={({ field }) => (
-                        <FormItem className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
+                        <FormItem className={`flex items-center justify-between p-4 ${isDarkMode ? "bg-gray-800" : "bg-gray-50"} rounded-lg`}>
                           <div>
-                            <FormLabel>Notifications d&apos;entretien</FormLabel>
-                            <p className="text-sm text-gray-500">Recevez des alertes sur l&apos;entretien de vos plantes</p>
+                            <FormLabel className={isDarkMode ? "text-gray-200" : ""}>{t.maintenanceNotifs}</FormLabel>
+                            <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{t.maintenanceNotifsDesc}</p>
                           </div>
                           <FormControl>
                             <SwitchButton checked={field.value} onCheckedChange={field.onChange} />
@@ -450,10 +546,10 @@ export default function Settings() {
                       control={notificationsForm.control}
                       name="weeklyTips"
                       render={({ field }) => (
-                        <FormItem className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
+                        <FormItem className={`flex items-center justify-between p-4 ${isDarkMode ? "bg-gray-800" : "bg-gray-50"} rounded-lg`}>
                           <div>
-                            <FormLabel>Conseils hebdomadaires</FormLabel>
-                            <p className="text-sm text-gray-500">Recevez des astuces pour prendre soin de vos plantes</p>
+                            <FormLabel className={isDarkMode ? "text-gray-200" : ""}>{t.weeklyTips}</FormLabel>
+                            <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{t.weeklyTipsDesc}</p>
                           </div>
                           <FormControl>
                             <SwitchButton checked={field.value} onCheckedChange={field.onChange} />
@@ -466,10 +562,10 @@ export default function Settings() {
                       <button
                         type="submit"
                         disabled={notificationsLoading}
-                        className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center"
+                        className={`${isDarkMode ? "bg-secondary hover:bg-secondary/90 text-black" : "bg-primary hover:bg-primary/90 text-white"} px-5 py-2 rounded-md flex items-center`}
                       >
                         {notificationsLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
-                        Sauvegarder
+                        {t.save}
                       </button>
                     </div>
                   </form>
@@ -485,7 +581,7 @@ export default function Settings() {
                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                         </svg>
-                        Préférences enregistrées !
+                        {t.prefSuccess}
                       </div>
                     )}
                     <FormField
@@ -493,12 +589,12 @@ export default function Settings() {
                       name="language"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Langue</FormLabel>
+                          <FormLabel className={isDarkMode ? "text-gray-300" : ""}>{t.language}</FormLabel>
                           <FormControl>
                             <select
                               {...field}
                               disabled={editMode}
-                              className="bg-white border border-gray-300 rounded-md shadow-sm focus:ring-primary focus:border-primary w-full p-2.5"
+                              className={`${isDarkMode ? "bg-gray-700 text-white border-gray-600" : "bg-white border-gray-300"} border rounded-md shadow-sm focus:ring-primary focus:border-primary w-full p-2.5`}
                             >
                               <option value="fr">Français</option>
                               <option value="en">English</option>
@@ -512,10 +608,10 @@ export default function Settings() {
                       control={preferencesForm.control}
                       name="darkMode"
                       render={({ field }) => (
-                        <FormItem className='flex items-center justify-between p-4 bg-gray-50 rounded-lg'>
+                        <FormItem className={`flex items-center justify-between p-4 ${isDarkMode ? "bg-gray-800" : "bg-gray-50"} rounded-lg`}>
                           <div>
-                            <FormLabel className='font-medium'>Mode sombre</FormLabel>
-                            <p className="text-sm text-gray-500">Activez le mode sombre pour une meilleure visibilité la nuit</p>
+                            <FormLabel className={`font-medium ${isDarkMode ? "text-gray-200" : ""}`}>{t.darkMode}</FormLabel>
+                            <p className={`text-sm ${isDarkMode ? "text-gray-400" : "text-gray-500"}`}>{t.darkModeDesc}</p>
                           </div>
                           <FormControl>
                             <SwitchButton checked={field.value} onCheckedChange={field.onChange} />
@@ -528,10 +624,10 @@ export default function Settings() {
                       <button
                         type="submit"
                         disabled={preferencesLoading}
-                        className="bg-primary hover:bg-primary/90 text-white px-5 py-2 rounded-md flex items-center"
+                        className={`${isDarkMode ? "bg-secondary hover:bg-secondary/90 text-black" : "bg-primary hover:bg-primary/90 text-white"} px-5 py-2 rounded-md flex items-center`}
                       >
                         {preferencesLoading ? <Loader2 size={16} className="mr-2 animate-spin" /> : <Save size={16} className="mr-2" />}
-                        Sauvegarder
+                        {t.save}
                       </button>
                     </div>
                   </form>

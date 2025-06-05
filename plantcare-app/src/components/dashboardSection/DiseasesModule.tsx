@@ -47,13 +47,13 @@ function DiseasesModule() {
     }, [selectedPlant])
 
     // If no plant selected
-    if (!selectedPlant) return (<UnselectedPlant/>)
+    if (!selectedPlant) return (<div className={`h-full ${session?.user.theme === "light" ? "bg-white text-black" : "bg-bgDarkSection text-white" }`}><UnselectedPlant/></div>)
     if (isLoading) {
       return (
-        <div className={`w-full h-full flex items-center justify-center ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" }`}>
+        <div className={`w-full h-full flex items-center justify-center ${session?.user.theme === "light" ? "bg-[#F9FAFB] text-primary" : "bg-bgDarkSection text-white" }`}>
           <div className="flex flex-col items-center">
             <div className="w-16 h-16 border-4 border-[#87b57d] border-solid rounded-full border-t-transparent animate-spin"></div>
-            <p className="mt-4 text-lg font-medium text-[#3e663a]">Chargement...</p>
+            <p className="mt-4 text-lg font-medium">Chargement...</p>
           </div>
         </div>
       )
@@ -62,10 +62,10 @@ function DiseasesModule() {
 
     return (
         <div className="w-full h-full flex flex-col items-start overflow-hidden">
-            <div className={`w-full h-[50px] flex items-center justify-start ${session?.user.theme === "light" ? "bg-white border-b border-gray-200" : "bg-[#c9c9c9]" }`}>
-              <h3 className="text-primary text-2xl font-bold py-1 px-3">Possible diseases</h3>
+            <div className={`w-full h-[50px] flex items-center justify-start border-b border-gray-200 ${session?.user.theme === "light" ? "bg-white text-primary" : "bg-black text-white" }`}>
+              <h3 className="text-2xl font-bold py-1 px-3">Possible diseases</h3>
             </div>
-            <div className={`w-full h-full flex flex-col md:flex-row items-center justify-around space-x-10 p-3 overflow-x-auto ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" }`}>
+            <div className={`w-full h-full flex flex-col md:flex-row items-center justify-around space-x-10 p-3 overflow-x-auto ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-bgDarkSection" }`}>
               { diseases.map((disease, index) => {
                   return <DiseaseCard
                    key={index}  

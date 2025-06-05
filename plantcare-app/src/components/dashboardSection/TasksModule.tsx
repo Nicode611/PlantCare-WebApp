@@ -42,11 +42,11 @@ export default function TasksModule() {
 
     return (
         <div className="w-full h-full flex flex-col items-center rounded-md">
-          <div className={`w-full flex items-center justify-start ${session?.user.theme === "light" ? "bg-white border-b border-gray-200" : "bg-[#c9c9c9]" }`}>
-            <h3 className="text-primary text-2xl font-bold py-1 px-3">Tasks</h3>
+          <div className={`w-full flex items-center justify-start border-b border-gray-200 ${session?.user.theme === "light" ? "bg-white text-primary" : "bg-black text-white" }`}>
+            <h3 className="text-2xl font-bold py-1 px-3">Tasks</h3>
           </div>
-          <div className={`flex w-full h-full p-3 ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-[#e4e4e4]" }`}>
-            <div className="w-[70%] h-full flex flex-col items-center shadow-inner bg-secondary bg-opacity-50 overflow-y-auto rounded-md">
+          <div className={`flex w-full h-full p-3 ${session?.user.theme === "light" ? "bg-[#F9FAFB]" : "bg-bgDarkSection" }`}>
+            <div className={`w-[70%] h-full flex flex-col items-center shadow-inner ${session?.user.theme === "light" ? "bg-secondary" : "bg-white" } bg-opacity-50 overflow-y-auto rounded-md`}>
                 {validTasks.length > 0 ? (
                     <ul className="flex flex-col items-center w-[95%]">
                         {validTasks.map((task) => (
@@ -56,8 +56,8 @@ export default function TasksModule() {
                                 <Image
                                 src="/icons/droplet.svg"
                                 alt="Droplet icon"
-                                width={25}
-                                height={25}
+                                width={20}
+                                height={20}
                                 className="m-2"
                                 />
                                 <div className="flex flex-col">
@@ -65,7 +65,7 @@ export default function TasksModule() {
                                     <strong>{task.action}</strong> {task.plant?.model?.name}
                                 </span>
                                 <span
-                                    className="leading-tight"
+                                    className="leading-tight text-[0.6rem]"
                                     style={{
                                       color:
                                         task.severityLvl === "M"
@@ -85,12 +85,12 @@ export default function TasksModule() {
                     </ul>
                 ) : (
                   <div className="w-full h-full flex justify-center items-center">
-                    <span>No task</span>
+                    <span className={`${session?.user.theme === "light" ? "text-primary" : " text-white" }`}>No task</span>
                   </div>
                 )}
             </div>
             <div className="flex flex-col justify-center items-center w-[30%] h-full m-1 ">
-                <div className="flex flex-col justify-around items-center bg-primary text-white font-bold rounded-md w-[80%] h-[75%] m-2 pt-3 pb-3 whitespace-nowrap">
+                <div className={`flex flex-col justify-around items-center  bg-primary text-white font-bold rounded-md w-[80%] h-[75%] m-2 pt-3 pb-3 whitespace-nowrap`}>
                     <span className="text-[0.8rem] ">Total tasks</span>
                     <span>{validTasks.length}</span>
                 </div>

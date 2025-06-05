@@ -84,8 +84,8 @@ function Sidebar() {
                         <ul className="list-none flex flex-col w-full">
                             <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("dashboard"))}>
                                 <div
-                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08740C] w-[90%] ${
-                                    activeSection === "dashboard" ? "bg-[#98C496] bg-opacity-80 text-[#08740C]" : ""
+                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer  w-[90%] ${
+                                    activeSection === "dashboard" ? `bg-secondary bg-opacity-80 ${session?.user.theme === "light" ? " text-[#08740C] hover:text-[#08740C]" : "hover:text-white text-white " }` : ""
                                   }`}
                                 >
                                     <Image
@@ -212,8 +212,8 @@ function Sidebar() {
                             </Tooltip.Provider>
                             <li className="flex justify-center m-2" onClick={() => dispatch(changeSection("plants"))}>
                                 <div
-                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer hover:text-[#08720C] w-[90%] ${
-                                    activeSection === "plants" ? "bg-[#98C496] bg-opacity-80 text-[#08720C]" : ""
+                                  className={`flex justify-start items-center p-1 rounded-sm hover:bg-[#98C496] hover:bg-opacity-80 hover:cursor-pointer w-[90%] ${
+                                    activeSection === "plants" ?  `bg-secondary bg-opacity-80 ${session?.user.theme === "light" ? " text-[#08740C] hover:text-[#08740C]" : "hover:text-white text-white " }` : ""
                                   }`}
                                 >
                                     <Image
